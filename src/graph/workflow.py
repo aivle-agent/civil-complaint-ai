@@ -1,7 +1,7 @@
 from langgraph.graph import StateGraph, END
 from src.models.state import CivilComplaintState
 
-from src.nodes.civi_complaint_node import civi_complaint_node
+from src.nodes.civi_complaint_node import civil_complaint_node
 from src.nodes.refine_query_node import refine_query_node
 from src.nodes.generate_strategy_node import generate_strategy_node
 from src.nodes.draft_reply_node import draft_reply_node
@@ -21,7 +21,7 @@ def create_graph():
     workflow = StateGraph(CivilComplaintState)
 
     # Add nodes
-    workflow.add_node("civi_complaint", civi_complaint_node)
+    workflow.add_node("civi_complaint", civil_complaint_node)
     workflow.add_node("refine_query", refine_query_node)
     workflow.add_node("generate_strategy", generate_strategy_node)
     workflow.add_node("draft_reply", draft_reply_node)

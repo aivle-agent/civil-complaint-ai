@@ -1,6 +1,6 @@
 import pytest
 from src.models.state import CivilComplaintState
-from src.nodes.civi_complaint_node import civi_complaint_node
+from src.nodes.civi_complaint_node import civil_complaint_node
 
 def test_civi_complaint_node():
     # Given
@@ -10,7 +10,7 @@ def test_civi_complaint_node():
     }
     
     # When
-    result = civi_complaint_node(initial_state)
+    result = civil_complaint_node(initial_state)
     
     # Then
     assert result["retry_count"] == 0
