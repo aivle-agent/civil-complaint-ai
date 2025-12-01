@@ -16,7 +16,6 @@ def civil_complaint_node(state: CivilComplaintState) -> CivilComplaintState:
         # Assuming run from root, but let's be safe with relative paths if needed
         # Or just assume data/examples.csv exists relative to CWD
         csv_path = "data/examples.csv"
-        
         if os.path.exists(csv_path):
             try:
                 with open(csv_path, 'r', encoding='utf-8') as f:
