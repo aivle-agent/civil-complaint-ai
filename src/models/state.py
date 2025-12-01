@@ -1,5 +1,6 @@
 from typing import TypedDict, Optional
 
+
 class CivilComplaintState(TypedDict):
     user_question: str
     refined_question: Optional[str]

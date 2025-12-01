@@ -1,5 +1,6 @@
 from src.models.state import CivilComplaintState
 
+
 def generate_strategy_node(state: CivilComplaintState) -> CivilComplaintState:
     """
     Generates a strategy to answer the complaint.

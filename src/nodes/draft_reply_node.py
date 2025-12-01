@@ -1,5 +1,6 @@
 from src.models.state import CivilComplaintState
 
+
 def draft_reply_node(state: CivilComplaintState) -> CivilComplaintState:
     """
     Drafts a reply based on the strategy.

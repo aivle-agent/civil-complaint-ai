@@ -1,5 +1,6 @@
 from src.models.state import CivilComplaintState
 
+
 def civil_complaint_node(state: CivilComplaintState) -> CivilComplaintState:
     """
     Initial processing of the civil complaint.

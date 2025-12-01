@@ -19,17 +19,21 @@ llama_pipe = transformers.pipeline(
 
 # 1. 프롬프트 ARM 정의
 
+
 @dataclass
 class PromptArmConfig:
     """
     각 프롬프트 전략(arm)에 대한 메타 정보.
     feature_vector는 이 전략의 성향을 나타내는 임베딩(스타일/목적 가중치 등).
     """
+
     name: str
     description: str
     feature_vector: np.ndarray  # shape = (d,)
 
+
 # 2. Logistic Bandit (arm별 w, H + UCB)
+
 
 class LogisticPromptBandit:
     """
@@ -37,6 +41,7 @@ class LogisticPromptBandit:
     - 각 arm별로 logistic 모델 w_a, H_a 유지
     - UCB 스타일로 exploration (mean + beta * uncertainty)
     """
+
     def __init__(
         self,
         arms: List[PromptArmConfig],
@@ -52,8 +57,8 @@ class LogisticPromptBandit:
         self.w = np.zeros((self.n_arms, self.d))  # w_a
         self.H = [lambda_reg * np.eye(self.d) for _ in range(self.n_arms)]
 
-        self.eta = eta   # step size
-        self.beta = beta # exploration 강도
+        self.eta = eta  # step size
+        self.beta = beta  # exploration 강도
 
     def _sigmoid(self, z: float) -> float:
         return 1.0 / (1.0 + np.exp(-z))
@@ -115,6 +120,7 @@ class LogisticPromptBandit:
             )
         return lines
 
+
 # 3. LLM Generator (Meta-Llama-3 기반)
 
 
@@ -123,6 +129,7 @@ class LlamaChatGenerator:
     Meta-Llama-3-8B-Instruct HF pipeline을 감싸는 generator 래퍼.
     system_prompt + user_prompt를 받아 답변을 생성.
     """
+
     def __init__(self, pipe):
         self.pipe = pipe
         self.tokenizer = pipe.tokenizer
@@ -142,7 +149,7 @@ class LlamaChatGenerator:
 
         terminators = [
             self.tokenizer.eos_token_id,
-            self.tokenizer.convert_tokens_to_ids("<|eot_id|>")
+            self.tokenizer.convert_tokens_to_ids("<|eot_id|>"),
         ]
 
         outputs = self.pipe(
@@ -187,23 +194,26 @@ def build_prompt_from_arm(
         f"- 과도한 약속이나 확정적인 표현은 피하고, '담당 부서의 최종 판단'이 필요함을 밝혀주세요.\n"
     )
 
+
 # 4. Verifier: LLM 기반 점수 → reward
 
 
 @dataclass
 class VerificationScores:
     """각 품질 지표 스코어 (0~1)."""
-    resolution_likelihood: float    # 실제로 해결/처리가 될 가능성
-    policy_legal_alignment: float   # 정책/법령·과거 답변과의 일치도
-    explanation_clarity: float      # 구조/논리/명료성
-    empathy_tone: float             # 민원인 친화적 톤, 갈등 완화
-    risk_safety: float              # 기관 입장에서의 안전성 (높을수록 안전)
+
+    resolution_likelihood: float  # 실제로 해결/처리가 될 가능성
+    policy_legal_alignment: float  # 정책/법령·과거 답변과의 일치도
+    explanation_clarity: float  # 구조/논리/명료성
+    empathy_tone: float  # 민원인 친화적 톤, 갈등 완화
+    risk_safety: float  # 기관 입장에서의 안전성 (높을수록 안전)
 
 
 class LlamaVerifier:
     """
     질문+답변을 평가하고 JSON 형태의 점수를 받는 verifier.
     """
+
     def __init__(self, pipe):
         self.pipe = pipe
         self.tokenizer = pipe.tokenizer
@@ -216,7 +226,7 @@ class LlamaVerifier:
 
         terminators = [
             self.tokenizer.eos_token_id,
-            self.tokenizer.convert_tokens_to_ids("<|eot_id|>")
+            self.tokenizer.convert_tokens_to_ids("<|eot_id|>"),
         ]
 
         outputs = self.pipe(
@@ -339,7 +349,9 @@ def aggregate_reward(
 
     return float(max(0.0, min(1.0, s)))
 
+
 # 5. 전체 엔진: bandit → generator → verifier → bandit update
+
 
 class PromptBanditEngine:
     """
@@ -348,6 +360,7 @@ class PromptBanditEngine:
     - verifier가 품질 측정 → reward 산출
     - bandit 업데이트
     """
+
     def __init__(
         self,
         arms: List[PromptArmConfig],
@@ -417,9 +430,10 @@ class PromptBanditEngine:
 
 # 6. to be decided
 
+
 def build_default_arms() -> List[PromptArmConfig]:
     """
-      [법률/정책 중시 정도, 해결책 제안 정도, 공감/톤, 단호함(제한 강조), 근거 제시 강조]
+    [법률/정책 중시 정도, 해결책 제안 정도, 공감/톤, 단호함(제한 강조), 근거 제시 강조]
     """
     return [
         PromptArmConfig(
@@ -462,7 +476,6 @@ def main():
     sample_complaints = [
         "우리 동네 공원 옆 도로에서 밤마다 오토바이 소음이 심해서 잠을 잘 수 없습니다. "
         "어디에 민원을 넣어야 하고, 구청에서 어떤 조치를 할 수 있는지 알고 싶습니다.",
-
         "아파트 단지 앞 불법주차 차량 때문에 시야가 가려져 사고 위험이 큽니다. "
         "단속 기준과 신고 방법, 그리고 실제로 조치가 이루어지는 절차를 알고 싶습니다.",
     ]
@@ -474,8 +487,8 @@ def main():
 
         result = engine.step(
             complaint_text=c,
-            reward_weights=None,   # 가중치 조절 필요
-            extra_context="",      # 법령 RAG context?
+            reward_weights=None,  # 가중치 조절 필요
+            extra_context="",  # 법령 RAG context?
         )
 
         print("\n[선택된 프롬프트 전략]")
@@ -501,5 +514,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-

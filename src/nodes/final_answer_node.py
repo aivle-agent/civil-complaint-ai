@@ -1,5 +1,6 @@
 from src.models.state import CivilComplaintState
 
+
 def final_answer_node(state: CivilComplaintState) -> CivilComplaintState:
     """
     Produces the final answer.

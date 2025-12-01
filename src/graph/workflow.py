@@ -8,6 +8,7 @@ from src.nodes.draft_reply_node import draft_reply_node
 from src.nodes.verify_reply_node import verify_reply_node
 from src.nodes.final_answer_node import final_answer_node
 
+
 def should_continue(state: CivilComplaintState) -> str:
     """
     Determines the next step based on verification result.
@@ -16,6 +17,7 @@ def should_continue(state: CivilComplaintState) -> str:
         return "final_answer"
     else:
         return "generate_strategy"
+
 
 def create_graph():
     workflow = StateGraph(CivilComplaintState)
@@ -39,10 +41,7 @@ def create_graph():
     workflow.add_conditional_edges(
         "verify_reply",
         should_continue,
-        {
-            "final_answer": "final_answer",
-            "generate_strategy": "generate_strategy"
-        }
+        {"final_answer": "final_answer", "generate_strategy": "generate_strategy"},
     )
 
     workflow.add_edge("final_answer", END)

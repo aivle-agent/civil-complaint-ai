@@ -34,7 +34,10 @@ tokenizer = pipe.tokenizer
 
 # 1. 공통 LLM 호출 유틸
 
-def call_llm_json(messages: List[Dict[str, str]], temperature: float = 0.2) -> Dict[str, Any] | None:
+
+def call_llm_json(
+    messages: List[Dict[str, str]], temperature: float = 0.2
+) -> Dict[str, Any] | None:
     """
     messages: [{"role": "system"/"user"/"assistant", "content": "..."}]
     LLM에게 JSON만 출력하도록 요청하고, 마지막 { ... } 부분을 파싱해서 dict로 반환.
@@ -42,7 +45,7 @@ def call_llm_json(messages: List[Dict[str, str]], temperature: float = 0.2) -> D
     """
     terminators = [
         tokenizer.eos_token_id,
-        tokenizer.convert_tokens_to_ids("<|eot_id|>")
+        tokenizer.convert_tokens_to_ids("<|eot_id|>"),
     ]
 
     out = pipe(
@@ -63,9 +66,13 @@ def call_llm_json(messages: List[Dict[str, str]], temperature: float = 0.2) -> D
         print("[RAW OUTPUT]", out[:500], "...")
         return None
 
+
 # 2. 질문 퀄리티 스코어링
 
-def score_question_quality(question_text: str, topic: str | None = None) -> Dict[str, float]:
+
+def score_question_quality(
+    question_text: str, topic: str | None = None
+) -> Dict[str, float]:
     """
     질문 퀄리티 변수 C_t:
     - clarity: 시간/장소/대상/피해/요구 slot 충실도 (0~1)
@@ -122,9 +129,13 @@ Return ONLY JSON like:
     # float 캐스팅
     return {k: float(v) for k, v in res.items()}
 
+
 # 3. 답변 퀄리티 스코어링
 
-def score_answer_quality(question_text: str, answer_text: str, law_context: str = "") -> Dict[str, float]:
+
+def score_answer_quality(
+    question_text: str, answer_text: str, law_context: str = ""
+) -> Dict[str, float]:
     """
     답변 퀄리티 R_t:
     - law_align: 법/정책 정합성
@@ -140,7 +151,7 @@ to a citizen complaint. Respond ONLY in JSON with scores 0.0–1.0.
 - proc_clarity: clear procedural guidance (what future action is to be taken, for how long is it to be taken, etc).
 - helpful: how much this answer helps the citizen understand what to do next.
 - tone: politeness, empathy, de-escalation.
-- responsible: institutionally safe and responsible wording (no over-promising, 
+- responsible: institutionally safe and responsible wording (no over-promising,
   proper limits and disclaimers).
 """
 
@@ -180,7 +191,9 @@ Return ONLY JSON like:
         }
     return {k: float(v) for k, v in res.items()}
 
-# 4. 질문-답변 유사도 / 주제 일치도 
+
+# 4. 질문-답변 유사도 / 주제 일치도
+
 
 def qa_similarity(q: str, a: str) -> float:
     """
@@ -205,9 +218,13 @@ def topic_match_score(topic_true: str | None, topic_pred: str | None) -> float:
         return 0.0
     return 1.0 if topic_true == topic_pred else 0.0
 
+
 # 5. QA 리스트에서 feature 추출
 
-def extract_features_from_qa_pairs(qa_pairs: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+
+def extract_features_from_qa_pairs(
+    qa_pairs: List[Dict[str, Any]],
+) -> List[Dict[str, Any]]:
     """
     qa_pairs: [{"question": str, "answer": str, "topic": Optional[str]}, ...]
     를 넣으면, 각 QA에 대해 질문/답변 퀄리티 + 유사도 feature를 계산해서 리스트로 반환.
@@ -230,7 +247,7 @@ def extract_features_from_qa_pairs(qa_pairs: List[Dict[str, Any]]) -> List[Dict[
         # 3) QA 유사도 (고정 변수)
         sim_qa = qa_similarity(q, a)
 
-        # 4) 토픽 일치도 
+        # 4) 토픽 일치도
         topic_match = 1.0  # 가변 변수, 수정 필요
 
         # 5) 답변 종합 퀄리티 (타깃 y 후보)
@@ -257,7 +274,9 @@ def extract_features_from_qa_pairs(qa_pairs: List[Dict[str, Any]]) -> List[Dict[
 
     return feature_rows
 
+
 # 6. SHAP: 모델 학습 + 전역 중요도
+
 
 def train_model_and_compute_shap(feature_rows: List[Dict[str, Any]]):
     """
@@ -309,6 +328,7 @@ def train_model_and_compute_shap(feature_rows: List[Dict[str, Any]]):
         "global_importance": global_importance,
     }
 
+
 def get_local_question_shap(
     feature_row: Dict[str, Any],
     explainer,
@@ -318,13 +338,15 @@ def get_local_question_shap(
     민원에 대해 SHAP 값 구해서 q_ 변수들만 dict로 반환.
     """
     x = np.array([[feature_row[col] for col in feature_cols]])
-    shap_vals = explainer.shap_values(x)[0]  
+    shap_vals = explainer.shap_values(x)[0]
 
     local_all = {col: float(val) for col, val in zip(feature_cols, shap_vals)}
     local_q_shap = {k: v for k, v in local_all.items() if k.startswith("q_")}
     return local_q_shap
 
+
 # 7. SHAP + 점수 기반 교정 가이드 + 리라이팅
+
 
 def build_guideline_with_shap(
     question: str,
@@ -340,11 +362,13 @@ def build_guideline_with_shap(
     items = []
     for var, shap_val in local_q_shap.items():
         score = float(feature_row.get(var, 0.0))
-        items.append({
-            "name": var,
-            "score": score,
-            "shap_value": shap_val,
-        })
+        items.append(
+            {
+                "name": var,
+                "score": score,
+                "shap_value": shap_val,
+            }
+        )
 
     # 영향력(|shap|) 큰 순으로 정렬
     items_sorted = sorted(items, key=lambda x: abs(x["shap_value"]), reverse=True)
@@ -360,7 +384,7 @@ how each QUESTION quality factor affects the predicted ANSWER quality.
 
 Interpretation:
 - score: current quality of that factor (0~1).
-- shap: local contribution to answer quality. 
+- shap: local contribution to answer quality.
   Negative shap = this factor is currently making the answer quality worse.
   Larger |shap| = stronger impact.
 
@@ -391,7 +415,7 @@ Guideline rules:
 
     terminators = [
         tokenizer.eos_token_id,
-        tokenizer.convert_tokens_to_ids("<|eot_id|>")
+        tokenizer.convert_tokens_to_ids("<|eot_id|>"),
     ]
     out = pipe(
         messages,
@@ -431,7 +455,7 @@ Return ONLY the rewritten question, no explanation."""
 
     terminators = [
         tokenizer.eos_token_id,
-        tokenizer.convert_tokens_to_ids("<|eot_id|>")
+        tokenizer.convert_tokens_to_ids("<|eot_id|>"),
     ]
     out = pipe(
         messages,
@@ -444,12 +468,13 @@ Return ONLY the rewritten question, no explanation."""
 
     return out
 
+
 # main 실행 코드
 # # 8. 예시 실행 (메인)
 
 # if __name__ == "__main__":
 #     qa_pairs = [
-        
+
 #     ]
 
 #     # 1) QA → feature 추출
