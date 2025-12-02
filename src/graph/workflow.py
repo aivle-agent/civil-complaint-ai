@@ -7,6 +7,7 @@ from src.nodes.generate_strategy_node import generate_strategy_node
 from src.nodes.draft_reply_node import draft_reply_node
 from src.nodes.verify_reply_node import verify_reply_node
 from src.nodes.final_answer_node import final_answer_node
+from src.nodes.retrieve_node import retrieve_node
 
 
 def should_continue(state: CivilComplaintState) -> str:
@@ -25,6 +26,7 @@ def create_graph():
     # Add nodes
     workflow.add_node("civi_complaint", civil_complaint_node)
     workflow.add_node("refine_query", refine_query_node)
+    workflow.add_node("retrieve", retrieve_node)
     workflow.add_node("generate_strategy", generate_strategy_node)
     workflow.add_node("draft_reply", draft_reply_node)
     workflow.add_node("verify_reply", verify_reply_node)
@@ -33,7 +35,8 @@ def create_graph():
     # Define edges
     workflow.set_entry_point("civi_complaint")
     workflow.add_edge("civi_complaint", "refine_query")
-    workflow.add_edge("refine_query", "generate_strategy")
+    workflow.add_edge("refine_query", "retrieve")
+    workflow.add_edge("retrieve", "generate_strategy")
     workflow.add_edge("generate_strategy", "draft_reply")
     workflow.add_edge("draft_reply", "verify_reply")
 

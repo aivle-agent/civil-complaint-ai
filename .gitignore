@@ -147,3 +147,11 @@ cython_debug/
 
 # macOS
 .DS_Store
+
+
+src/utils/build_faiss_index.py
+src/utils/rag_helper_faiss.py
+data/documents.txt
+data/embeddings.npy
+data/metadata.pkl
+data/vectorstores/
