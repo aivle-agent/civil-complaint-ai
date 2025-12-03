@@ -83,24 +83,12 @@ def load_to_document() -> List[Document]:
 
 
 
-@lru_cache(maxsize=1)
-def get_civil_vectorstore() -> Chroma:
+def build_chroma_db() -> None:
     """
-    벡터스토어 & 리트리버
-    """
+    벡터DB 구축 함수.
+    # """
     embeddings = get_embedding_model()
 
-    # 이미 벡터DB가 존재하면 로드
-    # os.listdir(VECTOR_DIR): 해당 디렉토리 내 파일들을 리스트로 반환
-    if os.path.exists(VECTOR_DIR) and os.listdir(VECTOR_DIR):
-        print(f"[RAG] 이미 {VECTOR_DIR}에 존재하는 Chroma DB 로딩")
-        vectorstore = Chroma(
-            persist_directory=VECTOR_DIR,
-            embedding_function=embeddings
-        )
-        return vectorstore
-    
-    # 벡터DB가 존재하지 않으면 생성.
     os.makedirs(VECTOR_DIR, exist_ok=True)
     print(f"[RAG] {VECTOR_DIR}에 새로운 Chroma DB 생성")
     docs = load_to_document()
@@ -114,8 +102,27 @@ def get_civil_vectorstore() -> Chroma:
     )
     vectorstore.persist()
     print("[RAG] Chroma DB 구축 및 저장(persist) 완료")
-    return vectorstore
 
+
+
+@lru_cache(maxsize=1)
+def get_civil_vectorstore() -> Chroma:
+    """
+    벡터스토어 & 리트리버. 존재하는 벡터DB 로드
+    """
+    embeddings = get_embedding_model()
+
+    # 이미 벡터DB가 존재하면 로드
+    # os.listdir(VECTOR_DIR): 해당 디렉토리 내 파일들을 리스트로 반환
+    if not os.path.exists(VECTOR_DIR) and not os.listdir(VECTOR_DIR):
+        raise RuntimeError("[RAG] Chroma DB가 존재하지 않습니다. build_chroma_db() 함수를 먼저 호출하여 벡터 DB를 생성하세요.")
+
+    print(f"[RAG] 이미 {VECTOR_DIR}에 존재하는 Chroma DB 로딩")
+    vectorstore = Chroma(
+        persist_directory=VECTOR_DIR,
+        embedding_function=embeddings
+    )
+    return vectorstore
 
 
 @lru_cache(maxsize=1)
