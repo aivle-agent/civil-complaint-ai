@@ -298,6 +298,30 @@ const ProposalForm = ({ onNext }) => {
         setFiles(newFiles);
     };
 
+    const handleNext = () => {
+        if (!inputs.prplTitl.trim()) {
+            alert("제안 제목을 입력해주세요.");
+            document.getElementById('prplTitl').focus();
+            return;
+        }
+        if (!inputs.prplCntnCl.trim()) {
+            alert("현황 및 문제점을 입력해주세요.");
+            document.getElementById('prplCntnCl').focus();
+            return;
+        }
+        if (!inputs.btmtIdeaCl.trim()) {
+            alert("개선방안을 입력해주세요.");
+            document.getElementById('btmtIdeaCl').focus();
+            return;
+        }
+        if (!inputs.expcEfctCl.trim()) {
+            alert("기대효과를 입력해주세요.");
+            document.getElementById('expcEfctCl').focus();
+            return;
+        }
+        onNext();
+    };
+
     return (
         <FormWrapper>
             <SubTitle>
@@ -419,7 +443,7 @@ const ProposalForm = ({ onNext }) => {
                 <div className="btnA_r">
                     <button className="btn line">불러오기</button>
                     <button className="btn line">임시저장</button>
-                    <button className="btn fill" onClick={onNext}>다음</button>
+                    <button className="btn fill" onClick={handleNext}>다음</button>
                 </div>
             </ButtonArea>
         </FormWrapper>
