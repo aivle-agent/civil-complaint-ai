@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import GlobalStyle from './styles/GlobalStyle';
 import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
 import Footer from './components/Layout/Footer';
 import ProposalList from './pages/ProposalList';
+import ProposalForm from './components/Proposal/ProposalForm';
 
 const MainContainer = styled.div`
   max-width: 1200px;
@@ -19,14 +20,17 @@ const ContentWrapper = styled.main`
 `;
 
 function App() {
+    const [activePage, setActivePage] = useState('form'); // Default to form as requested
+
     return (
         <>
             <GlobalStyle />
             <Header />
             <MainContainer>
-                <Sidebar />
+                <Sidebar activePage={activePage} onNavigate={setActivePage} />
                 <ContentWrapper>
-                    <ProposalList />
+                    {activePage === 'list' && <ProposalList />}
+                    {activePage === 'form' && <ProposalForm />}
                 </ContentWrapper>
             </MainContainer>
             <Footer />

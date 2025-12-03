@@ -31,6 +31,7 @@ const LNBItem = styled.li`
     color: var(--gray70);
     background-color: var(--gray0);
     transition: all 0.2s;
+    cursor: pointer;
 
     &:hover {
       background-color: var(--gray5);
@@ -46,19 +47,33 @@ const LNBItem = styled.li`
   }
 `;
 
-const Sidebar = () => {
-    return (
-        <SidebarWrapper>
-            <SidebarTitle>국민제안</SidebarTitle>
-            <LNBList>
-                <LNBItem><a href="#">일반제안</a></LNBItem>
-                <LNBItem><a href="#" className="active">공개제안</a></LNBItem>
-                <LNBItem><a href="#">실시제안</a></LNBItem>
-                <LNBItem><a href="#">국민제안 소개</a></LNBItem>
-                <LNBItem><a href="#">공무원제안</a></LNBItem>
-            </LNBList>
-        </SidebarWrapper>
-    );
+const Sidebar = ({ activePage, onNavigate }) => {
+  return (
+    <SidebarWrapper>
+      <SidebarTitle>국민제안</SidebarTitle>
+      <LNBList>
+        <LNBItem>
+          <a
+            className={activePage === 'form' ? 'active' : ''}
+            onClick={() => onNavigate('form')}
+          >
+            일반제안
+          </a>
+        </LNBItem>
+        <LNBItem>
+          <a
+            className={activePage === 'list' ? 'active' : ''}
+            onClick={() => onNavigate('list')}
+          >
+            공개제안
+          </a>
+        </LNBItem>
+        <LNBItem><a href="#">실시제안</a></LNBItem>
+        <LNBItem><a href="#">국민제안 소개</a></LNBItem>
+        <LNBItem><a href="#">공무원제안</a></LNBItem>
+      </LNBList>
+    </SidebarWrapper>
+  );
 };
 
 export default Sidebar;
