@@ -52,7 +52,12 @@ function App() {
                             onDataChange={handleProposalDataChange}
                         />
                     )}
-                    {activePage === 'institution' && <InstitutionSelect onNavigate={setActivePage} />}
+                    {activePage === 'institution' && (
+                        <InstitutionSelect
+                            onNavigate={setActivePage}
+                            data={proposalData}
+                        />
+                    )}
                 </ContentWrapper>
             </MainContainer>
             <Footer />

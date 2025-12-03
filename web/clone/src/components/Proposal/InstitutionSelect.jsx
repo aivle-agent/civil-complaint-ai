@@ -478,11 +478,14 @@ const ModalContent = styled.div`
   }
 `;
 
-const InstitutionSelect = ({ onNavigate }) => {
+const InstitutionSelect = ({ onNavigate, data }) => {
     const [selectedInstitution, setSelectedInstitution] = useState(null);
     const [isAccordionOpen, setIsAccordionOpen] = useState(true);
     const [showPreview, setShowPreview] = useState(false);
     const [searchCategory, setSearchCategory] = useState('cntrAdministDiv');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [aiResponse, setAiResponse] = useState(null);
+    const [hasPreviewed, setHasPreviewed] = useState(false);
 
     const autoRecommendations = [
         { id: '3200000', name: '서울특별시 관악구' },
@@ -513,6 +516,49 @@ const InstitutionSelect = ({ onNavigate }) => {
 
     const handleSelect = (name) => {
         setSelectedInstitution(name);
+        setHasPreviewed(false);
+        setAiResponse(null);
+    };
+
+    const handlePreview = async () => {
+        if (!selectedInstitution) {
+            alert("처리기관을 선택해주세요.");
+            return;
+        }
+
+        setIsSubmitting(true);
+        try {
+            const response = await fetch('http://localhost:8000/api/submit-proposal', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const result = await response.json();
+            console.log("AI Analysis Result:", result);
+            setAiResponse(result.final_answer);
+            setHasPreviewed(true);
+            setShowPreview(true);
+        } catch (error) {
+            console.error("Error generating preview:", error);
+            alert("미리보기 생성 중 오류가 발생했습니다.");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleSubmit = () => {
+        if (!hasPreviewed) {
+            alert("미리보기를 먼저 진행해주세요.");
+            return;
+        }
+        alert("신청이 완료되었습니다.");
     };
 
     return (
@@ -638,8 +684,23 @@ const InstitutionSelect = ({ onNavigate }) => {
                     <button className="btn gray">취소</button>
                 </div>
                 <div className="btnA_r">
-                    <button className="btn line" onClick={() => setShowPreview(true)}>미리보기</button>
-                    {selectedInstitution && <button className="btn fill">신청</button>}
+                    <button
+                        className="btn line"
+                        onClick={handlePreview}
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting ? '생성중...' : '미리보기'}
+                    </button>
+                    {selectedInstitution && (
+                        <button
+                            className="btn fill"
+                            onClick={handleSubmit}
+                            disabled={!hasPreviewed}
+                            style={{ opacity: !hasPreviewed ? 0.5 : 1, cursor: !hasPreviewed ? 'not-allowed' : 'pointer' }}
+                        >
+                            신청
+                        </button>
+                    )}
                 </div>
             </ButtonArea>
 
@@ -653,28 +714,39 @@ const InstitutionSelect = ({ onNavigate }) => {
                         <div className="def_lPop_body">
                             <p>작성하신 내용에 대해 확인 후 신청해주시기 바랍니다.</p>
                             <div className="titBox">
-                                <strong>에이비테스트</strong>
+                                <strong>{data?.prplTitl || '제목 없음'}</strong>
                             </div>
                             <div className="preview">
                                 <dl>
                                     <dt>현황 및 문제점</dt>
-                                    <dd>내용입니다...</dd>
+                                    <dd>{data?.prplCntnCl || '-'}</dd>
                                 </dl>
                                 <dl>
                                     <dt>개선방안</dt>
-                                    <dd>개선방안입니다...</dd>
+                                    <dd>{data?.btmtIdeaCl || '-'}</dd>
                                 </dl>
                                 <dl>
                                     <dt>기대효과</dt>
-                                    <dd>기대효과입니다...</dd>
+                                    <dd>{data?.expcEfctCl || '-'}</dd>
                                 </dl>
                             </div>
+
                             <div className="preview_info">
                                 <dl>
                                     <dt>신청 기관</dt>
                                     <dd>{selectedInstitution || '-'}</dd>
                                 </dl>
                             </div>
+
+                            {aiResponse && (
+                                <div className="preview" style={{ marginTop: '20px', borderTop: '2px solid var(--primary50)' }}>
+                                    <dl>
+                                        <dt style={{ backgroundColor: 'var(--primary5)', color: 'var(--primary50)' }}>예상답변</dt>
+                                        <dd style={{ whiteSpace: 'pre-wrap' }}>{aiResponse}</dd>
+                                    </dl>
+                                </div>
+                            )}
+
                             <div className="closeBtn">
                                 <button onClick={() => setShowPreview(false)}>닫기</button>
                             </div>
@@ -687,3 +759,5 @@ const InstitutionSelect = ({ onNavigate }) => {
 };
 
 export default InstitutionSelect;
+
+
