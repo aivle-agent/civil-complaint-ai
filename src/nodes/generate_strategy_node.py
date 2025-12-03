@@ -1,7 +1,6 @@
 from src.models.state import CivilComplaintState
-from src.tools.civil_rag_tool import get_civil_retriever
+from src.tools.civil_rag_tool import get_retriever
 
-retriever = get_civil_retriever()
 
 def generate_strategy_node(state: CivilComplaintState) -> CivilComplaintState:
     """
@@ -11,6 +10,7 @@ def generate_strategy_node(state: CivilComplaintState) -> CivilComplaintState:
     print("---GENERATE STRATEGY NODE---")
     refined_question = state.get("refined_question", "")
 
+    retriever = get_retriever()
     docs = retriever.invoke(refined_question)
     rag_context = "\n\n".join(
         f"[{i+1}] sorce: {doc.metadata.get('source_file', 'unknown')}\n{doc.page_content}"
@@ -21,3 +21,16 @@ def generate_strategy_node(state: CivilComplaintState) -> CivilComplaintState:
     # rag_context를 활용하여 실제로 전략을 생성하는 로직이 들어가야 함
     strategy = f"Strategy for: {refined_question} using {len(docs)} documents."
     return {"strategy": strategy, "rag_context": rag_context}
+
+
+
+# if __name__ == "__main__":
+#     # 간단한 테스트 실행
+#     test_state: CivilComplaintState = {
+#         "user_question": "불법주정차 단속에 대해 알려줘",
+#         "refined_question": "불법주정차 단속",
+#         "retry_count": 0,
+#     }
+#     result = generate_strategy_node(test_state)
+#     print("Generated Strategy:", result["strategy"])
+#     print("RAG Context:", result["rag_context"])

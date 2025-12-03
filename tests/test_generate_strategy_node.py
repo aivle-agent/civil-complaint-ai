@@ -15,7 +15,7 @@ def test_generate_strategy_node():
 
     # ② generate_strategy_node 내부 retriever를 더미로 교체
     with patch(
-        "src.nodes.generate_strategy_node._get_retriever",
+        "src.nodes.generate_strategy_node.get_retriever",
         return_value=DummyRetriever()
     ):
         # Given
