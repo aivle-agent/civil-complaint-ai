@@ -1,4 +1,4 @@
-from typing import TypedDict, Optional, Dict
+from typing import TypedDict, Optional, Dict, List
 
 
 class CivilComplaintState(TypedDict):
@@ -11,3 +11,5 @@ class CivilComplaintState(TypedDict):
     is_verified: bool  # Added for routing logic
     final_answer: Optional[str]
     retry_count: int
+
+    rag_context: Optional[str]  # Context retrieved via RAG

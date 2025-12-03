@@ -1,7 +1,7 @@
 from langgraph.graph import StateGraph, END
 from src.models.state import CivilComplaintState
 
-from src.nodes.civi_complaint_node import civil_complaint_node
+from src.nodes.civil_complaint_node import civil_complaint_node
 from src.nodes.refine_query_node import refine_query_node
 from src.nodes.generate_strategy_node import generate_strategy_node
 from src.nodes.draft_reply_node import draft_reply_node
