@@ -264,7 +264,7 @@ const ButtonArea = styled.div`
   }
 `;
 
-const ProposalForm = () => {
+const ProposalForm = ({ onNext }) => {
     const [inputs, setInputs] = useState({
         prplTitl: '',
         prplCntnCl: '',
@@ -419,7 +419,7 @@ const ProposalForm = () => {
                 <div className="btnA_r">
                     <button className="btn line">불러오기</button>
                     <button className="btn line">임시저장</button>
-                    <button className="btn fill">다음</button>
+                    <button className="btn fill" onClick={onNext}>다음</button>
                 </div>
             </ButtonArea>
         </FormWrapper>
@@ -427,3 +427,4 @@ const ProposalForm = () => {
 };
 
 export default ProposalForm;
+

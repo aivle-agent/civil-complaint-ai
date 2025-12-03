@@ -35,7 +35,7 @@ def refine_file(input_filename, output_filename):
 
 if __name__ == "__main__":
     # 입력 파일명과 출력 파일명 지정
-    INPUT_FILE = 'clone_제안신청_info.txt'
-    OUTPUT_FILE = 'clone_제안신청_info_refined.txt'
+    INPUT_FILE = 'clone_처리기관_info.txt'
+    OUTPUT_FILE = 'clone_처리기관_info_refined.txt'
     
     refine_file(INPUT_FILE, OUTPUT_FILE)

@@ -7,6 +7,8 @@ import Footer from './components/Layout/Footer';
 import ProposalList from './pages/ProposalList';
 import ProposalForm from './components/Proposal/ProposalForm';
 
+import InstitutionSelect from './components/Proposal/InstitutionSelect';
+
 const MainContainer = styled.div`
   max-width: 1200px;
   margin: 40px auto;
@@ -30,7 +32,8 @@ function App() {
                 <Sidebar activePage={activePage} onNavigate={setActivePage} />
                 <ContentWrapper>
                     {activePage === 'list' && <ProposalList />}
-                    {activePage === 'form' && <ProposalForm />}
+                    {activePage === 'form' && <ProposalForm onNext={() => setActivePage('institution')} />}
+                    {activePage === 'institution' && <InstitutionSelect onNavigate={setActivePage} />}
                 </ContentWrapper>
             </MainContainer>
             <Footer />
@@ -39,3 +42,4 @@ function App() {
 }
 
 export default App;
+
