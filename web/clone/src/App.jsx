@@ -23,6 +23,19 @@ const ContentWrapper = styled.main`
 
 function App() {
     const [activePage, setActivePage] = useState('form'); // Default to form as requested
+    const [proposalData, setProposalData] = useState({
+        prplTitl: '',
+        prplCntnCl: '',
+        btmtIdeaCl: '',
+        expcEfctCl: ''
+    });
+
+    const handleProposalDataChange = (name, value) => {
+        setProposalData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
 
     return (
         <>
@@ -32,7 +45,13 @@ function App() {
                 <Sidebar activePage={activePage} onNavigate={setActivePage} />
                 <ContentWrapper>
                     {activePage === 'list' && <ProposalList />}
-                    {activePage === 'form' && <ProposalForm onNext={() => setActivePage('institution')} />}
+                    {activePage === 'form' && (
+                        <ProposalForm
+                            onNext={() => setActivePage('institution')}
+                            data={proposalData}
+                            onDataChange={handleProposalDataChange}
+                        />
+                    )}
                     {activePage === 'institution' && <InstitutionSelect onNavigate={setActivePage} />}
                 </ContentWrapper>
             </MainContainer>

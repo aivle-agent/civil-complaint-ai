@@ -264,23 +264,15 @@ const ButtonArea = styled.div`
   }
 `;
 
-const ProposalForm = ({ onNext }) => {
-    const [inputs, setInputs] = useState({
-        prplTitl: '',
-        prplCntnCl: '',
-        btmtIdeaCl: '',
-        expcEfctCl: ''
-    });
-
+const ProposalForm = ({ onNext, data, onDataChange }) => {
+    // Local state for files is fine to keep here for now, or lift it if needed. 
+    // The user specifically asked for text fields.
     const [files, setFiles] = useState([]);
     const fileInputRef = useRef(null);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setInputs({
-            ...inputs,
-            [name]: value
-        });
+        onDataChange(name, value);
     };
 
     const handleFileChange = (e) => {
@@ -299,22 +291,22 @@ const ProposalForm = ({ onNext }) => {
     };
 
     const handleNext = () => {
-        if (!inputs.prplTitl.trim()) {
+        if (!data.prplTitl.trim()) {
             alert("제안 제목을 입력해주세요.");
             document.getElementById('prplTitl').focus();
             return;
         }
-        if (!inputs.prplCntnCl.trim()) {
+        if (!data.prplCntnCl.trim()) {
             alert("현황 및 문제점을 입력해주세요.");
             document.getElementById('prplCntnCl').focus();
             return;
         }
-        if (!inputs.btmtIdeaCl.trim()) {
+        if (!data.btmtIdeaCl.trim()) {
             alert("개선방안을 입력해주세요.");
             document.getElementById('btmtIdeaCl').focus();
             return;
         }
-        if (!inputs.expcEfctCl.trim()) {
+        if (!data.expcEfctCl.trim()) {
             alert("기대효과를 입력해주세요.");
             document.getElementById('expcEfctCl').focus();
             return;
@@ -361,11 +353,11 @@ const ProposalForm = ({ onNext }) => {
                         type="text"
                         name="prplTitl"
                         id="prplTitl"
-                        value={inputs.prplTitl}
+                        value={data.prplTitl}
                         onChange={handleInputChange}
                         placeholder="제목을 입력하세요"
                     />
-                    <span className="charCnt">({inputs.prplTitl.length}/200)</span>
+                    <span className="charCnt">({data.prplTitl.length}/200)</span>
                 </InputBox>
 
                 <InputBox className="mwInput_box">
@@ -375,10 +367,10 @@ const ProposalForm = ({ onNext }) => {
                     <textarea
                         name="prplCntnCl"
                         id="prplCntnCl"
-                        value={inputs.prplCntnCl}
+                        value={data.prplCntnCl}
                         onChange={handleInputChange}
                     />
-                    <span className="charCnt">({inputs.prplCntnCl.length}/4000)</span>
+                    <span className="charCnt">({data.prplCntnCl.length}/4000)</span>
                 </InputBox>
 
                 <InputBox className="mwInput_box">
@@ -388,10 +380,10 @@ const ProposalForm = ({ onNext }) => {
                     <textarea
                         name="btmtIdeaCl"
                         id="btmtIdeaCl"
-                        value={inputs.btmtIdeaCl}
+                        value={data.btmtIdeaCl}
                         onChange={handleInputChange}
                     />
-                    <span className="charCnt">({inputs.btmtIdeaCl.length}/4000)</span>
+                    <span className="charCnt">({data.btmtIdeaCl.length}/4000)</span>
                 </InputBox>
 
                 <InputBox className="mwInput_box">
@@ -401,10 +393,10 @@ const ProposalForm = ({ onNext }) => {
                     <textarea
                         name="expcEfctCl"
                         id="expcEfctCl"
-                        value={inputs.expcEfctCl}
+                        value={data.expcEfctCl}
                         onChange={handleInputChange}
                     />
-                    <span className="charCnt">({inputs.expcEfctCl.length}/4000)</span>
+                    <span className="charCnt">({data.expcEfctCl.length}/4000)</span>
                 </InputBox>
 
                 <FileUploadWrapper className="fileItems">
