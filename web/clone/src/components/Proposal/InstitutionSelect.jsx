@@ -485,7 +485,6 @@ const InstitutionSelect = ({ onNavigate, data }) => {
     const [searchCategory, setSearchCategory] = useState('cntrAdministDiv');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [aiResponse, setAiResponse] = useState(null);
-    const [hasPreviewed, setHasPreviewed] = useState(false);
 
     const autoRecommendations = [
         { id: '3200000', name: '서울특별시 관악구' },
@@ -516,8 +515,7 @@ const InstitutionSelect = ({ onNavigate, data }) => {
 
     const handleSelect = (name) => {
         setSelectedInstitution(name);
-        setHasPreviewed(false);
-        setAiResponse(null);
+        setAiResponse(null); // Reset AI response when institution changes
     };
 
     const handlePreview = async () => {
@@ -543,7 +541,6 @@ const InstitutionSelect = ({ onNavigate, data }) => {
             const result = await response.json();
             console.log("AI Analysis Result:", result);
             setAiResponse(result.final_answer);
-            setHasPreviewed(true);
             setShowPreview(true);
         } catch (error) {
             console.error("Error generating preview:", error);
@@ -551,14 +548,6 @@ const InstitutionSelect = ({ onNavigate, data }) => {
         } finally {
             setIsSubmitting(false);
         }
-    };
-
-    const handleSubmit = () => {
-        if (!hasPreviewed) {
-            alert("미리보기를 먼저 진행해주세요.");
-            return;
-        }
-        alert("신청이 완료되었습니다.");
     };
 
     return (
@@ -691,16 +680,7 @@ const InstitutionSelect = ({ onNavigate, data }) => {
                     >
                         {isSubmitting ? '생성중...' : '미리보기'}
                     </button>
-                    {selectedInstitution && (
-                        <button
-                            className="btn fill"
-                            onClick={handleSubmit}
-                            disabled={!hasPreviewed}
-                            style={{ opacity: !hasPreviewed ? 0.5 : 1, cursor: !hasPreviewed ? 'not-allowed' : 'pointer' }}
-                        >
-                            신청
-                        </button>
-                    )}
+                    {selectedInstitution && <button className="btn fill">신청</button>}
                 </div>
             </ButtonArea>
 
@@ -759,5 +739,3 @@ const InstitutionSelect = ({ onNavigate, data }) => {
 };
 
 export default InstitutionSelect;
-
-
