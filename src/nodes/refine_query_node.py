@@ -221,6 +221,33 @@ Definitions:
     }
     return {k: float(v) for k, v in res.items() if k in keys}
 
+def compute_question_quality(question_text: str, topic: Optional[str] = None) -> Dict[str, float]:
+    """
+    Backward-compatible wrapper used by tests.
+
+    The original codebase exposed `compute_question_quality` for
+    evaluating question quality. Internally we now use
+    `score_question_quality`, so this function simply delegates
+    to that implementation.
+
+    Args:
+        question_text: 원본 민원 또는 질문 텍스트.
+        topic: (선택) 주제 정보. 현재는 사용하지 않지만
+               기존 시그니처를 유지하기 위해 남겨둡니다.
+
+    Returns:
+        품질 점수 딕셔너리. 예:
+        {
+            "clarity": 0.0~1.0,
+            "specific": 0.0~1.0,
+            "fact_ratio": 0.0~1.0,
+            "noise": 0.0~1.0,
+            "focus": 0.0~1.0,
+            "law_situation_sim": 0.0~1.0,
+        }
+    """
+    return score_question_quality(question_text, topic=topic)
+
 
 # -------------------------------------------------------------------
 # 3. RF + SHAP 아티팩트 로딩
@@ -450,6 +477,16 @@ You MUST NOT:
      or specific article numbers of laws or regulations.
    - If such specific information is needed in reality, you must instead
      phrase it as a general request for guidance, NOT by fabricating details.
+6. **Say that the complaint is unclear or lacks information, or ask the citizen to add more information.**
+   - Do NOT write sentences such as:
+     - "민원 내용이 명확하지 않습니다."
+     - "특정 위치나 시간 등에 대한 정보가 부족합니다."
+     - "추가 정보를 제공해 주시면 감사하겠습니다."
+     - "연락처나 신청 날짜를 추가로 적어 주십시오."
+   - Even if important details are missing, you must NOT comment on the lack of information
+     and must NOT request the citizen to add, supplement, or provide more details, contact information, or dates.
+   - Instead, you must write the best possible complete complaint using general expressions
+     (예: "최근", "출퇴근 시간대", "여러 차례", "인근 도로", "아파트 단지 앞 인도" 등).
 
 FACT HANDLING RULES
 1. Use only information that is:
@@ -508,9 +545,12 @@ Final Output Instructions
   - Any explanations about what you are doing.
   - Any English or Chinese words, or other foreign language.
   - Any square-bracket placeholders like [내용].
+  - Any sentences that analyse the complaint itself (e.g., "민원 내용이 부족합니다.", "정보가 명확하지 않습니다.")
+  - Any sentences that ask the citizen to provide/add/supplement information, contact details, or dates.
 - The output must be ready to submit directly as an official citizen complaint in Korean.
 
 """
+
 
 
     rewrite_user_content = f"""[원본 민원]
@@ -541,33 +581,33 @@ Final Output Instructions
     return state
 
 
-if __name__ == "__main__":
-    # 단독 실행 테스트
-    test_query = (
-        "집 앞 인도에 눈이 쌓여 매우 미끄러운 상태입니다. "
-        "보행자 안전을 위해 제설 작업을 조속히 진행해 주시길 요청드립니다."
-    )
+# if __name__ == "__main__":
+#     # 단독 실행 테스트
+#     test_query = (
+#         "집 앞 인도에 눈이 쌓여 매우 미끄러운 상태입니다. "
+#         "보행자 안전을 위해 제설 작업을 조속히 진행해 주시길 요청드립니다."
+#     )
 
-    # init_state: CivilComplaintState = {
-    #     "user_question": test_query,
-    #     "refined_question": None,
-    #     "quality_scores": None,
-    #     "strategy": None,
-    #     "draft_answer": None,
-    #     "verification_feedback": None,
-    #     "is_verified": False,
-    #     "final_answer": None,
-    #     "retry_count": 0,
-    #     "rag_context": None,
-    #     "quality_shap_plot_base64": None,
-    # }
+#     init_state: CivilComplaintState = {
+#         "user_question": test_query,
+#         "refined_question": None,
+#         "quality_scores": None,
+#         "strategy": None,
+#         "draft_answer": None,
+#         "verification_feedback": None,
+#         "is_verified": False,
+#         "final_answer": None,
+#         "retry_count": 0,
+#         "rag_context": None,
+#         "quality_shap_plot_base64": None,
+#     }
 
-    # result_state = refine_query_node(init_state)
+#     result_state = refine_query_node(init_state)
 
-    # print("\n" + "=" * 40)
-    # print("       [최종 결과 확인]       ")
-    # print("=" * 40)
-    # print("\n[교정 가이드]")
-    # print(result_state.get("strategy"))
-    # print("\n[교정된 민원 (최종)]")
-    # print(result_state.get("refined_question"))
+#     print("\n" + "=" * 40)
+#     print("       [최종 결과 확인]       ")
+#     print("=" * 40)
+#     print("\n[교정 가이드]")
+#     print(result_state.get("strategy"))
+#     print("\n[교정된 민원 (최종)]")
+#     print(result_state.get("refined_question"))
