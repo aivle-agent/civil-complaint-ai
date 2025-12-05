@@ -248,6 +248,87 @@ def compute_question_quality(question_text: str, topic: Optional[str] = None) ->
     """
     return score_question_quality(question_text, topic=topic)
 
+def generate_refinement_suggestions(
+    question_text: str,
+    shap_summary_text: Optional[str] = None,
+    quality_scores: Optional[Dict[str, float]] = None,
+    *args: Any,
+    **kwargs: Any,
+) -> str:
+    """
+    Backward-compatible helper used by tests.
+
+    이전 버전 코드베이스에서는 이 함수가
+    SHAP/품질 분석 결과를 바탕으로 민원 개선 가이드를 생성하는 역할을 했습니다.
+    현재 리팩토링 버전에서는 내부적으로 LLM을 사용하는 동일한 목적의
+    가이드를 생성하도록 구현합니다.
+
+    Args:
+        question_text:
+            원본 민원 또는 질문 텍스트.
+        shap_summary_text:
+            (선택) 품질 지표와 SHAP 기여도를 요약한 문자열.
+            예: "- 항목: q_clarity, 현재점수: 0.30, 개선필요도(SHAP): -0.0123" 형식.
+        quality_scores:
+            (선택) 품질 점수 딕셔너리.
+            예: {"clarity": 0.3, "specific": 0.4, ...}
+
+    Returns:
+        한국어로 된 개선 가이드 문자열(여러 줄).
+    """
+    # LLM에 전달할 분석 텍스트 조합
+    analysis_parts: list[str] = []
+
+    if shap_summary_text:
+        analysis_parts.append("SHAP 기반 분석 요약:\n" + shap_summary_text)
+
+    if quality_scores:
+        qs_lines = "\n".join(
+            f"- {k}: {float(v):.3f}" for k, v in quality_scores.items()
+        )
+        analysis_parts.append("예측된 품질 점수:\n" + qs_lines)
+
+    if analysis_parts:
+        analysis_text = "\n\n".join(analysis_parts)
+    else:
+        analysis_text = "분석 정보는 별도로 제공되지 않았습니다."
+
+    system_prompt = """
+You are a writing assistant for Korean citizen complaints.
+You receive an original complaint and some analysis info (quality scores or SHAP summaries).
+Based on this, you must return 3–5 short, concrete suggestions in Korean
+that help the citizen rewrite their complaint so that it is clearer, more specific,
+focused on a single main issue, and suitable for submission to a public office.
+
+Requirements:
+- Output must be written ONLY in Korean.
+- Do not mention SHAP, 점수, 모델, 차원, 특성, 피처, 분석 결과 or any internal analysis terms.
+- Each suggestion should be one sentence starting with a dash (-) or a numbered item (예: "1.", "2.").
+- Focus on what additional facts (누가, 언제, 어디서, 무엇을, 왜, 어떻게) should be 포함될지,
+  또는 어떤 불필요한 감정적 표현이나 반복을 줄이면 좋을지에 대해 조언해 주세요.
+"""
+
+    user_prompt = f"""[원본 민원]
+{question_text}
+
+[분석 정보]
+{analysis_text}
+
+위 정보를 바탕으로, 민원인이 글을 다시 쓸 때 참고할 수 있는
+구체적인 개선 제안을 3~5개 한국어로 작성해 주세요.
+각 제안은 한 문장으로만 작성하고, 앞에 "-" 또는 "번호+점(예: 1.)"을 붙여 주세요.
+"""
+
+    suggestions = call_llm_text(
+        [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ],
+        temperature=0.2,
+    )
+
+    return suggestions.strip()
+
 
 # -------------------------------------------------------------------
 # 3. RF + SHAP 아티팩트 로딩
