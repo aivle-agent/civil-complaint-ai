@@ -26,20 +26,37 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from ..models.state import CivilComplaintState  # models/state.py 에서 타입 불러옴
 
 
-# --- CI 모드 감지 -----------------------------------------------------
 IS_CI = os.getenv("CI", "").lower() == "true" or os.getenv(
     "GITHUB_ACTIONS", ""
 ).lower() == "true"
 
-
-# torch / transformers 같은 무거운 라이브러리는
-# CI 환경에서는 import 자체를 생략
 if not IS_CI:
     import torch  # type: ignore[import]
-    from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
+    from transformers import AutoModelForCausalLM, AutoTokenizer  # type: ignore[import]
 else:
+    # CI 환경에서는 torch/transformers 를 실제로 사용하지 않도록 막는다
     torch = None  # type: ignore[assignment]
-    AutoTokenizer = AutoModelForCausalLM = pipeline = None  # type: ignore[assignment
+    AutoModelForCausalLM = AutoTokenizer = None  # type: ignore[assignment]
+
+
+def _get_device() -> str:
+    """
+    CI 환경에서는 torch 없이도 안전하게 동작하도록 장치 문자열만 리턴.
+    로컬/실서비스에서는 cuda/mps 여부를 보고 문자열 리턴.
+    """
+    if IS_CI or torch is None:
+        return "cpu"
+
+    if torch.cuda.is_available():
+        return "cuda"
+    # mps(backends)가 있을 때만 확인
+    if hasattr(torch, "backends") and hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+        return "mps"
+    return "cpu"
+
+
+# "cpu" / "cuda" / "mps" 문자 형태
+DEVICE = _get_device()
 
 
 # -------------------------------------------------------------------
@@ -57,18 +74,8 @@ MODEL_SAVE_DIR = THIS_DIR.parent / "models"       # .../src/models
 ARTIFACTS: Dict[str, Any] = {"model": None, "explainer": None, "features": None}
 
 # LLM 전역 캐시 (lazy load)
-_tokenizer: Optional[AutoTokenizer] = None
-_model: Optional[AutoModelForCausalLM] = None
-
-
-def _get_device() -> torch.device:
-    """사용할 디바이스 선택 (Apple Silicon 이면 mps 우선)."""
-    if torch.backends.mps.is_available():
-        return torch.device("mps")
-    return torch.device("cpu")
-
-
-DEVICE = _get_device()
+_tokenizer: Optional[Any] = None
+_model: Optional[Any] = None
 
 
 # -------------------------------------------------------------------
@@ -81,6 +88,10 @@ def initialize_models() -> None:
     - HUGGINGFACE_HUB_TOKEN / HF_TOKEN / HUGGINGFACE_TOKEN: HF 토큰 사용
     """
     global _tokenizer, _model
+
+    # CI에서는 LLM 로딩 자체를 하지 않음 (테스트는 compute_question_quality만 사용)
+    if IS_CI:
+        return
 
     if _model is not None and _tokenizer is not None:
         return
@@ -95,7 +106,8 @@ def initialize_models() -> None:
 
     print(f"[INFO] Loading LLM: {model_id} on device={DEVICE} ...")
 
-    torch_dtype = torch.float16 if DEVICE.type == "mps" else torch.float32
+    # DEVICE는 "cpu" / "cuda" / "mps" 문자열
+    torch_dtype = torch.float16 if DEVICE == "mps" else torch.float32
 
     _tokenizer = AutoTokenizer.from_pretrained(
         model_id,
@@ -192,6 +204,8 @@ def score_question_quality(
     민원 질문 품질을 여러 차원으로 점수화.
     JSON 파싱 실패 시 모든 항목 0.5 로 fallback.
     """
+    if IS_CI:
+        return compute_question_quality(question_text, topic)
     system_prompt = system_prompt = """You are an expert policy maker and law expert that rates the QUALITY of a citizen complaint QUESTION.
 You must respond ONLY in strict JSON with floating-point scores between 0 and 1.
 
@@ -297,10 +311,23 @@ def compute_question_quality(
         fact_ratio = 0.8
 
     # --- focus: 문장 개수 비슷하게 -------------------------------
-    sentence_separators = [".", "?", "!", "요."]
+    sentence_separators = [".", "?", "!"]
     sep_count = sum(text.count(sep) for sep in sentence_separators)
+
     # 한 문장(또는 거의 한 문장) → 1.0
-    focus = 1.0 if sep_count <= 1 else 0.4
+    focus = 1.0 if sep_count <= 2 else 0.4
+
+    # 여러 불만이 함께 섞여 있을 가능성이 높은 패턴이 있으면 포커스를 낮춘다
+    multi_issue_markers = [
+        "또한",
+        "그리고",
+        "및",
+        "뿐만 아니라",
+        "도 있고",
+        "도 있으며",
+    ]
+    if any(m in text for m in multi_issue_markers):
+        focus = min(focus, 0.4)
 
     # --- law_situation_sim: 행정/법 키워드 여부 ------------------------
     law_keywords = [
