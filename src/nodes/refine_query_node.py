@@ -806,33 +806,33 @@ Final Output Instructions
     return state
 
 
-if __name__ == "__main__":
-    # 단독 실행 테스트
-    test_query = (
-        "집 앞 인도에 눈이 쌓여 매우 미끄러운 상태입니다. "
-        "보행자 안전을 위해 제설 작업을 조속히 진행해 주시길 요청드립니다."
-    )
+# if __name__ == "__main__":
+#     # 단독 실행 테스트
+#     test_query = (
+#         "집 앞 인도에 눈이 쌓여 매우 미끄러운 상태입니다. "
+#         "보행자 안전을 위해 제설 작업을 조속히 진행해 주시길 요청드립니다."
+#     )
 
-    init_state: CivilComplaintState = {
-        "user_question": test_query,
-        "refined_question": None,
-        "quality_scores": None,
-        "strategy": None,
-        "draft_answer": None,
-        "verification_feedback": None,
-        "is_verified": False,
-        "final_answer": None,
-        "retry_count": 0,
-        "rag_context": None,
-        "quality_shap_plot_base64": None,
-    }
+#     init_state: CivilComplaintState = {
+#         "user_question": test_query,
+#         "refined_question": None,
+#         "quality_scores": None,
+#         "strategy": None,
+#         "draft_answer": None,
+#         "verification_feedback": None,
+#         "is_verified": False,
+#         "final_answer": None,
+#         "retry_count": 0,
+#         "rag_context": None,
+#         "quality_shap_plot_base64": None,
+#     }
 
-    result_state = refine_query_node(init_state)
+#     result_state = refine_query_node(init_state)
 
-    print("\n" + "=" * 40)
-    print("       [최종 결과 확인]       ")
-    print("=" * 40)
-    print("\n[교정 가이드]")
-    print(result_state.get("strategy"))
-    print("\n[교정된 민원 (최종)]")
-    print(result_state.get("refined_question"))
+#     print("\n" + "=" * 40)
+#     print("       [최종 결과 확인]       ")
+#     print("=" * 40)
+#     print("\n[교정 가이드]")
+#     print(result_state.get("strategy"))
+#     print("\n[교정된 민원 (최종)]")
+#     print(result_state.get("refined_question"))
