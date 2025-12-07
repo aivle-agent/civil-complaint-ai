@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ "main", "MVP" ]
+    branches: [ "main", "MVP", "MVP_WEB" ]
   pull_request:
-    branches: [ "main", "MVP" ]
+    branches: [ "main", "MVP", "MVP_WEB" ]
 
 jobs:
   test:
