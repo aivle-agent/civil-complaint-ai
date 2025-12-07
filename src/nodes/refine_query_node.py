@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Local LangGraph node:
-- Qwen/Qwen2.5-1.5B-Instruct 로 민원 질문 품질 평가
+- Qwen/Qwen2.5-3B-Instruct 로 민원 질문 품질 평가
 - RandomForestRegressor + SHAP 으로 품질 예측 및 중요도 분석
 - refined_question, strategy, predicted_quality, quality_shap_plot_base64 를 state에 기록
 """
@@ -14,18 +14,16 @@ import json
 import os
 from io import BytesIO
 from pathlib import Path
-from typing import Any, Dict, List, Optional, TypedDict, Union
+from typing import Any, Dict, List, Optional, Union
 
 import joblib
 import matplotlib.pyplot as plt
 import numpy as np
 import shap
-import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from ..models.state import CivilComplaintState  # models/state.py 에서 타입 불러옴
 
-
+# CI 환경 여부
 IS_CI = os.getenv("CI", "").lower() == "true" or os.getenv(
     "GITHUB_ACTIONS", ""
 ).lower() == "true"
@@ -83,7 +81,7 @@ _model: Optional[Any] = None
 # -------------------------------------------------------------------
 def initialize_models() -> None:
     """
-    Qwen2.5-1.5B-Instruct 모델 lazy-load.
+    Qwen2.5-3B-Instruct 모델 lazy-load.
     - QWEN_MODEL_ID 환경변수: 모델 ID 변경 가능
     - HUGGINGFACE_HUB_TOKEN / HF_TOKEN / HUGGINGFACE_TOKEN: HF 토큰 사용
     """
@@ -106,8 +104,15 @@ def initialize_models() -> None:
 
     print(f"[INFO] Loading LLM: {model_id} on device={DEVICE} ...")
 
-    # DEVICE는 "cpu" / "cuda" / "mps" 문자열
-    torch_dtype = torch.float16 if DEVICE == "mps" else torch.float32
+    # dtype 설정
+    if DEVICE == "cuda":
+        torch_dtype = torch.float16  # GPU 있으면 half 사용
+    elif DEVICE == "mps":
+        # MPS 에서는 속도를 위해 여전히 float16 사용
+        # (NaN 문제는 generate() 단계에서 do_sample=False 로 완화)
+        torch_dtype = torch.float16
+    else:
+        torch_dtype = torch.float32  # CPU
 
     _tokenizer = AutoTokenizer.from_pretrained(
         model_id,
@@ -129,7 +134,7 @@ def initialize_models() -> None:
 def _generate_from_messages(
     messages: List[Dict[str, str]],
     temperature: float = 0.2,
-    max_new_tokens: int = 1024,
+    max_new_tokens: int = 512,
 ) -> str:
     """
     Qwen chat template 으로 messages 입력받아 텍스트 생성.
@@ -146,12 +151,20 @@ def _generate_from_messages(
     )
     inputs = _tokenizer(prompt_text, return_tensors="pt").to(DEVICE)
 
+    # MPS 에서는 NaN/inf 문제를 줄이기 위해 샘플링을 끄고 greedy decoding 사용
+    if DEVICE == "mps":
+        do_sample_flag = False
+        gen_temperature = None
+    else:
+        do_sample_flag = True
+        gen_temperature = temperature
+
     with torch.no_grad():
         generated = _model.generate(
             **inputs,
             max_new_tokens=max_new_tokens,
-            do_sample=True,
-            temperature=temperature,
+            do_sample=do_sample_flag,
+            temperature=gen_temperature,
             eos_token_id=_tokenizer.eos_token_id,
         )
 
@@ -169,7 +182,7 @@ def call_llm_json(
         raw = _generate_from_messages(
             messages,
             temperature=temperature,
-            max_new_tokens=512,
+            max_new_tokens=256,
         )
         start_idx = raw.find("{")
         end_idx = raw.rfind("}")
@@ -190,10 +203,12 @@ def call_llm_text(
         return _generate_from_messages(
             messages,
             temperature=temperature,
-            max_new_tokens=1024,
+            max_new_tokens=512,
         )
     except Exception as e:
-        return f"[ERROR] LLM call failed: {e}"
+        # 콘솔에는 에러 출력, 사용자 결과에는 노출하지 않도록 빈 문자열 반환
+        print(f"[ERROR] LLM call failed: {e}")
+        return ""
 
 
 def score_question_quality(
@@ -206,7 +221,7 @@ def score_question_quality(
     """
     if IS_CI:
         return compute_question_quality(question_text, topic)
-    system_prompt = system_prompt = """You are an expert policy maker and law expert that rates the QUALITY of a citizen complaint QUESTION.
+    system_prompt = """You are an expert policy maker and law expert that rates the QUALITY of a citizen complaint QUESTION.
 You must respond ONLY in strict JSON with floating-point scores between 0 and 1.
 
 Definitions:
@@ -279,8 +294,6 @@ def compute_question_quality(
     tokens = text.split()
 
     # --- clarity: 문장 길이 기반 (테스트 요구사항 만족용) -------------
-    # - "2024년 11월 언제 어디서 누가 무엇을 어떻게 했나요?" → 토큰 많음 → 0.8 이상
-    # - "문제가 있어요" → 토큰 2개 이하 → 0.2
     if len(tokens) <= 2:
         clarity = 0.2
     elif len(tokens) >= 5:
@@ -293,13 +306,11 @@ def compute_question_quality(
     date_markers = ["년", "월", "일", "시", "분"]
     has_date_marker = any(m in text for m in date_markers)
 
-    # 테스트에서 "문제가 발생했어요" → specific == 0.0 이어야 함
     specific = 0.8 if (has_number or has_date_marker) else 0.0
 
     # --- noise: !, ? 비율만으로 간단 계산 -----------------------------
     punct_count = text.count("!") + text.count("?")
     punct_ratio = punct_count / float(length)
-    # "왜!!!!! 안되나요????!!!! 정말!!!!!" 같은 건 > 0.5가 되게
     noise = 0.8 if punct_ratio > 0.1 else 0.2
 
     # --- fact_ratio: 감정/느낌 위주면 낮게 ---------------------------
@@ -313,11 +324,8 @@ def compute_question_quality(
     # --- focus: 문장 개수 비슷하게 -------------------------------
     sentence_separators = [".", "?", "!"]
     sep_count = sum(text.count(sep) for sep in sentence_separators)
-
-    # 한 문장(또는 거의 한 문장) → 1.0
     focus = 1.0 if sep_count <= 2 else 0.4
 
-    # 여러 불만이 함께 섞여 있을 가능성이 높은 패턴이 있으면 포커스를 낮춘다
     multi_issue_markers = [
         "또한",
         "그리고",
@@ -343,7 +351,6 @@ def compute_question_quality(
         "위반",
     ]
     has_law_keyword = any(word in text for word in law_keywords)
-    # 테스트에서 "이것 좀 도와주세요" → 0.0, "행정 규정에 따른 ..." → >0.0
     law_situation_sim = 0.6 if has_law_keyword else 0.0
 
     return {
@@ -365,11 +372,8 @@ def generate_refinement_suggestions(
 ) -> str:
     """
     테스트/CI에서도 안정적으로 동작하는 개선 가이드 생성기.
-
-    - LLM 호출 없이, 점수 기반으로 정적인 가이드를 만든다.
-    - tests/test_refine_query_node.py의 문자열 기대값을 충족하도록 설계.
+    - LLM 호출 없이 점수 기반으로 정적인 가이드를 만든다.
     """
-    # 1) 점수 결정: 인자로 dict가 오면 그걸 쓰고, 아니면 다시 계산
     if isinstance(shap_summary_text, dict) and quality_scores is None:
         scores = shap_summary_text
     elif quality_scores is not None:
@@ -386,49 +390,42 @@ def generate_refinement_suggestions(
 
     suggestions: List[str] = []
 
-    # --- 명확성 부족 -------------------------------------------------
     if clarity < 0.5:
         suggestions.append(
             "명확성 개선: 누가, 언제, 어디서, 무엇을, 어떻게 했는지 "
             "문장 안에서 분명하게 드러나도록 적어 주세요."
         )
 
-    # --- 구체성 부족 -------------------------------------------------
     if specific < 0.5:
         suggestions.append(
             "구체성 개선: 날짜, 시간, 횟수, 위치 등 숫자나 구체적인 정보를 "
             "한두 가지 이상 추가해 주세요."
         )
 
-    # --- 사실 비율 --------------------------------------------------
     if fact_ratio < 0.5:
         suggestions.append(
             "사실 위주 작성: 감정 표현이나 추측은 줄이고, 실제로 발생한 사실과 "
             "확인 가능한 내용 위주로 정리해 주세요."
         )
 
-    # --- 노이즈 -----------------------------------------------------
     if noise > 0.5:
         suggestions.append(
             "불필요한 표현 줄이기: 물음표/느낌표 반복, 감탄사 등은 줄이고 "
             "핵심 내용만 남겨 주세요."
         )
 
-    # --- 포커스 -----------------------------------------------------
     if focus < 0.7:
         suggestions.append(
             "단일 주제 집중: 여러 불만이 섞여 있다면, 가장 중요한 한 가지 문제만 "
             "선택해 민원을 작성해 주세요."
         )
 
-    # --- 법/행정 맥락 ------------------------------------------------
     if law_sim < 0.2:
         suggestions.append(
             "행정/법령 맥락 연결: 관련 기관명, 제도명, 처리 절차 등 행정 상황을 "
             "함께 적어 주시면 담당자가 이해하기 더 쉽습니다."
         )
 
-    # --- 전반적으로 좋은 품질일 때: 칭찬 메시지 삽입 ----------------
     if (
         clarity >= 0.7
         and specific >= 0.7
@@ -436,8 +433,6 @@ def generate_refinement_suggestions(
         and noise <= 0.3
         and focus >= 0.7
     ):
-        # 테스트에서 "잘 작성되었습니다" 포함 여부를 검사하므로,
-        # 항상 맨 앞에 넣어준다.
         suggestions.insert(
             0,
             "잘 작성되었습니다. 현재 민원은 전반적으로 명확하고 구체적으로 "
@@ -445,7 +440,6 @@ def generate_refinement_suggestions(
         )
 
     if not suggestions:
-        # 아무 개선 포인트도 없다면, 긍정 메시지만 리턴
         return (
             "잘 작성되었습니다. 현재 민원은 전반적으로 명확하고 구체적으로 "
             "작성되어 큰 수정 없이 제출해도 무방합니다."
@@ -454,10 +448,6 @@ def generate_refinement_suggestions(
     return "\n- ".join(["- " + s for s in suggestions])
 
 
-
-# -------------------------------------------------------------------
-# 3. RF + SHAP 아티팩트 로딩
-# -------------------------------------------------------------------
 # -------------------------------------------------------------------
 # 3. RF + SHAP 아티팩트 로딩
 # -------------------------------------------------------------------
@@ -466,8 +456,6 @@ def load_artifacts_if_needed() -> bool:
     RandomForestRegressor, feature column 목록을 로드하고,
     가능하면 shap_explainer.joblib 을 사용하되
     실패 시에는 TreeExplainer 를 새로 만들어 사용한다.
-
-    → 로컬 / GitHub Actions 모두에서 버전 차이에 최대한 견고하게 동작하도록 설계.
     """
     if (
         ARTIFACTS["model"] is not None
@@ -483,7 +471,6 @@ def load_artifacts_if_needed() -> bool:
         explainer = None
         explainer_path = MODEL_SAVE_DIR / "shap_explainer.joblib"
 
-        # 1순위: 기존에 저장해 둔 explainer 가 있다면 먼저 시도
         if explainer_path.exists():
             try:
                 explainer = joblib.load(explainer_path)
@@ -494,7 +481,6 @@ def load_artifacts_if_needed() -> bool:
                     f"will rebuild TreeExplainer instead: {e}"
                 )
 
-        # 2순위: 파일이 없거나 로드 실패 → TreeExplainer 새로 구성
         if explainer is None:
             explainer = shap.TreeExplainer(rf_model)
             print("[INFO] SHAP TreeExplainer created from RF model (no pickle).")
@@ -517,12 +503,10 @@ def load_artifacts_if_needed() -> bool:
         return False
 
 
-
 # -------------------------------------------------------------------
 # 4. LangGraph 노드 본체
 # -------------------------------------------------------------------
 def refine_query_node(state: CivilComplaintState) -> CivilComplaintState:
-    
     # --- CI 모드: 초경량 경로 ---------------------------------------
     if IS_CI:
         user_question = state["user_question"]
@@ -530,17 +514,12 @@ def refine_query_node(state: CivilComplaintState) -> CivilComplaintState:
         scores = compute_question_quality(user_question)
         state["quality_scores"] = scores
 
-        # SHAP 요약 대신, 점수 기반 가이드만 생성
         guideline = generate_refinement_suggestions(user_question, scores)
         state["strategy"] = guideline
-
-        # CI에서는 굳이 LLM 재작성 없이 원문을 정리 정도만 해서 넣어줌
         state["refined_question"] = user_question.strip()
-
-        # CI에서는 SHAP 플롯도 생성하지 않음
         state["quality_shap_plot_base64"] = None
-
         return state
+
     """
     LangGraph 노드:
     - state["user_question"] 를 입력으로 받아
@@ -581,7 +560,7 @@ def refine_query_node(state: CivilComplaintState) -> CivilComplaintState:
             score = input_row.get(k, 0.0)
             q_shap_items.append({"name": k, "score": score, "shap_value": float(v)})
 
-    # SHAP 기여도 기준 정렬 (오름차순: 품질에 더 안 좋은 영향부터)
+    # SHAP 기여도 기준 정렬 (오름차순)
     sorted_items = sorted(q_shap_items, key=lambda x: x["shap_value"])
 
     # LLM 가이드라인 입력용 설명 텍스트
@@ -637,13 +616,12 @@ You must analyze the provided SHAP values to generate concrete, actionable advic
 - law_situation_sim: 법률/행정 상황 유사성 부족
 
 [SHAP Interpretation and Guidance Rules]
-1.  **Prioritization:** Address factors with LOW score (below 0.5) and strongly NEGATIVE SHAP value first.
-2.  **No Redundancy:** Ensure each bullet point provides unique advice.
-3.  **Diagnosis First (Korean):** For each bullet point, you MUST first state which quality dimension is low by using the **Korean term** from the mapping table (e.g., '명확성 부족' is 0.2, SHAP is -0.0032) and link it directly to the problematic part of the original question.
-4.  **Actionable Advice:** The advice MUST suggest specific actions:
-    * **Clarity/Specific:** Explicitly request missing factual data (e.g., '공장의 정확한 주소와 용도변경을 신청한 날짜를 추가로 적어 주세요.').
-    * **Focus/Law:** Convert vague complaints into specific administrative inquiries.
-5.  *
+1.  Prioritize factors with LOW score (below 0.5) and strongly NEGATIVE SHAP value.
+2.  Ensure each bullet point provides unique advice (no redundancy).
+3.  For each bullet point, FIRST name the quality dimension in Korean from the mapping table
+    (e.g., '명확성 부족', '구체성 부족') and briefly explain what is missing in the original question.
+4.  Then give specific, actionable advice in Korean on how to improve that aspect.
+5.  All output MUST be written ONLY in Korean (no English).
 """
 
     guideline_user_content = f"""[원본 민원]
@@ -662,121 +640,121 @@ You must analyze the provided SHAP values to generate concrete, actionable advic
         ]
     )
 
+    # LLM 호출 실패 시 간단한 점수 기반 가이드로 대체
+    if not guideline:
+        guideline = generate_refinement_suggestions(user_question, q_scores)
+
     # 5. 최종 민원문(refined_question) 생성
     print("   ... (LLM) 최종 민원문 교정 중 ...")
 
     rewrite_system_prompt = """
-You are a rewriting assistant for Korean citizen complaints.
-Your goal is to transform the original complaint into a clear, concise, and natural Korean text
-that a public official can easily read, understand the situation from, and use to consider appropriate administrative action.
+You are a dedicated rewriting assistant for Korean citizen complaints.
+Your job is to read the ORIGINAL COMPLAINT and rewrite it into a clear, polite, and logically organized complaint
+that can be submitted directly to a Korean administrative agency.
 
-CRITICAL LANGUAGE CONSTRAINTS
-1. The final output MUST be written **only in Korean**.
-2. Do NOT use any English words, Chinese characters, or any other foreign language in the final complaint text.
-   - No English words such as "quality", "policy", "case", "SHAP", "score", "feature", "dimension", etc.
-   - No Chinese characters or non-Hangul scripts. If a technical term or foreign word comes to mind,
-     you MUST rewrite it into natural Korean explanation instead (e.g., "생활의 질", "사례", "정책", "층간소음").
-3. Numbers (e.g., 1, 2, 3, 2025) are allowed, but you MUST NOT invent specific dates, counts, or article numbers
-   that are not present in the original complaint or in the provided guideline.
+IMPORTANT: OUTPUT LANGUAGE
+1. The final output MUST be written ONLY in Korean.
+2. You MUST NOT include any English words, Chinese characters, or other foreign languages in the final complaint text.
+   - If a technical or foreign term comes to mind, you MUST instead describe it in natural Korean.
+3. Your answer is the final complaint text itself. Do NOT explain what you are doing.
 
-TARGET ROLE AND PERSPECTIVE
-- The text you generate will be stored as 'refined_question' and submitted directly as a citizen complaint.
-- The reader is a public official in a Korean administrative agency.
-- Always write from the citizen's first-person perspective:
-  - Use expressions like "저는", "저희 가족은", "저희 아파트는".
-- Use polite, formal Korean suitable for an official complaint.
+GOAL
+- Keep the meaning and factual content of the original complaint.
+- Improve clarity, coherence, and politeness.
+- Produce a complaint that a public official can easily understand and use for administrative action.
 
-ABSOLUTE PROHIBITIONS
+ALLOWED INFORMATION (FACT CONSISTENCY)
+1. Every concrete factual detail in the final complaint MUST already exist in the original complaint.
+   This includes:
+   - Addresses, apartment/building names, road names, institution names, business names, school names, personal names,
+   - Dates, times, time periods, counts, amounts of money,
+   - Names of laws, regulations, and article numbers.
+2. If the original complaint uses only vague expressions such as:
+   - "집 앞 도로", "동네 길", "위층", "옆집", "근처 도로", "아파트 단지 내",
+   then:
+   - You may keep the same level of vagueness (e.g., "집 앞 도로", "거주지 주변 도로"),
+   - BUT you MUST NOT replace them with new specific information like exact road names, building numbers, apartment names, or institution names.
+3. If the original complaint does NOT contain any specific address, apartment name, institution name, or law name:
+   - The final complaint MUST also NOT contain any specific address, apartment name, institution name, or law name.
+   - Use only general expressions such as "집 앞 도로", "주변 도로", "관할 행정기관", "관련 부서".
+4. If the refinement guideline (strategy text) contains new specific addresses, institution names, dates, numbers, or law articles
+   that do NOT appear in the original complaint:
+   - You MUST NOT copy those specific details into the final complaint.
+   - The guideline is only for what to emphasize, not for adding new facts.
+
+STRICTLY FORBIDDEN
 You MUST NOT:
-1. Use any analysis/model-related terminology in the final text:
-   - No "SHAP", "점수", "모델", "차원", "특성", "피처", "분석 결과" or similar.
-2. Produce placeholders or bracketed variables in the final text:
-   - No "[아파트 이름]", "[날짜]", "[층]", "[SHAP 값]", "[질량 차원]" or any other text in square brackets [ ].
-3. Give writing instructions or meta-comments inside the final complaint:
-   - No "다음과 같이 작성해 주십시오", "추가로 ~를 적어 주시면 좋겠습니다", "이 글은 ~에 대한 민원입니다.".
-4. Describe the document itself:
-   - Do NOT say "이 민원은 ~에 대한 문의입니다.", "이 문서는 ~을 설명합니다." etc.
-5. Invent new concrete facts that are not supported by the original complaint or guideline:
-   - Do NOT invent exact dates like "2025년 6월 1일",
-     exact counts like "최근 3개월간 신고 50건",
-     or specific article numbers of laws or regulations.
-   - If such specific information is needed in reality, you must instead
-     phrase it as a general request for guidance, NOT by fabricating details.
-6. **Say that the complaint is unclear or lacks information, or ask the citizen to add more information.**
-   - Do NOT write sentences such as:
-     - "민원 내용이 명확하지 않습니다."
-     - "특정 위치나 시간 등에 대한 정보가 부족합니다."
-     - "추가 정보를 제공해 주시면 감사하겠습니다."
-     - "연락처나 신청 날짜를 추가로 적어 주십시오."
-   - Even if important details are missing, you must NOT comment on the lack of information
-     and must NOT request the citizen to add, supplement, or provide more details, contact information, or dates.
-   - Instead, you must write the best possible complete complaint using general expressions
-     (예: "최근", "출퇴근 시간대", "여러 차례", "인근 도로", "아파트 단지 앞 인도" 등).
+1. Invent any new factual details that are not clearly supported by the original complaint, including:
+   - New addresses, building or apartment names, road names,
+   - New company, school, or institution names,
+   - New dates, times, time periods, counts, money amounts, or law/regulation article numbers.
+2. Use any placeholders or bracketed variables.
+   - FORBIDDEN examples: "[주소]", "[아파트명]", "[날짜]", "[연락처]" or any text in square brackets [ ].
+3. Ask the citizen to add or provide more information.
+   - Do NOT write sentences like:
+     - "추가 정보를 제공해 주십시오.",
+     - "연락처를 남겨 주시면 감사하겠습니다.",
+     - "주소나 날짜를 적어 주십시오."
+4. Comment on the quality or clarity of the complaint itself.
+   - FORBIDDEN examples:
+     - "민원 내용이 명확하지 않습니다.",
+     - "정보가 부족합니다.",
+     - "이 민원은 ~에 대한 문의입니다."
+5. Reuse or copy sentences from previous complaints or previous outputs.
+   - For every new input, you MUST generate new sentences based ONLY on the current original complaint and guideline.
+6. Use English, Chinese characters, or any foreign language in the final text.
+   - The final complaint MUST be pure Korean, with only numbers allowed where appropriate.
 
-FACT HANDLING RULES
-1. Use only information that is:
-   - Explicitly present in the original complaint, OR
-   - Reasonably implied at a general level (e.g., "최근 몇 달간", "여러 차례", "출퇴근 시간대").
-2. If a related regulation, law, or rule seems important:
-   - Do NOT invent specific law or article names.
-   - Instead, write a natural Korean request such as:
-     - "해당 상황에 적용될 수 있는 관련 법령이나 조례, 기준을 안내해 주시기 바랍니다."
-     - "관련 규정에 따라 어떤 조치가 가능한지 설명해 주시기 바랍니다."
+PERSPECTIVE AND TONE
+- Always write in the first person from the citizen’s point of view:
+  - Use expressions like "저는", "저희 가족은", "저희 아파트는".
+- Use polite, formal Korean suitable for communication with a public official.
+- Reduce overly emotional language slightly, while still conveying the seriousness and inconvenience of the situation.
 
-CONTENT STRUCTURE AND LOGIC
-You should organize the complaint into 2–3 short paragraphs in Korean:
+PARAGRAPH AND SENTENCE STRUCTURE
+- Always produce 2 or 3 paragraphs.
+- Each paragraph should contain about 2–4 sentences.
+- Sentences should not be excessively long; split complex ideas into separate sentences.
 
-[Paragraph 1: Background and overall situation]
+RECOMMENDED STRUCTURE (FORMAT, DO NOT COPY WORDING)
+You MUST follow this structure, but you MUST NOT copy any example sentence literally.
+
+Paragraph 1: Background and overall situation
 - Briefly state who you are and what general problem you are experiencing.
-- Include information such as:
-  - Where (도로, 인도, 아파트 단지, 동네 등 — general description only),
-  - Since when or how often (최근, 출퇴근 시간대, 여러 차례 등),
-  - What kind of problem (눈·얼음으로 인한 미끄러움, 교통 체증, 소음 등).
+- Use the time/place level that appears in the original complaint (do NOT make it more specific).
 
-[Paragraph 2: Concrete problem details and impact]
+Paragraph 2: Concrete problem details and impact
 - Describe how the problem appears in daily life:
-  - Repetition, severity, and concrete effects on safety, daily life, or traffic.
-  - Any actions already taken (e.g., 관리사무소에 문의, 이전 민원 제기 등), if mentioned or reasonably implied.
-- Use the six-question perspective (who, where, when, what, why, how) as much as the original content allows,
-  but do NOT invent specific dates, counts, or article numbers.
+  - How often it occurs, how severe it is, in which situations it is especially problematic,
+  - How it affects safety, daily life, traffic, environment, etc.
+- If the original complaint mentions contact with a management office, previous complaints, or calls,
+  naturally include those actions.
+- Use only information that is explicit or reasonably implied in the original complaint.
 
-[Paragraph 3: Clear request to the authority]
-- Clearly state what you want the public office to do.
-- Acceptable request types include:
-  - Requesting specific administrative actions:
-    - "제설 작업 등 안전 조치를 조속히 시행해 주시기 바랍니다."
-    - "교통 체증을 완화할 수 있는 신호 체계 조정이나 우회 동선 마련을 검토해 주십시오."
-  - Requesting guidance on regulations:
-    - "해당 상황에 적용될 수 있는 관련 법령이나 조례, 기준이 있다면 함께 안내해 주시기 바랍니다."
-    - "관련 규정에 따라 어떤 조치가 가능한지 설명해 주시기 바랍니다."
+Paragraph 3: Request to the authority
+- Clearly and politely state what you want the authority to do, in a way that fits the original complaint.
+- Allowed request types include, for example (structure only, do NOT copy wording):
+  - Requesting investigation and improvement,
+  - Requesting safety or environmental measures,
+  - Requesting guidance on applicable regulations or standards.
+- You MUST create sentences that match the actual situation of the original complaint.
+- Do NOT blindly copy any example sentence from this instruction; always generate new sentences.
 
 STYLE REQUIREMENTS
-1. The tone must be polite, formal Korean appropriate for communication with a public official.
-2. Sentences should not be excessively long. Split long explanations into two or more clear sentences.
-3. Do NOT repeat the same complaint sentence in a redundant way.
-4. Use natural Korean expressions instead of foreign terms.
-   - If a foreign or technical term comes to mind, you MUST replace it with a natural Korean explanation.
+1. Use polite, formal Korean ending forms appropriate for official complaints.
+2. Avoid redundant repetition of the same idea.
+3. Keep the logic clear: background → detailed problem → concrete request.
+4. If the original text is very emotional, you may soften the tone slightly while keeping the core message.
 
-GOOD EXAMPLE PATTERN (FOR STYLE ONLY, NOT FOR FACTS)
-You may use the following pattern as a STYLE reference only (do NOT copy dates or numbers):
-- 문제 상황 제시: 언제부터, 어느 장소에서, 어떤 문제가 반복되고 있는지 설명
-- 구체적 맥락: 어느 시간대에 특히 심각한지, 어떤 불편이 있는지 설명
-- 요청: "신속한 개선 조치와 ○○ 개선을 요청합니다."와 같이 명확한 조치 요청
-
-Final Output Instructions
-- Output ONLY the final complaint text in Korean, as continuous paragraphs.
-- Do NOT include:
-  - Any bullet points, headings, numbering, or lists.
-  - Any explanations about what you are doing.
-  - Any English or Chinese words, or other foreign language.
-  - Any square-bracket placeholders like [내용].
-  - Any sentences that analyse the complaint itself (e.g., "민원 내용이 부족합니다.", "정보가 명확하지 않습니다.")
-  - Any sentences that ask the citizen to provide/add/supplement information, contact details, or dates.
-- The output must be ready to submit directly as an official citizen complaint in Korean.
-
+FINAL OUTPUT FORMAT
+- Output ONLY the final complaint text in Korean as continuous paragraphs.
+- DO NOT include:
+  - Bullet points, numbered lists, headings, or section titles,
+  - Explanations of what you are doing,
+  - The words “original complaint”, “guideline”, or any meta-comment.
+- Do NOT show any placeholders or brackets.
+- Do NOT use any English or other foreign language in the final complaint.
 """
-
-
 
     rewrite_user_content = f"""[원본 민원]
 {user_question}
@@ -784,7 +762,7 @@ Final Output Instructions
 [교정 가이드]
 {guideline}
 
-위 가이드를 반영하여, 공무원이 읽기 좋게 다듬어진 '최종 민원 내용'만 작성해 주세요.
+위 가이드를 참고하여, 공무원이 읽기 좋게 다듬어진 '최종 민원 내용'만 작성해 주세요.
 """
 
     refined_question = call_llm_text(
@@ -793,6 +771,10 @@ Final Output Instructions
             {"role": "user", "content": rewrite_user_content},
         ]
     )
+
+    # LLM 호출 실패 시 원본 민원을 그대로 사용
+    if not refined_question:
+        refined_question = user_question.strip()
 
     # 6. state 업데이트
     state["refined_question"] = refined_question.strip()
@@ -809,8 +791,7 @@ Final Output Instructions
 # if __name__ == "__main__":
 #     # 단독 실행 테스트
 #     test_query = (
-#         "집 앞 인도에 눈이 쌓여 매우 미끄러운 상태입니다. "
-#         "보행자 안전을 위해 제설 작업을 조속히 진행해 주시길 요청드립니다."
+#      """저는 ○○시에 거주하는 주민으로, 거주지 인근 도로 포장 상태와 관련하여 민원을 드립니다. 최근 도로 일부 구간이 움푹 패이거나 갈라져 있어 차량 운전 시 충격이 느껴지고, 보행자가 이동할 때도 넘어질 위험이 있다고 생각됩니다. 관할 부서에서 해당 구간을 점검하시어 필요하다면 보수 공사를 진행해 주시길 요청드립니다."""
 #     )
 
 #     init_state: CivilComplaintState = {
