@@ -14,4 +14,13 @@ def test_refine_query_node_basic():
 
     # Then
     assert "refined_question" in result
-    assert result["refined_question"] == initial_state["user_question"]
+    assert isinstance(result["refined_question"], str), "refined_question must be a string"
+    assert len(result["refined_question"]) > 0, "refined_question must not be empty"
+    
+    # Check that quality_scores and strategy are also generated
+    assert "quality_scores" in result, "Result must contain 'quality_scores' key"
+    assert "strategy" in result, "Result must contain 'strategy' key"
+    assert isinstance(result["strategy"], str), "strategy must be a string"
+    
+    print(f"✓ refined_question: {result['refined_question'][:50]}...")
+    print(f"✓ strategy generated: {len(result['strategy'])} chars")

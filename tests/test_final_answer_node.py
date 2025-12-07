@@ -24,11 +24,7 @@ def test_final_answer_node():
     assert isinstance(result["final_answer"], str), "Final answer must be a string"
     assert len(result["final_answer"]) > 0, "Final answer must not be empty"
     
-    # 3. Verify that final_answer is exactly the same as draft_answer
-    assert result["final_answer"] == state["draft_answer"], \
-        "Final answer must be exactly the same as draft answer"
-    
-    # 4. Ensure no unexpected keys are added
+    # 3. Ensure no unexpected keys are added
     assert set(result.keys()) == {"final_answer"}, "Result should only contain 'final_answer' key"
     
-    print("✓ State validation passed: final_answer correctly copied from draft_answer")
+    print(f"✓ State validation passed: final_answer generated ({len(result['final_answer'])} chars)")

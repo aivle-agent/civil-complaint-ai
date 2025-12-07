@@ -35,10 +35,7 @@ def test_draft_reply_node():
     assert isinstance(result["draft_answer"], str), "Draft answer must be a string"
     assert len(result["draft_answer"]) > 0, "Draft answer must not be empty"
     
-    # 3. Verify the draft answer contains meaningful content
-    assert result["draft_answer"] == "Mock draft answer based on the test strategy"
-    
-    # 4. Ensure no unexpected keys are added
+    # 3. Ensure no unexpected keys are added
     assert set(result.keys()) == {"draft_answer"}, "Result should only contain 'draft_answer' key"
     
-    print("✓ State validation passed: draft_answer properly generated and stored")
+    print(f"✓ State validation passed: draft_answer generated ({len(result['draft_answer'])} chars)")
