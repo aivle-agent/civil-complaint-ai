@@ -426,9 +426,12 @@ const ModalOverlay = styled.div`
 const ModalContent = styled.div`
   background-color: white;
   width: 600px;
+  max-height: 80vh;
   border-radius: var(--radius-md);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   
   .layerPop_top {
     background-color: var(--primary50);
@@ -454,6 +457,8 @@ const ModalContent = styled.div`
   
   .def_lPop_body {
     padding: 30px;
+    flex: 1;
+    overflow-y: auto;
     
     p {
         margin-bottom: 20px;
