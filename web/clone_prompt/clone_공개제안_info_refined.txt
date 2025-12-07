@@ -1,0 +1,2597 @@
+DOM:
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="canonical" href="https://www.epeople.go.kr">
+	<meta name="description" content="국민권익위원회가 운영하는 온라인 국민참여포털로 민원신청, 국민제안, 정책참여 창구">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="국민신문고">
+	<meta property="og:description" content="국민권익위원회가 운영하는 온라인 국민참여포털로 민원신청, 국민제안, 정책참여 창구">
+	<meta property="og:image" content="https://www.epeople.go.kr/resource/images/paid/nep/layout/epeople_logo.png">
+	<meta property="og:url" content="https://www.epeople.go.kr">
+	<meta name="_csrf_parameter" content="_csrf"><meta name="_csrf_header" content="X-CSRF-TOKEN"><meta name="_csrf" content="4b8b330b-37ff-4535-a4a2-b65da81d751b">
+			<title>국민신문고 | 국민제안 &gt; 공개제안</title>
+	<link rel="stylesheet" type="text/css" href="/resource/css/paid/nep/pot/css.css?t_=20251202_1745">
+	<link rel="stylesheet" type="text/css" href="/resource/js/paid/cmmn/mCustomScrollbar/jquery.mCustomScrollbar.css">
+	<link rel="stylesheet" type="text/css" href="/resource/css/paid/cmmn/jAlert.css">
+	<script type="text/javascript" src="/resource/js/paid/cmmn/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="/resource/js/paid/cmmn/jquery-ui.min.js?t_=20251202_1745"></script>
+	<script type="text/javascript" src="/resource/js/paid/cmmn/jquery.cookie.js"></script>
+	<script type="text/javascript" src="/resource/js/paid/cmmn/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/resource/js/paid/cmmn/loading.js"></script>
+	<script type="text/javascript" src="/resource/js/paid/cmmn/sendAjaxReq.js?t_=20251202_1745"></script>
+	<script type="text/javascript" src="/resource/js/paid/cmmn/jquery.form.js"></script>
+	<script type="text/javascript" src="/resource/js/paid/cmmn/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script type="text/javascript" src="/resource/js/paid/cmmn/pgwslideshow/pgwslideshow.min.js"></script>
+	<script type="text/javascript" src="/resource/js/paid/nep/pot/common.js?t_=20251202_1745"></script>
+	<script type="text/javascript" src="/resource/js/paid/cmmn/common.js?t_=20251202_1745"></script>
+	<script type="text/javascript" src="/resource/js/paid/cmmn/jquery.money.plus.js"></script>
+	<script type="text/javascript" src="/resource/js/paid/cmmn/jquery.alphanumeric.js"></script>
+	<script type="text/javascript" src="/resource/js/paid/cmmn/jquery.alerts.js?t_=20251202_1745"></script>
+	<script type="text/javascript" src="/resource/js/paid/cmmn/validation.js"></script>
+	<script type="text/javascript" src="/resource/js/paid/cmmn/common.file.js?t_=20251202_1745"></script>
+	<script type="text/javascript" src="/resource/js/paid/cmmn/common.popup.js?t_=20251202_1745"></script>
+	<script type="text/javascript" src="/resource/js/paid/nep/cmmn/common.sch.js?t_=20251202_1745"></script>
+	<script type="text/javascript" src="/resource/js/paid/nep/pot/kakao.min.js"></script>
+	<script type="text/javascript" src="/resource/js/paid/cmmn/jquery.bpopup-0.11.0.min.js"></script>
+	<script type="text/javascript" src="/resource/js/paid/nep/cmmn/netfunnel/netfunnel.js?ver=1.0"></script>
+	<script type="text/javascript" src="/resource/js/paid/nep/cmmn/netfunnel/nfnSkin.js?ver=1.0"></script>
+	<script type="text/javascript">
+		var contexts = '';
+		var JBOSS_NODE_NAME = 'euser31';
+		var acesMode = '';  //프레임 접근 구분자
+		$(function(){
+			if (acesMode == 'frm') {
+				$('#contentWrap').addClass('full');  //프레임일 경우 화면 레이아웃 Full
+			}
+		});
+		Kakao.init('53056da5f179f887698576ec42f7468a');
+		function fn_kakaoLink(title, pageUrl) {
+			title = "국민신문고 | " + title;
+			Kakao.Link.sendDefault({
+				objectType: 'text',
+				text: title,
+				link: {
+					mobileWebUrl: pageUrl,
+					webUrl: pageUrl
+				},
+				buttons: [
+					{
+						title: '웹으로 이동',
+						link: {
+							mobileWebUrl: pageUrl,
+							webUrl: pageUrl
+						}
+					}
+				]
+			});
+		}
+		function fn_snsEvent(snsDiv, pUrl) {
+			console.log("snsDiv:" + snsDiv);
+			var url = "https://" + window.location.host + pUrl;
+			if(snsDiv == "print") {
+				window.print();
+			} else if(snsDiv == "url") {
+				url = url.replaceAll("&amp;", "&");
+				console.log("url:" + url);
+				navigator.clipboard.writeText(url)
+						.then(() => jAlert("URL이 복사되었습니다."))
+						.catch(err => console.error("복사 실패:", err));
+			}
+		}
+	</script>
+</head>
+<body><div class="loading black" style="position: fixed; width: 100%; height: auto; min-height: 100%; z-index: 100; top: 0px; left: 0px; display: none; opacity: 0.6;">
+	<div style="width:100%; height:100%; top:50%; left:50%; position:absolute;">
+    	<span style="display:table-cell; text-align:center; vertical-align:middle;">
+      		<img alt="로딩중" src="/resource/images/paid/cmmn/bg_progress.gif">
+    	</span>
+	</div>
+</div>
+	<div id="skip">
+		<strong class="hide">반복영역 건너뛰기</strong>
+		<a href="#gnb">주메뉴 바로가기</a>
+		<a href="#contentWrap">본문 바로가기</a>
+	</div>
+<div id="wrap"><div class="main_blind" style="display: none; position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; background: rgb(0, 0, 0); opacity: 0; z-index: 998;"></div>
+	<div class="blind"></div>
+	<!-- 세션에 접근 시스템 구분자가 프레임이 아닐 경우(프레임 통합 메뉴로 접근시 세션에 접근 시스템 구분자를 추가)만 헤더와 푸터를 포함하도록 처리 -->
+<!-- masthead -->
+<div id="masthead">
+	<div class="toggle-wrap">
+		<div class="toggle-head">
+			<div class="inner">
+				<span class="nuri-txt">이 누리집은 대한민국 공식 전자정부 누리집입니다</span>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- //masthead -->
+		<!-- 헤더 상단 : s -->
+		<!-- 헤더 상단 : e -->
+		<!-- 헤더 하단 : s -->
+		<!-- 헤더 하단 : e -->
+<!-- 모바일메뉴 : s -->
+<!-- 모바일메뉴 : e -->
+	<!-- 범정부UI/UX 헤더적용 : s -->
+<script type="text/javascript" src="/resource/js/paid/nep/pot/ui-script.js" defer=""></script>
+<script>
+    $(document).ready(function () {
+        $('#mSc').keypress(function(event){
+            if(event.which == 13){
+                fn_potSearch_m('PC');
+                return false;
+            }
+            $("#si").addClass("ico-delete-fill");
+        });
+        $('#mScMB').keypress(function(event){
+            if(event.which == 13){
+                fn_potSearch_m('MB');
+                return false;
+            }
+            $("#msi").addClass("ico-delete-fill");
+        });
+        /*로그인 여부*/
+        chk_dev();
+        $("#selectedMenuB").addClass('selected');
+        var ck = getCookie("screenValue");
+        console.log("ck:" + ck);
+        krds_adjustContentScale.scaleValue(ck);
+        var sc = "";
+        if(ck == "0.9") {
+            sc = ".sm";
+        }else if(ck == "1") {
+            sc = ".md";
+        }else if(ck == "1.1") {
+            sc = ".lg";
+        }else if(ck == "1.3") {
+            sc = ".xlg";
+        }else if(ck == "1.5") {
+            sc = ".xxlg";
+        } else {
+            sc = ".md";
+        }
+        console.log("sc:" + sc);
+        const scaleButtons = document.querySelectorAll("[data-adjust] [data-adjust-scale]");
+        scaleButtons.forEach((button) => {
+            const others = button.closest(".drop-menu").querySelectorAll(".item-link");
+            const defaultSize = button.closest(".drop-menu").querySelector(".item-link" + sc);
+            others.forEach((item) => {
+                item.classList.remove("active");
+                item.setAttribute("aria-selected", "false");
+                //    item.querySelector(".sr-only").innerHTML = "";
+            });
+            defaultSize.classList.add("active");
+            //defaultSize.querySelector(".sr-only").innerHTML = "선택됨";
+        });
+        var acntYn = {}; // 계정 여부
+        acntYn.epAcntYn = ''; // 국민신문고 계정 여부
+        acntYn.mibxAcntYn = ''; // 국민생각함 계정 여부
+        acntYn.xprtAcntYn = ''; // 전문가 계정 여부
+        acntYn.pbsvAcntYn = ''; // 공무원 계정 여부
+        acntYn.nmbrAcntYn = ''; // 비회원 계정 여부
+        fn_paid_nep_header_allMenu_acesPrmsYn(acntYn);
+    });
+    // wwwdev 여부 구분
+    function chk_dev(){
+        var hostname = window.location.hostname;
+        console.log("hostname:" + hostname);
+        if(hostname == "wwwdev.epeople.go.kr" ) {
+            $("#epeopleLogo").attr("src", "/resource/nsf/images/common/dev_logo_new3.png");
+        }
+    }
+    function fn_potSearch(){
+        /** 2024.07.25 검색어 길이 제한 체크 추가 **/
+        var val = $('#all_scInput').val();
+        if(val.length > 100) {
+            jAlert("검색어는 입력은 100자리로 제한됩니다.", function() {
+                $('#all_scInput').val(val.substr(0, 100));
+                $('#all_scInput').focus();
+            });
+            return;
+        }
+        var searchKeywordContent = $("#all_scInput").val();
+        $("#searchKeywordContent").val(searchKeywordContent);
+        $("#potSearch").attr("action","/nep/potSearch/epeople/potSearchPage.npaid");
+        $("#potSearch").submit();
+    }
+    function fn_potSearch_m(type){
+        var searchKeywordContent_m = "";
+        if(type == "PC") {
+            searchKeywordContent_m = $("#mSc").val();
+            if(searchKeywordContent_m.length > 100) {
+                jAlert("검색어는 입력은 100자리로 제한됩니다.", function() {
+                    $('#mSc').val(val.substr(0, 100));
+                    $('#mSc').focus();
+                });
+                return;
+            }
+        } else {
+            searchKeywordContent_m = $("#mScMB").val();
+            if(searchKeywordContent_m.length > 100) {
+                jAlert("검색어는 입력은 100자리로 제한됩니다.", function() {
+                    $('#mScMB').val(val.substr(0, 100));
+                    $('#mScMB').focus();
+                });
+                return;
+            }
+        }
+        $("#searchKeywordContent").val(searchKeywordContent_m);
+        $("#potSearch").attr("action","/nep/potSearch/epeople/potSearchPage.npaid");
+        $("#potSearch").submit();
+    }
+    // 넷퍼넬
+    function goThkMainNetFunnelChk(){
+        var hostname = window.location.hostname;
+        console.log("hostname:" + hostname);
+        var actionId;
+        if(hostname == "wwwdev.epeople.go.kr" ) {
+            actionId ="thkMainTest";
+        }else{
+            actionId ="thkMain";
+        }
+        fn_goNetFunnel( actionId ,'skin3');
+    }
+    /**
+     * 검색어 X버튼 활성화
+     */
+    function fn_delVs(type) {
+        //    $("#si").addClass("ico-delete-fill");
+    }
+    function fn_siOut(type) {
+        if(type == "PC") {
+            if($("#mSc").val().length == 0) {
+                $("#si").removeClass("ico-delete-fill");
+            }
+        } else {
+            if($("#mScMB").val().length == 0) {
+                $("#msi").removeClass("ico-delete-fill");
+            }
+        }
+    }
+    function fn_searchDf(type) {
+        if(type == "PC") {
+            $('#mSc').val("");
+            $("#si").removeClass("ico-delete-fill");
+        }
+        else {
+            $('#mScMB').val("");
+            $("#msi").removeClass("ico-delete-fill");
+        }
+    }
+    function setCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+    function getCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1, c.length);
+            }
+            if (c.indexOf(nameEQ) == 0) {
+                return c.substring(nameEQ.length, c.length);
+            }
+        }
+        return null;
+    }
+    /** 쿠키 삭제 **/
+    function deleteCookie(name) {
+        document.cookie = name + '=; path=/';
+        console.log("쿠키 " + name + " 가 삭제되었습니다.");
+    }
+    //this.scaleValue("lg");
+    function logOut() {
+                anyidAdaptor.ssoLogout('/index.jsp');
+    }
+</script>
+    <script>
+        var anyidAdaptor = anyidAdaptor || {};
+        /*이용기관 수정 영역 Start*/
+        anyidAdaptor.orgLogin = function(data){
+            alert("이용기관 자체 로그인!!!");
+            //정부 통합인증SDK_연계가이드 4.4.1.3 이용기관 로그인(토글 off) 참조
+            //제공되는 라이브러리 메소드로 인증데이터 decrypt 이후 자체 로그인 로직 개발
+            const params = new URLSearchParams(location.search);
+            var obj ={
+                ssob : data.ssob
+                , tag : params.get("tx")
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/nep/crtf/AnyToggleOff.npaid", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    debugger;
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.status == "success") {
+                        console.log("response >>>>> ", JSON.stringify(response));
+                    } else {
+                    }
+                }
+            };
+            xhr.send(JSON.stringify(obj));
+        }
+        /*이용기관 수정 영역 End*/
+        /*이용기관 문구수정 영역 Start*/
+        anyidAdaptor.JoinConfirm = function(portalJoinUri, memberData){
+            if(!confirm('Any-ID 사용자등록 하시겠습니까?')) {
+                anyidAdaptor.orgLogin(anyidAdaptor.certData);
+                return;
+            }else{
+                anyidAdaptor.receiveAnyIdJoin(portalJoinUri, memberData);
+            }
+        }
+        /*이용기관 문구수정 영역 End*/
+        anyidAdaptor.portalJoinUri = "null";
+        anyidAdaptor.certData = null;
+        anyidAdaptor.ssoByPass = "0";
+        anyidAdaptor.niRegYn = "null";
+        anyidAdaptor.agencyContextPath = "";
+        anyidAdaptor.success = function(data){
+            //alert("anyidAdaptor.success");
+            if(anyidAdaptor.ssoByPass != 0 || !data.useSso) {
+                //alert("orgLogin");
+                anyidAdaptor.orgLogin(data);
+            } else {
+                //alert("userCheck");
+                anyidAdaptor.certData = data;
+                anyidAdaptor.userCheck();
+            }
+        }
+        anyidAdaptor.userCheck = function(){
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", anyidAdaptor.agencyContextPath + "/oidc/userCheck", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    //alert("response:" + response + "/" + response.success);
+                    if (response.success) {
+                        //alert("anyidAdaptor.ssoLogin()");
+                        anyidAdaptor.ssoLogin();
+                    } else {
+                        setTimeout(function() {
+                            //alert("anyidAdaptor.receiveAnyIdJoin()");
+                            anyidAdaptor.receiveAnyIdJoin(response.uri, response.data);
+                        }, 100);
+                    }
+                }
+            };
+            let jsonObject = new Object();
+            jsonObject.txId = anyidAdaptor.certData.txId;
+            jsonObject.ssob = anyidAdaptor.certData.ssob;
+            jsonObject.userSeCd = anyidAdaptor.certData.userSeCd;
+            let jsonStr = JSON.stringify(jsonObject);
+            let encodedString = btoa(jsonStr);
+            console.log("jsonStr:" + jsonStr);
+            var data = "data=" + encodedString + "&txId=" + anyidAdaptor.certData.txId;
+            xhr.send(data);
+        }
+        //anyid가입
+        anyidAdaptor.receiveAnyIdJoin = function(portalJoinUri, memberData){
+            var url = portalJoinUri+encodeURIComponent(memberData);
+            anyidAdaptor.popup(url,"openAnyIdRegistUserIdv",700,740);
+            window.addEventListener("message", function(event) {
+                var result;
+                try {
+                    result = JSON.parse(event.data);
+                } catch (error) {
+                    console.error("Received message is not valid JSON:", error);
+                    return;
+                }
+                if(!result.funcName || (result.funcName !== "trmsAgreComplete" && result.funcName !== "registUserComplete")) {
+                    return;
+                }
+                if(result.status === "success") {
+                    if(result.trmsAgreYn == "Y"){
+                        anyidAdaptor.ssoLogin();
+                    }else{
+                        anyidAdaptor.orgLogin(anyidAdaptor.certData);
+                    }
+                }else{
+                    anyidAdaptor.orgLogin(anyidAdaptor.certData);
+                }
+            }, false);
+        }
+        // 팝업 호출
+        anyidAdaptor.popup = function(url, name, width, height){
+            let left = (screen.width) ? (screen.width-width)/2 : 0;
+            let top = (screen.height) ? (screen.height-height)/2 : 0;
+            let popup=window.open(url, name ,"resizable=yes,toolbar=no,scrollbars=yes,location=no,top="+top+"px,left="+left+"px,width="+width+"px,height="+height+"px");
+            if(popup){
+                popup.focus();
+            }
+        }
+        anyidAdaptor.ssoLogin = function(){
+            //alert(" anyidAdaptor.ssoLogin exec ");
+            let jsonObject = new Object();
+            jsonObject.txId = anyidAdaptor.certData.txId;
+            jsonObject.ssob = anyidAdaptor.certData.ssob;
+            jsonObject.userSeCd = anyidAdaptor.certData.userSeCd;
+            jsonObject.afData = anyidAdaptor.certData.afData;
+            let jsonStr = JSON.stringify(jsonObject);
+            let encodedString = btoa(jsonStr);
+            var baseUrl = window.location.origin + anyidAdaptor.agencyContextPath + "/oidc/ssoLogin";
+            var urlWithParams = baseUrl + "?data=" + encodedString;
+            window.location.href = urlWithParams;
+        }
+        anyidAdaptor.ssoLoginPageSub = function(baseUrl, endPoint, acrValues){
+            var subUrl = "";
+            if (endPoint && endPoint.trim() !== "") {
+                subUrl = "?endPoint=" + encodeURIComponent(endPoint);
+            }
+            if (!acrValues && acrValues.trim() == "") {
+                acrValues = "3";
+            }
+            if (acrValues && acrValues.trim() !== "") {
+                if(subUrl == ""){
+                    subUrl = "?";
+                }else{
+                    subUrl = subUrl + "&";
+                }
+                subUrl = subUrl + "acrValues=" + acrValues;
+            }
+            window.location.replace(baseUrl+subUrl);
+        }
+        /**/
+        anyidAdaptor.ssoLogout = function(endPoint) {
+            endPoint = typeof endPoint !== 'undefined' ? endPoint : "/";
+            var baseUrl = window.location.origin + anyidAdaptor.agencyContextPath + "/oidc/ssoLogout";
+            baseUrl = baseUrl + "?endPoint=" + encodeURIComponent(endPoint);
+            window.location.replace(baseUrl);
+        }
+        /**/
+        anyidAdaptor.reAuthLevel = function(endPoint, acrValues){
+            endPoint = typeof endPoint !== 'undefined' ? endPoint : "/";
+            var baseUrl = window.location.origin + anyidAdaptor.agencyContextPath + "/oidc/reAuthLevel";
+            anyidAdaptor.ssoLoginPageSub(baseUrl, endPoint, acrValues);
+        }
+        /**/
+        anyidAdaptor.ssoLoginPage = function(endPoint, acrValues){
+        //    alert("ssoLoginPage");
+            endPoint = typeof endPoint !== 'undefined' ? endPoint : "/";
+            var baseUrl = window.location.origin + anyidAdaptor.agencyContextPath + "/oidc/auth";
+            anyidAdaptor.ssoLoginPageSub(baseUrl, endPoint, acrValues);
+        }
+        /**/
+        anyidAdaptor.ssoSvcToSvc = function(url, endPoint){
+            var baseUrl = url + "/oidc/svcToSvc?endPoint=" + encodeURIComponent(endPoint);
+            window.open(baseUrl, "_blank");
+        }
+    </script>
+<header id="krds-header">
+    <!-- 헤더 컨텐츠 영역  -->
+    <div class="header-in">
+        <!-- 헤더 상단 기타메뉴 -->
+        <div class="header-container">
+            <div class="inner">
+                <h2 class="logo">
+                    <a href="/index.jsp">
+                        <span class="sr-only">국민권익위원회가 운영하는 국민신문고</span>
+                    </a>
+                </h2>
+                <div class="utility">
+                    <ul class="utility-list">
+                        <li>
+                            <div class="krds-drop-wrap krds-resize" data-adjust="scale">
+                                <button type="button" class="krds-btn xsmall text drop-btn" aria-expanded="false">화면크기 <i class="svg-icon ico-toggle"></i></button>
+                                <div class="drop-menu">
+                                    <div class="drop-in">
+                                        <ul class="drop-list">
+                                            <li><button type="button" class="item-link sm" data-adjust-scale="sm" aria-selected="false">작게<span class="sr-only"></span></button></li>
+                                            <li><button type="button" class="item-link md active" data-adjust-scale="md" aria-selected="false">보통<span class="sr-only">선택됨</span></button></li>
+                                            <li><button type="button" class="item-link lg" data-adjust-scale="lg" aria-selected="false">조금 크게<span class="sr-only"></span></button></li>
+                                            <li><button type="button" class="item-link xlg" data-adjust-scale="xlg" aria-selected="false">크게<span class="sr-only"></span></button></li>
+                                            <li><button type="button" class="item-link xxlg" data-adjust-scale="xxlg" aria-selected="false">가장크게<span class="sr-only"></span></button></li>
+                                        </ul>
+                                        <div class="drop-bottom">
+                                            <button type="button" class="krds-btn xsmall text" data-adjust-scale="md"><i class="svg-icon ico-reset"></i> 초기화</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="/petition/pps/pps.npaid" class="krds-btn xsmall text" target="_blank" title="새 창 열기" lang="en">
+                                For Foreigners <i class="svg-icon ico-go"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="header-actions">
+                        <!-- 통합검색 인풋형태(PC ver) -->
+                        <div class="search-top-box">
+                            <div class="sch-form-wrap">
+                                <div class="sch-input">
+                                    <input type="text" id="mSc" class="krds-input small" placeholder="검색어를 입력해주세요" title="검색어 입력" onfocusin="fn_delVs('PC');" onfocusout="fn_siOut('PC')">
+                                    <button type="button" class="krds-btn icon ico-clear" onclick="fn_searchDf('PC')">
+                                        <span class="sr-only">입력 검색어 초기화</span>
+                                        <i class="svg-icon" id="si"></i>
+                                    </button>
+                                    <button type="button" class="krds-btn icon ico-search" onclick="javaScript:fn_potSearch_m('PC');">
+                                        <span class="sr-only">검색</span>
+                                        <i class="svg-icon ico-sch"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- //통합검색 인풋형태(PC ver) -->
+                        <!-- 통합검색 버튼형태(Mobile ver) -->
+                        <button type="button" class="btn-navi navi-row sch open-modal" title="통합검색 레이어" data-target="popTotalSch" tabindex="0">통합검색</button>
+                        <!-- //통합검색 버튼형태(Mobile ver) -->
+                                <!-- 로그아웃 상태 -->
+                                <a href="javascript:void(0);" onclick="javascript:fn_goNetFunnel( 'epLogn' ,'skin3'); return false;" class="btn-navi navi-row login">로그인</a>
+                                <a href="/nep/mfrnUser/mbrSelectPage.npaid" class="btn-navi navi-row join">회원가입</a>
+                                <!-- //로그아웃 상태  -->
+                        <button type="button" class="btn-navi all" aria-controls="mobile-nav">전체메뉴</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- //헤더 상단 기타메뉴 -->
+        <!-- 메인메뉴 : 데스크탑 -->
+        <nav class="krds-main-menu" id="gnb">
+            <div class="inner">
+                <ul class="gnb-menu" aria-label="메인 메뉴">
+                                    <li>
+                                        <button href="#" id="selectedMenuA" class="gnb-main-trigger" data-trigger="gnb" aria-controls="gnb-main-menu-czh54xf" aria-expanded="false" aria-haspopup="true">민원</button>
+                                        <div class="gnb-toggle-wrap" id="gnb-main-menu-czh54xf">
+                                            <div class="gnb-main-list" data-has-submenu="true">
+                                                <ul>
+                                                                <li>
+                                                                            <a href="javascript:void(0);" onclick="javascript:fn_goNetFunnel( 'epPttn' ,'skin3'); return false;" class="gnb-sub-trigger active" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="A0001" aria-controls="gnb-sub-menu-cq69c16" aria-expanded="true" aria-haspopup="true"> 일반민원</a>
+                                                                        <div class="gnb-sub-list active" id="gnb-sub-menu-cq69c16">
+                                                                            <div class="gnb-sub-content">
+                                                                                <h2 class="sub-title">
+                                                                                    <a href="#">일반민원</a>
+                                                                                </h2>
+                                                                                <ul>
+                                                                                            <li><a href="/nep/pttn/gnrlPttn/PttnRqstWrtnInfo.paid">민원신청</a></li>
+                                                                                            <li><a href="/nep/pttn/gnrlPttn/pttnSmlrCaseList.npaid">민원질의응답∙답변원문</a></li>
+                                                                                            <li><a href="/nep/pttn/gnrlPttn/plcyUntyRdList.npaid">정책 통합조회</a></li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <ul>
+                                                                        </ul>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="javascript:void(0);" class="gnb-sub-trigger" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="A0045" aria-controls="gnb-sub-menu-x9a42zd" aria-expanded="false" aria-haspopup="true">적극행정 국민신청</a>
+                                                                        <div class="gnb-sub-list" id="gnb-sub-menu-x9a42zd">
+                                                                            <div class="gnb-sub-content">
+                                                                                <h2 class="sub-title">
+                                                                                    <a href="#">적극행정 국민신청</a>
+                                                                                </h2>
+                                                                                <ul>
+                                                                                            <li><a href="/nep/pttn/ativeAdmn/ativeAdmnPttnCotents.npaid">적극행정국민신청 소개</a></li>
+                                                                                            <li><a href="/nep/pttn/ativeAdmn/ativeAdmnRqst.paid">적극행정국민신청</a></li>
+                                                                                            <li><a href="/nep/pttn/negativePttn/selectNegativePttnList.npaid">적극∙소극행정 사례</a></li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <ul>
+                                                                        </ul>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="javascript:void(0);" class="gnb-sub-trigger" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="A0002" aria-controls="gnb-sub-menu-9c8dveh" aria-expanded="false" aria-haspopup="true">소극행정 신고센터</a>
+                                                                        <div class="gnb-sub-list" id="gnb-sub-menu-9c8dveh">
+                                                                            <div class="gnb-sub-content">
+                                                                                <h2 class="sub-title">
+                                                                                    <a href="#">소극행정 신고센터</a>
+                                                                                </h2>
+                                                                                <ul>
+                                                                                            <li><a href="/nep/pttn/negativePttn/NegativePttnCotents.npaid">소극행정 소개</a></li>
+                                                                                            <li><a href="/nep/pttn/negativePttn/negativePttnRqst.paid">소극행정 신고</a></li>
+                                                                                            <li><a href="/nep/pttn/negativePttn/negativeDsctPttnRqst.paid">소극행정 재신고</a></li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <ul>
+                                                                        </ul>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="javascript:void(0);" class="gnb-sub-trigger" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="A0003" aria-controls="gnb-sub-menu-gk8uird" aria-expanded="false" aria-haspopup="true">갑질피해 신고센터</a>
+                                                                        <div class="gnb-sub-list" id="gnb-sub-menu-gk8uird">
+                                                                            <div class="gnb-sub-content">
+                                                                                <h2 class="sub-title">
+                                                                                    <a href="#">갑질피해 신고센터</a>
+                                                                                </h2>
+                                                                                <ul>
+                                                                                            <li><a href="/nep/pttn/gjDmgPttn/gjDmgReportCenterContent.npaid">갑질피해 신고센터 안내</a></li>
+                                                                                            <li><a href="/nep/pttn/gjDmgPttn/gjDmgPttnRqstWrtnInfo.paid">갑질피해민원 신청</a></li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <ul>
+                                                                        </ul>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="/nep/pttn/gnrlPttn/pttnNtrcnContent.npaid" class="gnb-sub-trigger is-link" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="A0038">민원소개</a>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="/nep/pttn/pttnOnln/PttnOnlnWrtnInfo.npaid" class="gnb-sub-trigger is-link" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="I0001">민원상담 신청</a>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="/nep/utilHistory/myOnln/myOnlnList.paid" class="gnb-sub-trigger is-link" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="I0002">민원상담 신청결과</a>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="/nep/pttn/pttnOnln/pttnOnlnContent.npaid" class="gnb-sub-trigger is-link" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="I0003">민원상담 안내</a>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="/nep/evlmap/main.npaid?linkOpt=ext" target="_blank" class="gnb-sub-trigger is-link" data-trigger="gnb" data-mbr-aces-prms-yn="N" data-nmbr-aces-prms-yn="N" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="A0060">민원평가 지도</a>
+                                                                </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <button href="#" id="selectedMenuB" class="gnb-main-trigger selected" data-trigger="gnb" aria-controls="gnb-main-menu-vpa8tdg" aria-expanded="false" aria-haspopup="true">국민제안</button>
+                                        <div class="gnb-toggle-wrap" id="gnb-main-menu-vpa8tdg">
+                                            <div class="gnb-main-list" data-has-submenu="true">
+                                                <ul>
+                                                                <li>
+                                                                            <a href="javascript:void(0);" onclick="javascript:fn_goNetFunnel( 'epPrpl' ,'skin3'); return false;" class="gnb-sub-trigger is-link" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="B0001"> 일반제안</a>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="/nep/prpsl/opnPrpl/opnpblPrpslList.npaid" class="gnb-sub-trigger is-link" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="B0004">공개제안</a>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="/nep/prpsl/realize/selectXclncPrpslList.npaid" class="gnb-sub-trigger is-link" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="B0030">실시제안</a>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="/nep/prpsl/prplCont/gnrlPrpslNtrcnContent.npaid" class="gnb-sub-trigger is-link" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="B0006">국민제안 소개</a>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="/nep/prpl/pblPrplIda/selectPblsvntPrpslRqstPage.paid" class="gnb-sub-trigger is-link" data-trigger="gnb" data-mbr-aces-prms-yn="N" data-nmbr-aces-prms-yn="N" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="N" data-menu-id="B0003" style="display: none;">공무원제안</a>
+                                                                </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <button href="#" id="selectedMenuC" class="gnb-main-trigger" data-trigger="gnb" aria-controls="gnb-main-menu-07hhuxy" aria-expanded="false" aria-haspopup="true">예산낭비절감</button>
+                                        <div class="gnb-toggle-wrap" id="gnb-main-menu-07hhuxy">
+                                            <div class="gnb-main-list" data-has-submenu="true">
+                                                <ul>
+                                                                <li>
+                                                                            <a href="/nep/bdgtWst/selectBdgtWstRqstPage.paid" class="gnb-sub-trigger is-link" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="C0001">예산낭비 신고</a>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="/nep/bdgtWst/selectBdgtRdcnPrpslRqstPage.paid" class="gnb-sub-trigger is-link" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="C0002">예산절감 제안</a>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="javascript:void(0);" class="gnb-sub-trigger" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="C0003" aria-controls="gnb-sub-menu-mzs31j1" aria-expanded="false" aria-haspopup="true">예산낭비신고 소개</a>
+                                                                        <div class="gnb-sub-list" id="gnb-sub-menu-mzs31j1">
+                                                                            <div class="gnb-sub-content">
+                                                                                <h2 class="sub-title">
+                                                                                    <a href="#">예산낭비신고 소개</a>
+                                                                                </h2>
+                                                                                <ul>
+                                                                                            <li><a href="/nep/bdgtWst/selectBdgtWstStmntCntr.npaid">예산낭비신고센터</a></li>
+                                                                                            <li><a href="/nep/bdgtWst/selectBdgtResultRgm.npaid">예산성과금제도</a></li>
+                                                                                            <li><a href="/nep/bdgtWst/selectXclncBdgtWstList.npaid">우수사례</a></li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <ul>
+                                                                        </ul>
+                                                                </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);" class="gnb-main-trigger external-link is-link on" onclick="javascript:fn_goNetFunnel( 'thkMain' ,'skin3');" data-trigger="gnb">국민생각함</a>
+                                    </li>
+                                    <li>
+                                        <button href="#" id="selectedMenuF" class="gnb-main-trigger" data-trigger="gnb" aria-controls="gnb-main-menu-srdy53g" aria-expanded="false" aria-haspopup="true">정책실현</button>
+                                        <div class="gnb-toggle-wrap" id="gnb-main-menu-srdy53g">
+                                            <div class="gnb-main-list" data-has-submenu="true">
+                                                <ul>
+                                                                <li>
+                                                                            <a href="/nep/realize/XclncPrpsl/selectIdeaList.npaid" class="gnb-sub-trigger is-link" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="F0007">생각실현</a>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="/nep/realize/decireport/decireportCaseList.npaid" class="gnb-sub-trigger is-link" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="F0001">제도개선</a>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="/nep/realize/rslninfo/rslninfoCaseList.npaid" class="gnb-sub-trigger is-link" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="F0008">민원해결</a>
+                                                                </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <button href="#" id="selectedMenuH" class="gnb-main-trigger" data-trigger="gnb" aria-controls="gnb-main-menu-3k141ea" aria-expanded="false" aria-haspopup="true">고객센터 </button>
+                                        <div class="gnb-toggle-wrap" id="gnb-main-menu-3k141ea">
+                                            <div class="gnb-main-list" data-has-submenu="true">
+                                                <ul>
+                                                                <li>
+                                                                            <a href="javascript:void(0);" class="gnb-sub-trigger active" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="H0001" aria-controls="gnb-sub-menu-2qlpaaf" aria-expanded="true" aria-haspopup="true">국민신문고 소개</a>
+                                                                        <div class="gnb-sub-list active" id="gnb-sub-menu-2qlpaaf">
+                                                                            <div class="gnb-sub-content">
+                                                                                <h2 class="sub-title">
+                                                                                    <a href="#">국민신문고 소개</a>
+                                                                                </h2>
+                                                                                <ul>
+                                                                                            <li><a href="/nep/gdnc/SiteNtrcnContent.npaid">사이트소개</a></li>
+                                                                                            <li><a href="/nep/gdnc/SiteBanner.npaid">배너</a></li>
+                                                                                            <li><a href="/nep/gdnc/RltLawrdnc.npaid">관련법령</a></li>
+                                                                                            <li><a href="/nep/gdnc/TermsConditions.npaid">이용약관</a></li>
+                                                                                            <li><a href="/nep/gdnc/PlHndPlc.npaid">개인정보처리방침</a></li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <ul>
+                                                                        </ul>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="javascript:void(0);" class="gnb-sub-trigger" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="H0002" aria-controls="gnb-sub-menu-ibfqfa3" aria-expanded="false" aria-haspopup="true">이용안내</a>
+                                                                        <div class="gnb-sub-list" id="gnb-sub-menu-ibfqfa3">
+                                                                            <div class="gnb-sub-content">
+                                                                                <h2 class="sub-title">
+                                                                                    <a href="#">이용안내</a>
+                                                                                </h2>
+                                                                                <ul>
+                                                                                            <li><a href="/nep/gdnc/PttnUtilGdncContent.npaid">민원</a></li>
+                                                                                            <li><a href="/nep/gdnc/GnrlPrpslUtilGdncContent.npaid">국민제안</a></li>
+                                                                                            <li><a href="/nep/gdnc/BdgtWstUtilGdncContent.npaid">예산낭비</a></li>
+                                                                                            <li><a href="/nep/gdnc/GnrlThinkBoxUtilGdncContent.npaid">국민생각함</a></li>
+                                                                                            <li><a href="/nep/gdnc/SmgScrUtilGdncContent.npaid">국민신문고 점수</a></li>
+                                                                                            <li><a href="/nep/gdnc/BlindUtilGdncContent.npaid">시각장애인 이용안내</a></li>
+                                                                                            <li><a href="/nep/gdnc/ViewerDownload.npaid">뷰어 다운로드</a></li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <ul>
+                                                                        </ul>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="javascript:void(0);" class="gnb-sub-trigger" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="H0003" aria-controls="gnb-sub-menu-5qoa8wj" aria-expanded="false" aria-haspopup="true">고객문의</a>
+                                                                        <div class="gnb-sub-list" id="gnb-sub-menu-5qoa8wj">
+                                                                            <div class="gnb-sub-content">
+                                                                                <h2 class="sub-title">
+                                                                                    <a href="#">고객문의</a>
+                                                                                </h2>
+                                                                                <ul>
+                                                                                            <li><a href="/nep/gdnc/faq/CtmInqrFAQList.npaid">자주 하는 질문</a></li>
+                                                                                            <li><a href="/nep/gdnc/utilInqr/UtilInqrInsert.npaid">오류신고·이용문의</a></li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                        <ul>
+                                                                        </ul>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="/nep/gdnc/notice/NoticeList.npaid" class="gnb-sub-trigger is-link" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="H0004">공지사항</a>
+                                                                </li>
+                                                                <li>
+                                                                            <a href="/nep/gdnc/smgNews/sinmungoNewsList.npaid" class="gnb-sub-trigger is-link" data-trigger="gnb" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="H0005">신문고 소식</a>
+                                                                </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- //메인메뉴 : 데스크탑 -->
+    </div>
+    <!-- //헤더 컨텐츠 영역  -->
+    <!-- 메인메뉴 : 모바일 -->
+    <div id="mobile-nav" class="krds-main-menu-mobile" style="display: none;">
+        <div class="gnb-wrap">
+            <!-- gnb-header -->
+            <div class="gnb-header">
+                <!-- gnb-utils -->
+                <div class="gnb-utils">
+                    <ul class="utility-list">
+                        <li>
+                            <div class="krds-drop-wrap krds-resize" data-adjust="scale">
+                                <button type="button" class="krds-btn small text drop-btn" aria-expanded="false">
+                                    화면크기 <i class="svg-icon ico-toggle"></i>
+                                </button>
+                                <div class="drop-menu">
+                                    <div class="drop-in">
+                                        <ul class="drop-list">
+                                            <li><button type="button" class="item-link sm" data-adjust-scale="sm" aria-selected="false">작게<span class="sr-only"></span></button></li>
+                                            <li><button type="button" class="item-link md active" data-adjust-scale="md" aria-selected="false">보통<span class="sr-only">선택됨</span></button></li>
+                                            <li><button type="button" class="item-link lg" data-adjust-scale="lg" aria-selected="false">조금 크게<span class="sr-only"></span></button></li>
+                                            <li><button type="button" class="item-link xlg" data-adjust-scale="xlg" aria-selected="false">크게<span class="sr-only"></span></button></li>
+                                            <li><button type="button" class="item-link xxlg" data-adjust-scale="xxlg" aria-selected="false">가장크게<span class="sr-only"></span></button></li>
+                                        </ul>
+                                        <div class="drop-bottom">
+                                            <button type="button" class="krds-btn medium text" data-adjust-scale="md">
+                                                <i class="svg-icon ico-reset"></i> 초기화
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="/petition/pps/pps.npaid" class="krds-btn small text" title="새 창 열기">
+                                For Foreigners <i class="svg-icon ico-go"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- //gnb-utils -->
+                        <div class="gnb-service-menu">
+                            <a href="javascript:void(0);" onclick="javascript:fn_goNetFunnel( 'epLogn' ,'skin3'); return false;" class="link login">로그인</a>
+                            <a href="/nep/mfrnUser/mbrSelectPage.npaid" class="link join">회원가입</a>
+                        </div>
+            </div>
+            <!-- //gnb-header -->
+            <!-- gnb-body -->
+            <div class="gnb-body">
+                <!-- gnb-menu -->
+                <div class="gnb-menu">
+                    <div class="menu-wrap">
+                        <ul role="tablist">
+                                    <li role="none">
+                                        <a href="#mGnb-anchor1" class="gnb-main-trigger active" role="tab" aria-selected="true" aria-controls="mGnb-anchor1" id="tab-0">민원</a>
+                                    </li>
+                                    <li role="none">
+                                        <a href="#mGnb-anchor2" class="gnb-main-trigger" role="tab" aria-selected="false" aria-controls="mGnb-anchor2" id="tab-1">국민제안</a>
+                                    </li>
+                                    <li role="none">
+                                        <a href="#mGnb-anchor3" class="gnb-main-trigger" role="tab" aria-selected="false" aria-controls="mGnb-anchor3" id="tab-2">예산낭비절감</a>
+                                    </li>
+                                    <li role="none">
+                                        <a href="#mGnb-anchor4" class="gnb-main-trigger" role="tab" aria-selected="false" aria-controls="mGnb-anchor4" id="tab-3">국민생각함</a>
+                                    </li>
+                                    <li role="none">
+                                        <a href="#mGnb-anchor5" class="gnb-main-trigger" role="tab" aria-selected="false" aria-controls="mGnb-anchor5" id="tab-4">정책실현</a>
+                                    </li>
+                                    <li role="none">
+                                        <a href="#mGnb-anchor6" class="gnb-main-trigger" role="tab" aria-selected="false" aria-controls="mGnb-anchor6" id="tab-5">나의 신문고</a>
+                                    </li>
+                                    <li role="none">
+                                        <a href="#mGnb-anchor7" class="gnb-main-trigger" role="tab" aria-selected="false" aria-controls="mGnb-anchor7" id="tab-6">고객센터 </a>
+                                    </li>
+                        </ul>
+                    </div>
+                    <div class="submenu-wrap">
+                                <div class="gnb-sub-list" id="mGnb-anchor1" role="tabpanel" aria-labelledby="tab-0">
+                                    <h2 class="sub-title">민원</h2> <!-- 민원 -->
+                                    <ul>
+                                                <a href="#" class="gnb-sub-trigger has-depth3" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="A0001" aria-expanded="false">일반민원</a> <!-- 일반민원 -->
+                                                    <div class="depth3-wrap">
+                                                        <ul>
+                                                                    <li><a href="/nep/pttn/gnrlPttn/PttnRqstWrtnInfo.paid" class="depth3-trigger">민원신청</a></li>
+                                                                    <li><a href="/nep/pttn/gnrlPttn/pttnSmlrCaseList.npaid" class="depth3-trigger">민원질의응답∙답변원문</a></li>
+                                                                    <li><a href="/nep/pttn/gnrlPttn/plcyUntyRdList.npaid" class="depth3-trigger">정책 통합조회</a></li>
+                                                        </ul>
+                                                    </div>
+                                                <a href="#" class="gnb-sub-trigger has-depth3" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="A0045" aria-expanded="false">적극행정 국민신청</a> <!-- 일반민원 -->
+                                                    <div class="depth3-wrap">
+                                                        <ul>
+                                                                    <li><a href="/nep/pttn/ativeAdmn/ativeAdmnPttnCotents.npaid" class="depth3-trigger">적극행정국민신청 소개</a></li>
+                                                                    <li><a href="/nep/pttn/ativeAdmn/ativeAdmnRqst.paid" class="depth3-trigger">적극행정국민신청</a></li>
+                                                                    <li><a href="/nep/pttn/negativePttn/selectNegativePttnList.npaid" class="depth3-trigger">적극∙소극행정 사례</a></li>
+                                                        </ul>
+                                                    </div>
+                                                <a href="#" class="gnb-sub-trigger has-depth3" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="A0002" aria-expanded="false">소극행정 신고센터</a> <!-- 일반민원 -->
+                                                    <div class="depth3-wrap">
+                                                        <ul>
+                                                                    <li><a href="/nep/pttn/negativePttn/NegativePttnCotents.npaid" class="depth3-trigger">소극행정 소개</a></li>
+                                                                    <li><a href="/nep/pttn/negativePttn/negativePttnRqst.paid" class="depth3-trigger">소극행정 신고</a></li>
+                                                                    <li><a href="/nep/pttn/negativePttn/negativeDsctPttnRqst.paid" class="depth3-trigger">소극행정 재신고</a></li>
+                                                        </ul>
+                                                    </div>
+                                                <a href="#" class="gnb-sub-trigger has-depth3" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="A0003" aria-expanded="false">갑질피해 신고센터</a> <!-- 일반민원 -->
+                                                    <div class="depth3-wrap">
+                                                        <ul>
+                                                                    <li><a href="/nep/pttn/gjDmgPttn/gjDmgReportCenterContent.npaid" class="depth3-trigger">갑질피해 신고센터 안내</a></li>
+                                                                    <li><a href="/nep/pttn/gjDmgPttn/gjDmgPttnRqstWrtnInfo.paid" class="depth3-trigger">갑질피해민원 신청</a></li>
+                                                        </ul>
+                                                    </div>
+                                                <a href="/nep/pttn/gnrlPttn/pttnNtrcnContent.npaid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="A0038">민원소개</a> <!-- 일반민원 -->
+                                                <a href="/nep/pttn/pttnOnln/PttnOnlnWrtnInfo.npaid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="I0001">민원상담 신청</a> <!-- 일반민원 -->
+                                                <a href="/nep/utilHistory/myOnln/myOnlnList.paid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="I0002">민원상담 신청결과</a> <!-- 일반민원 -->
+                                                <a href="/nep/pttn/pttnOnln/pttnOnlnContent.npaid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="I0003">민원상담 안내</a> <!-- 일반민원 -->
+                                                <a href="/nep/evlmap/main.npaid?linkOpt=ext" target="_blank" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="N" data-nmbr-aces-prms-yn="N" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="A0060">민원평가 지도</a> <!-- 일반민원 -->
+                                    </ul>
+                                </div>
+                                <div class="gnb-sub-list" id="mGnb-anchor2" role="tabpanel" aria-labelledby="tab-1">
+                                    <h2 class="sub-title">국민제안</h2> <!-- 민원 -->
+                                    <ul>
+                                                <a href="/nep/prpl/selectGnrlPrpslRqstPage.paid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="B0001">일반제안</a> <!-- 일반민원 -->
+                                                <a href="/nep/prpsl/opnPrpl/opnpblPrpslList.npaid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="B0004">공개제안</a> <!-- 일반민원 -->
+                                                <a href="/nep/prpsl/realize/selectXclncPrpslList.npaid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="B0030">실시제안</a> <!-- 일반민원 -->
+                                                <a href="/nep/prpsl/prplCont/gnrlPrpslNtrcnContent.npaid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="B0006">국민제안 소개</a> <!-- 일반민원 -->
+                                                <a href="/nep/prpl/pblPrplIda/selectPblsvntPrpslRqstPage.paid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="N" data-nmbr-aces-prms-yn="N" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="N" data-menu-id="B0003" style="display: none;">공무원제안</a> <!-- 일반민원 -->
+                                    </ul>
+                                </div>
+                                <div class="gnb-sub-list" id="mGnb-anchor3" role="tabpanel" aria-labelledby="tab-2">
+                                    <h2 class="sub-title">예산낭비절감</h2> <!-- 민원 -->
+                                    <ul>
+                                                <a href="/nep/bdgtWst/selectBdgtWstRqstPage.paid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="C0001">예산낭비 신고</a> <!-- 일반민원 -->
+                                                <a href="/nep/bdgtWst/selectBdgtRdcnPrpslRqstPage.paid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="C0002">예산절감 제안</a> <!-- 일반민원 -->
+                                                <a href="#" class="gnb-sub-trigger has-depth3" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="C0003" aria-expanded="false">예산낭비신고 소개</a> <!-- 일반민원 -->
+                                                    <div class="depth3-wrap">
+                                                        <ul>
+                                                                    <li><a href="/nep/bdgtWst/selectBdgtWstStmntCntr.npaid" class="depth3-trigger">예산낭비신고센터</a></li>
+                                                                    <li><a href="/nep/bdgtWst/selectBdgtResultRgm.npaid" class="depth3-trigger">예산성과금제도</a></li>
+                                                                    <li><a href="/nep/bdgtWst/selectXclncBdgtWstList.npaid" class="depth3-trigger">우수사례</a></li>
+                                                        </ul>
+                                                    </div>
+                                    </ul>
+                                </div>
+                                <div class="gnb-sub-list" id="mGnb-anchor4" role="tabpanel" aria-labelledby="tab-3">
+                                    <h2 class="sub-title">국민생각함</h2> <!-- 민원 -->
+                                    <ul>
+                                            <a href="#" class="gnb-sub-trigger" onclick="javascript:fn_goNetFunnel( 'thkMain' ,'skin3');">국민생각함</a> <!-- 일반민원 -->
+                                    </ul>
+                                </div>
+                                <div class="gnb-sub-list" id="mGnb-anchor5" role="tabpanel" aria-labelledby="tab-4">
+                                    <h2 class="sub-title">정책실현</h2> <!-- 민원 -->
+                                    <ul>
+                                                <a href="/nep/realize/XclncPrpsl/selectIdeaList.npaid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="F0007">생각실현</a> <!-- 일반민원 -->
+                                                <a href="/nep/realize/decireport/decireportCaseList.npaid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="F0001">제도개선</a> <!-- 일반민원 -->
+                                                <a href="/nep/realize/rslninfo/rslninfoCaseList.npaid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="F0008">민원해결</a> <!-- 일반민원 -->
+                                    </ul>
+                                </div>
+                                <div class="gnb-sub-list" id="mGnb-anchor6" role="tabpanel" aria-labelledby="tab-5">
+                                    <h2 class="sub-title">나의 신문고</h2> <!-- 민원 -->
+                                    <ul>
+                                                <a href="/nep/utilHistory/user/MySmgMain.paid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="G0001">메인</a> <!-- 일반민원 -->
+                                                <a href="/nep/utilHistory/mySmgPttn/mySmgPttnList.paid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="G0002">민원</a> <!-- 일반민원 -->
+                                                <a href="/nep/utilHistory/myMrfnPrpsl/myPrplUtilHistoryListPage.paid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="G0003">국민제안 </a> <!-- 일반민원 -->
+                                                <a href="/nep/utilHistory/mySmgPblsvntPrpslList.paid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="N" data-nmbr-aces-prms-yn="N" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="Y" data-menu-id="G0004" style="display: none;">공무원제안</a> <!-- 일반민원 -->
+                                                <a href="/nep/utilHistory/bdgtWstRdcnPrpslList.paid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="G0005">예산낭비</a> <!-- 일반민원 -->
+                                                <a href="/nep/utilHistory/user/MyThinkBoxList.paid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="N" data-menu-id="G0006">국민생각함</a> <!-- 일반민원 -->
+                                                <a href="#" class="gnb-sub-trigger has-depth3" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="G0058" aria-expanded="false">정책 알림 서비스</a> <!-- 일반민원 -->
+                                                    <div class="depth3-wrap">
+                                                        <ul>
+                                                                    <li><a href="/nep/utilHistory/plcyNtcnSvc/itrsmPlcyInfoList.paid" class="depth3-trigger">관심분야 정책정보 조회</a></li>
+                                                                    <li><a href="/nep/utilHistory/plcyNtcnSvc/plcyNtcnSvcStup.paid" class="depth3-trigger">정책 알림 서비스 설정</a></li>
+                                                        </ul>
+                                                    </div>
+                                                <a href="/nep/utilHistory/myOnln/myOnlnList.paid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="G0055">민원상담 신청결과</a> <!-- 일반민원 -->
+                                                <a href="/nep/utilHistory/user/MyUtilHistList.paid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="G0007">오류신고∙이용문의</a> <!-- 일반민원 -->
+                                                <a href="/nep/utilHistory/user/MySmgScre.paid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="N" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="G0008">신문고 점수</a> <!-- 일반민원 -->
+                                                <a href="#" class="gnb-sub-trigger has-depth3" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="G0009" aria-expanded="false">나의 정보 관리</a> <!-- 일반민원 -->
+                                                    <div class="depth3-wrap">
+                                                        <ul>
+                                                                    <li><a href="/nep/utilHistory/user/userUpdatePWCheck.paid" class="depth3-trigger">정보수정</a></li>
+                                                                    <li><a href="/nep/utilHistory/user/mbrSecsnPWCheck.paid" class="depth3-trigger">회원탈퇴</a></li>
+                                                                    <li><a href="/nep/utilHistory/user/mbrRenameRqstPWCheck.paid" class="depth3-trigger">회원 개명신청</a></li>
+                                                        </ul>
+                                                    </div>
+                                    </ul>
+                                </div>
+                                <div class="gnb-sub-list" id="mGnb-anchor7" role="tabpanel" aria-labelledby="tab-6">
+                                    <h2 class="sub-title">고객센터 </h2> <!-- 민원 -->
+                                    <ul>
+                                                <a href="#" class="gnb-sub-trigger has-depth3" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="H0001" aria-expanded="false">국민신문고 소개</a> <!-- 일반민원 -->
+                                                    <div class="depth3-wrap">
+                                                        <ul>
+                                                                    <li><a href="/nep/gdnc/SiteNtrcnContent.npaid" class="depth3-trigger">사이트소개</a></li>
+                                                                    <li><a href="/nep/gdnc/SiteBanner.npaid" class="depth3-trigger">배너</a></li>
+                                                                    <li><a href="/nep/gdnc/RltLawrdnc.npaid" class="depth3-trigger">관련법령</a></li>
+                                                                    <li><a href="/nep/gdnc/TermsConditions.npaid" class="depth3-trigger">이용약관</a></li>
+                                                                    <li><a href="/nep/gdnc/PlHndPlc.npaid" class="depth3-trigger">개인정보처리방침</a></li>
+                                                        </ul>
+                                                    </div>
+                                                <a href="#" class="gnb-sub-trigger has-depth3" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="H0002" aria-expanded="false">이용안내</a> <!-- 일반민원 -->
+                                                    <div class="depth3-wrap">
+                                                        <ul>
+                                                                    <li><a href="/nep/gdnc/PttnUtilGdncContent.npaid" class="depth3-trigger">민원</a></li>
+                                                                    <li><a href="/nep/gdnc/GnrlPrpslUtilGdncContent.npaid" class="depth3-trigger">국민제안</a></li>
+                                                                    <li><a href="/nep/gdnc/BdgtWstUtilGdncContent.npaid" class="depth3-trigger">예산낭비</a></li>
+                                                                    <li><a href="/nep/gdnc/GnrlThinkBoxUtilGdncContent.npaid" class="depth3-trigger">국민생각함</a></li>
+                                                                    <li><a href="/nep/gdnc/SmgScrUtilGdncContent.npaid" class="depth3-trigger">국민신문고 점수</a></li>
+                                                                    <li><a href="/nep/gdnc/BlindUtilGdncContent.npaid" class="depth3-trigger">시각장애인 이용안내</a></li>
+                                                                    <li><a href="/nep/gdnc/ViewerDownload.npaid" class="depth3-trigger">뷰어 다운로드</a></li>
+                                                        </ul>
+                                                    </div>
+                                                <a href="#" class="gnb-sub-trigger has-depth3" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="H0003" aria-expanded="false">고객문의</a> <!-- 일반민원 -->
+                                                    <div class="depth3-wrap">
+                                                        <ul>
+                                                                    <li><a href="/nep/gdnc/faq/CtmInqrFAQList.npaid" class="depth3-trigger">자주 하는 질문</a></li>
+                                                                    <li><a href="/nep/gdnc/utilInqr/UtilInqrInsert.npaid" class="depth3-trigger">오류신고·이용문의</a></li>
+                                                        </ul>
+                                                    </div>
+                                                <a href="/nep/gdnc/notice/NoticeList.npaid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="H0004">공지사항</a> <!-- 일반민원 -->
+                                                <a href="/nep/gdnc/smgNews/sinmungoNewsList.npaid" class="gnb-sub-trigger is-link" data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="H0005">신문고 소식</a> <!-- 일반민원 -->
+                                    </ul>
+                                </div>
+                    </div>
+                </div>
+                <!-- //gnb-menu -->
+            </div>
+            <!-- //gnb-body -->
+            <!-- gnb-close -->
+            <button type="button" class="krds-btn medium icon" id="close-nav">
+                <span class="sr-only">전체메뉴 닫기</span>
+                <i class="svg-icon ico-popup-close"></i>
+            </button>
+            <!-- //gnb-close -->
+        </div>
+    </div>
+    <!-- //메인메뉴 : 모바일 -->
+</header>
+<!-- //header -->
+<!-- 모달 : 통합 검색 -->
+<div class="modal-wrap">
+    <div id="popTotalSch" class="krds-modal fade" data-type="full" aria-labelledby="tit_total_sch">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- modal title -->
+                <div class="modal-header sr-only">
+                    <h2 id="tit_total_sch" class="modal-title">통합검색</h2>
+                </div>
+                <!-- //modal title -->
+                <!-- modal contents -->
+                <div class="modal-conts">
+                    <!-- 통합검색 -->
+                    <div class="pop-total-serch-wrap">
+                        <!-- 통합검색 정보입력 영역 -->
+                        <div class="search-total-top">
+                            <!-- 검색어 타이틀 -->
+                            <div class="search-tit">
+                                <label for="search-total-input-id">국민신문고 통합검색</label>
+                            </div>
+                            <!-- //검색어 타이틀 -->
+                            <!-- 검색어 입력 폼 -->
+                            <div class="sch-form-wrap vert">
+                                <div class="sch-input">
+                                    <input type="text" id="mScMB" class="krds-input xlarge" placeholder="검색어를 입력해주세요." onfocus="fn_delVs('MB')" onfocusout="fn_siOut('MB')">
+                                    <button type="button" class="krds-btn icon medium ico-clear" onclick="fn_searchDf('MB')">
+                                        <span class="sr-only">입력 검색어 초기화</span>
+                                        <i class="svg-icon" id="msi"></i>
+                                    </button>
+                                    <button type="button" class="krds-btn icon xlarge ico-search" onclick="fn_potSearch_m('MB')">
+                                        <span class="sr-only">검색</span>
+                                        <i class="svg-icon ico-sch"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- //검색어 입력 폼 -->
+                        </div>
+                        <!-- //통합검색 정보입력 영역 -->
+                    </div>
+                    <!-- //통합검색 -->
+                </div>
+                <!-- //modal contents -->
+                <!-- close button -->
+                <button type="button" class="krds-btn xlarge icon btn-close close-modal">
+                    <span class="sr-only">닫기</span>
+                    <i class="svg-icon ico-popup-close"></i>
+                </button>
+                <!-- //close button -->
+            </div>
+        </div>
+        <div class="modal-back"></div>
+    </div>
+</div>
+<!-- //모달 : 통합 검색 -->
+<form method="post" id="potSearch" name="potSearch">
+    <input type="hidden" id="searchKeywordContent" name="searchKeywordContent">
+    <input type="hidden" name="_csrf" value="4b8b330b-37ff-4535-a4a2-b65da81d751b">
+</form>
+<script>
+    // 팝업 자동오픈
+    //document.addEventListener('DOMContentLoaded', () => {
+    //	krds_modal.openModal("popTotalSch");
+    //});
+</script>
+	<!-- 범정부UI/UX 헤더적용 : e -->
+	<!-- 전체메뉴 : s -->
+	<!-- 전체메뉴 : e -->
+	<!-- location : s -->
+	<!-- location : e -->
+	<div id="containerAcc"></div>
+	<main id="container">
+		<div class="layout in-between">
+				<nav id="lnb" role="navigation" aria-label="사이드 메뉴">
+<header class="lnb_title">
+	<h2>국민제안</h2>
+</header>
+				<ul class="lnbMenu">
+					<li data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="N" data-xprt-aces-prms-yn="N" data-menu-id="B0001"><a href="/nep/prpl/selectGnrlPrpslRqstPage.paid" aria-expanded="false"><span>일반제안</span></a></li>
+					<li data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="B0004"><a href="/nep/prpsl/opnPrpl/opnpblPrpslList.npaid" class="on" aria-expanded="false"><span>공개제안</span></a></li>
+					<li data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="B0030"><a href="/nep/prpsl/realize/selectXclncPrpslList.npaid" aria-expanded="false"><span>실시제안</span></a></li>
+					<li data-mbr-aces-prms-yn="Y" data-nmbr-aces-prms-yn="Y" data-mibx-aces-prms-yn="Y" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="Y" data-menu-id="B0006"><a href="/nep/prpsl/prplCont/gnrlPrpslNtrcnContent.npaid" aria-expanded="false"><span>국민제안 소개</span></a></li>
+					<li data-mbr-aces-prms-yn="N" data-nmbr-aces-prms-yn="N" data-mibx-aces-prms-yn="N" data-pbsv-aces-prms-yn="Y" data-xprt-aces-prms-yn="N" data-menu-id="B0003" style="display: none;"><a href="/nep/prpl/pblPrplIda/selectPblsvntPrpslRqstPage.paid" aria-expanded="false"><span>공무원제안</span></a></li>
+				</ul>
+				</nav>
+			<section id="contentWrap">
+	<!-- location : s1 -->
+	<nav class="krds-breadcrumb-wrap" aria-label="브레드크럼">
+		<ol class="breadcrumb">
+			<li class="home"><a href="/index.jsp" class="txt"><span>홈</span></a></li>
+					<li class="depth1"><a href="/nep/prpl/selectGnrlPrpslRqstPage.paid" class="txt"><span>국민제안</span></a></li>
+		</ol>
+	</nav>
+	<!-- location : e1 -->
+<script>
+	$(document).ready(function () {
+		var currentMenuMn = '국민제안';
+		$(document).attr('title', $(document).attr('title'));
+		var title = "";
+		title += " | ";
+		console.log("i.count:" + '1' + 2);
+		title += '국민제안' ;
+		title += " > ";
+		console.log("i.count:" + '2' + 2);
+		title += '공개제안' ;
+		$(document).attr('title', $(document).attr('title') + title);
+		//$(document).attr('title', $(document).attr('title') + ' ' + currentMenuMn);
+		console.log("currentMenuMn : " + '국민제안');
+	});
+</script>
+<script>
+	//20190905/통합연계 이대용/프레임통합메뉴 관련 변수 추가 시작
+	var frm_frmMenuMngNo = '';  //프레임메뉴관리번호
+	//20190905/통합연계 이대용//프레임통합메뉴 관련 변수 추가 끝
+	$(document).ready(function() {
+		//20190905/통합연계 이대용//프레임통합메뉴 관련 스크립트 추가 시작
+		if ($.chkEmptyVal(frm_frmMenuMngNo)) {  //세션에 프레임메뉴관리번호가 존재하면 프레임통합메뉴로 접근한 것
+			$('#subTit, #div_headInfo, #div_searchInstCd, #div_searchCd').hide();  //헤더 숨김
+			$('#div_btnPrplRqst').show();  //신청버튼 보임
+		}else{
+			fn_InstCdSearch();
+		}
+		//20190905/통합연계 이대용//프레임통합메뉴 관련 스크립트 추가 끝
+		var html ="<li><span><img src='/resource/images/paid/nep/pot/content/icon_bl_05.png' alt='자체포상'></span>자체포상</li><li><span><img src='/resource/images/paid/nep/pot/content/icon_bl_06.png' alt='중앙포상'></span>중앙포상</li><li><span><img src='/resource/images/paid/nep/pot/content/icon_bl_07.png' alt='공동제안'></span>공동제안</li><li><span><img src='/resource/images/paid/nep/pot/content/icon_bl_08.png' alt='단체제안'></span>단체제안</li>";
+		$(".align").addClass("add_icon");
+		$('.b_iconType').addClass("mo_none");
+		$('.b_iconType').append(html);
+		// 기간 달력 날짜 제어
+		cfn_dateTerm("rqstStDt", "rqstEndDt");
+		cfn_preDate("dateType", "rqstStDt", "rqstEndDt");	// 기간선택 select-box 제어
+		//fnCodeTmd();
+		//오늘날짜 셋팅
+		// 검색조건 페이지 리로딩시 유지
+		var dateType = '';
+		var rqstStDt = '2025-09-02';
+		var rqstEndDt = '2025-12-02';
+		if(rqstStDt != ''){
+			if(dateType === ''){
+				$('#dateType').val(4).prop('checked',true); // dataType 가 비어있으면 기본 3개월 세팅
+			}
+			else{
+				$('#dateType').val(dateType).prop('checked',true);
+			}
+			if(rqstStDt && rqstEndDt){
+				$("#rqstStDt").val(rqstStDt);
+				$("#rqstEndDt").val(rqstEndDt);
+			}
+		}else{
+			//검색이 아닌 경우
+			var today = gfn_today();
+			$("#rqstStDt").val(gfn_preDate(today, "3m"));	// 3개월을 기본 입력
+			$("#rqstEndDt").val(today);			// 현재 날짜를 기본 입력
+			$("#dateType option:eq(3)").prop("selected", true); //날짜선택
+		}
+		// 검색조건 유지 시작
+		var searchCd = '';
+		var searchInstCd = '';
+		var rqstStDt = '2025-09-02';
+		var rqstEndDt = '2025-12-02';
+		var prcsSttsCd = '';
+		var orderType = 'rqstDt';
+		var searchType = '';
+		var searchWord = '';
+		var selfPrize = '';
+		var centerPrize = '';
+		var commonPrpsl = '';
+		var sctyPrpsl = '';
+		var searchOptionClickYn = '';
+		var subPrcsStts = '';
+		if(searchInstCd != ""){
+			fn_InstCdSearch2(searchInstCd);
+		}
+		/* if(rqstStDt && rqstEndDt){
+			$('#rqstStDt').val(rqstStDt);
+			$('#rqstEndDt').val(rqstEndDt);
+		} */
+		if(prcsSttsCd){
+			$('#prcsSttsCd').val(prcsSttsCd).prop("selected",true);
+			if(prcsSttsCd == '10010004'){
+				// 심사완료
+				$('#subPrcsStts, .subAdpt').show();
+				$('.subRcpt').hide();
+			}
+			else if(prcsSttsCd == '10090004'){
+				// 제안실시
+				$('#subPrcsStts, .subRcpt').show();
+				$('.subAdpt').hide();
+			}
+		}
+		if(subPrcsStts){
+			$('#subPrcsStts').val(subPrcsStts).prop("selected",true);
+		}
+		if(orderType){
+			$('#orderType').val(orderType).prop("selected",true);
+		}
+		if(searchType){
+			$('#searchType').val(searchType).prop("selected",true);
+		}
+		if(searchOptionClickYn == "Y"){
+			$('#porgSearchDetails').show();
+			$(".search_fold").addClass('ov').css("display","block");
+		}
+		// 검색조건 유지 끝
+		// 검색 엔터키
+		$('#searchWord').keypress(function(event){
+			if(event.which == 13){
+				fn_searchPrplList();
+				return false;
+			}
+		})
+	});
+	//분야코드 목록 조회
+	function fnCodeTmd(){
+		var searchCd = $("#searchCd option:selected").val();
+		$.ajax({
+			type    : "POST",
+			dataType: "json",
+			data    : {"searchCd": searchCd},
+			url     : "/nep/prpl/selectTmdCdList.npaid",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader("X-CSRF-TOKEN","4b8b330b-37ff-4535-a4a2-b65da81d751b");
+			},
+			success:function(data){
+				$("#searchCd").empty();
+				$("#searchCd").append("<option value='all'>선택</option>");
+				var rs = data.selectTmdCdList;
+				var sc = "";
+				rs.forEach(function(e,i){
+					$("#searchCd").append($('<option>').attr('value', e.cd).text(e.cdHnglNm));
+					if(e.cd == sc){
+						$("#searchCd").val(sc);
+					}
+				});
+			},
+			error: function(request, status, error) {
+				jAlert("["+request.status+"]["+request.responseText+"]");
+			}
+		});
+	}
+	function fn_InstCdSearch(){
+		var searchCd = $("#searchCd option:selected").val();
+		$('#searchInstCdAdd').val('all');
+		$.ajax({
+			type    : "POST",
+			dataType: "json",
+			data    : {"instCd": searchCd},
+			url     : "/nep/prpl/selectPrstnNsttList.npaid",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader("X-CSRF-TOKEN","4b8b330b-37ff-4535-a4a2-b65da81d751b");
+			},
+			success:function(data){
+				$("#searchInstCd").empty();
+			   	$("#searchInstCd").append("<option value='all'>선택</option>");
+			   	var rs = data.psntInstList;
+			   	var sc = "";
+			   	rs.forEach(function(e,i){
+					$("#searchInstCd").append($('<option>').attr('value', e.instCd).text(e.allInstNm));
+					if(e.instCd == sc){
+						$("#searchInstCd").val(sc);
+					}
+			   	});
+			},
+			error: function(request, status, error) {
+		    	jAlert("["+request.status+"]["+request.responseText+"]");
+		    }
+		});
+	}
+	function fn_InstCdSearch2(selectSearchCd){
+		if($('#searchCd').val() != '5A110200')
+			return false;
+		var searchCd = selectSearchCd;
+		$('#searchInstCdAdd').show();
+		$.ajax({
+			type    : "POST",
+			dataType: "json",
+			data    : {"instNm": searchCd},
+			url     : "/nep/prpl/selectPrstnNsttList.npaid",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader("X-CSRF-TOKEN","4b8b330b-37ff-4535-a4a2-b65da81d751b");
+			},
+			success:function(data){
+				$("#searchInstCdAdd").empty();
+				$("#searchInstCdAdd").append("<option value='all'>선택</option>");
+			   	var rs = data.psntInstList;
+			   	var sc = '';
+			   	rs.forEach(function(e,i){
+					$("#searchInstCdAdd").append($('<option>').attr('value', e.instCd).text(e.allInstNm));
+					if(e.instCd == sc){
+						$("#searchInstCdAdd").val(sc);
+					}
+			   	});
+			},
+			error: function(request, status, error) {
+		    	jAlert("["+request.status+"]["+request.responseText+"]");
+		    }
+		});
+	}
+	//날짜조건별 달력셋팅
+	function rqstDateSelect(){
+		var dateTypeValue =  $("#dateType").val();
+		var rqstSearchDt= new Date();
+		var nowYear = rqstSearchDt.getFullYear().toString();
+		var nowMonth = (rqstSearchDt.getMonth()+1).toString();
+		var nowDay = rqstSearchDt.getDate().toString();
+		if(nowMonth < 10){
+			nowMonth = "0"+nowMonth;
+		}
+		if(nowDay < 10){
+			nowDay = "0"+nowDay;
+		}
+		var toDay = nowYear+"-"+nowMonth+"-"+nowDay;
+		$("#rqstEndDt").val(toDay);
+		if(dateTypeValue == 0){
+    		$("#rqstStDt").val(gfn_preDate(gfn_today(), "12m")); //1년
+    	}else if(dateTypeValue == 2){
+    		$("#rqstStDt").val(gfn_preDate(gfn_today(), "7d")); //1주일
+    	}else if(dateTypeValue == 3){
+   		 	$("#rqstStDt").val(gfn_preDate(gfn_today(), "1m")); //1개월
+    	}else if(dateTypeValue == 4){
+    		$("#rqstStDt").val(gfn_preDate(gfn_today(), "3m")); //3개월
+    	}else if(dateTypeValue == 5){
+    		$("#rqstStDt").val(gfn_preDate(gfn_today(), "6m")); //6개월
+    	}else if(dateTypeValue == 6){
+    		$("#rqstStDt").val(gfn_preDate(gfn_today(), "12m")); //1년
+    	}
+	}
+	function fn_prplDetailPage(prplRqstNo,instRcptSn){
+		$('#prplRqstNo').val(prplRqstNo);
+		$('#instRcptSn').val(instRcptSn);
+		var action = "";
+		if ($.chkEmptyVal(frm_frmMenuMngNo)) {  //프레임
+			action="/frmSub/prpsl/opnPrpl/opnpblPrpslView.npaid";
+		} else {  //포털
+			action="/nep/prpsl/opnPrpl/opnpblPrpslView.npaid";
+		}
+		/* 프레임 관련 변수 추가 하여 submit 20200413 노경용 */
+		var form = $("form#frm");
+		$.each($("form#frmMngInfoVO").serializeArray(),function(key,val){
+			var input = '<input type="hidden" name="'+val['name']+'" value="'+val['value']+'">';
+			form.append(input);
+		});
+		form.attr("action", action).submit();
+	}
+	// 검색 버튼 누를 경우
+	function fn_searchPrplList(){
+		var rqstStDt = $('#rqstStDt').val();
+		var rqstEndDt = $('#rqstEndDt').val();
+		if(checkDate(rqstStDt,rqstEndDt)){
+			//화면로딩중 추가 20200618-노경용
+			$('.loading_submit').show();
+			$('#pageIndex').val('1');
+			var action = "";
+			if ($.chkEmptyVal(frm_frmMenuMngNo)) {  //프레임
+				action = "/frmSub/prpsl/opnPrpl/opnpblPrpslList.npaid";
+			} else {  //포털
+				action = "/nep/prpsl/opnPrpl/opnpblPrpslList.npaid";
+			}
+			/* 프레임 관련 변수 추가 하여 submit 20200413 노경용 */
+			var form = $("form#frm");
+			$.each($("form#frmMngInfoVO").serializeArray(),function(key,val){
+				var input = '<input type="hidden" name="'+val['name']+'" value="'+val['value']+'">';
+				form.append(input);
+			});
+			form.attr("action", action).submit();
+		} else {
+			jAlert("검색 기간은 최대 1년입니다.");
+			return false;
+		}
+	}
+	// 상세검색 클릭 여부
+	function fn_optionYn(flag){
+		$('#searchOptionClickYn').val(flag);
+	}
+	//프레임 제안신청 페이지로 이동
+	function fn_movePrplRqst() {
+		if ($.chkEmptyVal(frm_frmMenuMngNo)) {  //프레임
+			var url = '/frm/prpl/gnrlPrplRqstInfo.npaid?frmMenuMngNo=' + frm_frmMenuMngNo;  //신청 페이지로
+			$(location).attr('href', url);
+		}
+	}
+	// 날짜 최대1년 검증
+	function checkDate(rqstStDt, rqstEndDt){
+		var stDtArr = rqstStDt.split("-");
+		var endDtArr = rqstEndDt.split("-");
+		var stDtObj = new Date(stDtArr[0], Number(stDtArr[1])-1, stDtArr[2]);
+		var endDtObj = new Date(endDtArr[0], Number(endDtArr[1])-1, endDtArr[2]);
+		var betweenDay = (endDtObj.getTime() - stDtObj.getTime())/Number(1000)/Number(60)/Number(60)/Number(24);
+		if(betweenDay > 365){
+			return false;
+		} else {
+			return true;
+		}
+	}
+	//프레임 공개민원 페이지 이동 20200604-노경용
+	function frmPageSearch(){
+		$.paidLoading.remove();
+		var rqstStDt = $('#rqstStDt').val();
+		var rqstEndDt = $('#rqstEndDt').val();
+		if(checkDate(rqstStDt,rqstEndDt)){
+			//화면로딩중 추가 20200618-노경용
+			$('.loading_submit').show();
+			var action = "";
+			if ($.chkEmptyVal(frm_frmMenuMngNo)) {  //프레임
+				action = "/frmSub/prpsl/opnPrpl/opnpblPrpslList.npaid";
+			} else {  //포털
+				action = "/nep/prpsl/opnPrpl/opnpblPrpslList.npaid";
+			}
+			/* 프레임 관련 변수 추가 하여 submit 20200413 노경용 */
+			var form = $("form#frm");
+			$.each($("form#frmMngInfoVO").serializeArray(),function(key,val){
+				var input = '<input type="hidden" name="'+val['name']+'" value="'+val['value']+'">';
+				form.append(input);
+			});
+			form.attr("action", action).submit();
+		} else {
+			jAlert("검색 기간은 최대 1년입니다.");
+			return false;
+		}
+	}
+	// 추진현황(처리상태) 변경시 하위에 나올 것들
+    function fn_prcsSttsCdChange(){
+		$('#subPrcsStts').val("").prop("selected",true);
+		if($('#prcsSttsCd').val() == '10010004'){
+			// 심사완료
+			$('#subPrcsStts, .subAdpt').show();
+			$('.subRcpt').hide();
+		}
+		else if($('#prcsSttsCd').val() == '10090004'){
+			// 제안실시
+			$('#subPrcsStts, .subRcpt').show();
+			$('.subAdpt').hide();
+		}
+		else{
+			$('#subPrcsStts').hide();
+		}
+    }
+</script>
+	<header id="subTit" class="share">
+		<h3>공개제안</h3>
+<ul class="shareList">
+    <li><a href="javascript:void(0);" class="sns urlcopy" title="주소 복사하기" onclick="fn_snsEvent('url', '/nep/prpsl/opnPrpl/opnpblPrpslList.npaid'); return false;">주소 복사하기</a></li>
+    <li><a href="javascript:void(0);" class="sns print" title="인쇄 새창열림" onclick="fn_snsEvent('print');  return false;">인쇄</a></li>
+</ul>
+	</header>
+	<article id="txt">
+		<!-- 상단 안내 박스 : s -->
+		<div class="top_box icon_2" id="div_headInfo">
+			<div class="box_pt">
+				<p>
+					<strong>공개제안은 국민의 참여를 통해 다수가 공감하는 제안이 정책으로 반영될 수 있도록 공개하는 국민제안입니다.</strong>
+				</p>
+				<ul class="box_list">
+					<li>공개로 신청하였다 하더라도 민원이관 등 제안 외 처리, 개인정보 유출 또는 동일 내용의 반복적인 게재 등인 경우에는 관리자에 의해 비공개로 전환될 수 있습니다.</li>
+				</ul>
+			</div>
+		</div>
+		<!-- 상단 안내 박스 : e -->
+		<form name="frmMngInfoVO" id="frmMngInfoVO" method="post">
+			<!-- 20200408/프레임통합 노경용/프레임통합메뉴 관련 변수 -->
+			<input type="hidden" id="frm_frmMenuMngNo" name="frm_frmMenuMngNo" value="">
+			<input type="hidden" id="frm_instCd" name="frm_instCd" value="">
+			<input type="hidden" id="frm_clsfAplcYn" name="frm_clsfAplcYn" value="">
+			<input type="hidden" id="frm_rcptPathInstCd" name="frm_rcptPathInstCd" value="">
+			<input type="hidden" id="frm_frmUrlSn" name="frm_frmUrlSn" value="">
+			<input type="hidden" id="frm_frmAllUrl" name="frm_frmAllUrl" value="">
+			<input type="hidden" id="frm_prcsInstChcePsblYn" name="frm_prcsInstChcePsblYn" value="">
+			<input type="hidden" id="frm_thptInfofAgreYn" name="frm_thptInfofAgreYn" value="">
+			<input type="hidden" id="frmDsgnType" name="frmDsgnType" value="">
+			<input type="hidden" id="frm_frmMenuClsfCd" name="frm_frmMenuClsfCd" value="">
+			<input type="hidden" id="frm_chrgDeptCd" name="frm_chrgDeptCd" value="">
+			<input type="hidden" id="frm_pttnDrctRcptYn" name="frm_pttnDrctRcptYn" value="">
+			<input type="hidden" id="frm_rcptTySctnCd" name="frm_rcptTySctnCd" value="">
+			<input type="hidden" id="frm_clsfRpsnNm" name="frm_clsfRpsnNm" value="">
+			<input type="hidden" id="frm_frmMngrCnt" name="frm_frmMngrCnt" value="">
+			<input type="hidden" id="frm_sysCrtnMngrIdCnt" name="frm_sysCrtnMngrIdCnt" value="">
+			<input type="hidden" id="frm_areaSntlYn" name="frm_areaSntlYn" value="">
+			<input type="hidden" id="frm_atchFileSntlYn" name="frm_atchFileSntlYn" value="">
+			<input type="hidden" id="frm_drqstrInfoIndcYn" name="frm_drqstrInfoIndcYn" value="">
+			<input type="hidden" id="frm_dpttnrInfoSntlYn" name="frm_dpttnrInfoSntlYn" value="">
+			<input type="hidden" id="frm_pttnSctnCd" name="frm_pttnSctnCd" value="">
+			<input type="hidden" id="frm_scryPttnSctnCd" name="frm_scryPttnSctnCd" value="">
+			<input type="hidden" id="frm_gdncWrdsUseYn" name="frm_gdncWrdsUseYn" value="">
+			<input type="hidden" id="frm_egppYn" name="frm_egppYn" value="">
+			<input type="hidden" id="frm_cnrsYn" name="frm_cnrsYn" value="">
+			<input type="hidden" id="frm_addnCltnItmUseYn" name="frm_addnCltnItmUseYn" value="">
+			<input type="hidden" id="frm_pttnClsfCd" name="frm_pttnClsfCd" value="">
+			<input type="hidden" id="frm_prcsTmltNumd" name="frm_prcsTmltNumd" value="">
+			<input type="hidden" id="frm_basePrcsPrd" name="frm_basePrcsPrd" value="">
+			<input type="hidden" id="frm_menuCd" name="frm_menuCd" value="">
+			<input type="hidden" id="frm_proPotMngrIdCnt" name="frm_proPotMngrIdCnt" value="">
+			<input type="hidden" id="frm_ablYn" name="frm_ablYn" value="">
+			<input type="hidden" id="acesMode" name="acesMode" value="">
+			<input type="hidden" id="frm_lwsInstNm" name="frm_lwsInstNm" value="">
+			<input type="hidden" id="frm_pttnPrcsCaseYn" name="frm_pttnPrcsCaseYn" value="">
+			<input type="hidden" id="frm_cntnCl" name="frm_cntnCl" value="">
+			<input type="hidden" id="frm_oppbYn" name="frm_oppbYn" value="">
+			<input type="hidden" id="frm_lognIndcYn" name="frm_lognIndcYn" value="">
+		</form>
+		<!-- 게시글 검색 : s -->
+		<form name="frm" id="frm" method="post">
+			<input type="hidden" name="_csrf" value="4b8b330b-37ff-4535-a4a2-b65da81d751b">
+			<input type="hidden" id="recordCountPerPage" name="recordCountPerPage" value="10">
+			<input type="hidden" id="pageIndex" name="pageIndex" value="1">
+			<input type="hidden" name="searchOptionClickYn" id="searchOptionClickYn" value="">
+			<input type="hidden" name="prplRqstNo" id="prplRqstNo" value="">
+			<input type="hidden" name="instRcptSn" id="instRcptSn" value="">
+			<div class="prog_search">
+				<div class="boardSch">
+					<div class="bSch_row" id="div_searchCd">
+						<div class="bSch_col full">
+							<div class="label">
+								<label for="searchCd">기관</label>
+							</div>
+							<div class="bSch_sel" style="width:100%;">
+								<select name="searchCd" id="searchCd" onchange="javascript:fn_InstCdSearch();" style="width:42%;">
+									<option value="all">선택</option>
+										<option value="5A110100">중앙행정기관</option>
+										<option value="5A110200">지방자치단체</option>
+										<option value="5A110300">시도교육청</option>
+										<option value="5A110400">공공기관</option>
+										<option value="5A110600">헌법기관</option>
+								</select>
+								<select name="searchInstCd" id="searchInstCd" onchange="javascript:fn_InstCdSearch2(this.value);" title="기관선택" style="width:173px;"><option value="all">선택</option></select>
+								<select name="searchInstCdAdd" id="searchInstCdAdd" title="기관선택" style="width:173px;display:none;">
+									<option value="all">선택</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="bSch_row">
+						<div class="bSch_col full">
+							<div class="label">
+								<label for="rqstStDt">기간</label>
+							</div>
+							<div class="dateWrap type_1">
+								<input type="text" name="rqstStDt" id="rqstStDt" class="datepicker hasDatepicker" title="시작일을 입력하세요. 예)2020-01-01"><button type="button" class="ui-datepicker-trigger"><img src="/resource/images/paid/nep/thk/common/icon_dateficker.png" alt="달력" title="달력"></button>
+								~
+								<input type="text" name="rqstEndDt" id="rqstEndDt" class="datepicker hasDatepicker" title="종료일을 입력하세요. 예)2020-01-01"><button type="button" class="ui-datepicker-trigger"><img src="/resource/images/paid/nep/thk/common/icon_dateficker.png" alt="달력" title="달력"></button>
+								<select name="dateType" id="dateType" class="datesel" title="기간을 선택하세요" onchange="javascript:rqstDateSelect();">
+									<option value="0">선택</option>
+									<option value="2">1주일</option>
+									<option value="3">1개월</option>
+									<option value="4">3개월</option>
+									<option value="5">6개월</option>
+									<option value="6">1년</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div id="porgSearchDetails">
+						<div class="bSch_row">
+							<div class="bSch_col">
+								<div class="label">
+									<label for="prcsSttsCd">추진상황</label>
+								</div>
+								<select name="prcsSttsCd" id="prcsSttsCd" onchange="fn_prcsSttsCdChange();">
+									<option value="">선택</option>
+									<option value="10010002">제안심사</option>
+									<option value="10010004">심사완료</option>
+									<option value="10090004">제안실시</option>
+								</select>
+							</div>
+							<div class="bSch_col" style="padding-left: 0px">
+								<select name="subPrcsStts" id="subPrcsStts" hidden="">
+									<option value="">선택</option>
+									<option class="subAdpt" value="Y">채택</option>
+									<option class="subAdpt" value="N">불채택</option>
+									<option class="subRcpt" value="10120001">완전실시</option>
+									<option class="subRcpt" value="10120002">일부실시</option>
+								</select>
+							</div>
+						</div>
+						<div class="bSch_row">
+							<div class="bSch_col">
+								<div class="label">
+									<label for="orderType">정렬순서</label>
+								</div>
+								<select name="orderType" id="orderType">
+									<option value="">선택</option>
+									<option value="rqstDt">최신순</option>
+									<option value="rdTcnt">조회순</option>
+								</select>
+							</div>
+						</div>
+						<div class="bSch_row">
+							<div class="bSch_col full">
+								<div class="label">
+									<label for="searchType">검색어</label>
+								</div>
+								<div class="sch_def">
+									<select name="searchType" id="searchType">
+										<option value="prplTitl">제목</option>
+										<option value="prplCntnCl">내용</option>
+									</select>
+									<input type="text" name="searchWord" id="searchWord" title="검색어를 입력하세요" value="" style="IME-MODE:active;">
+								</div>
+							</div>
+						</div>
+						<div class="bSch_row">
+							<div class="bSch_col full">
+								<div class="label">
+									<label for="value_01">종류</label>
+								</div>
+								<label for="value_01" class="details_label">
+									<input id="value_01" type="checkbox" name="selfPrize" value="Y"> 자체포상
+								</label>
+								<label for="value_02" class="details_label">
+									<input id="value_02" type="checkbox" name="centerPrize" value="Y"> 중앙포상
+								</label>
+								<label for="value_03" class="details_label">
+									<input id="value_03" type="checkbox" name="commonPrpsl" value="Y"> 공동제안
+								</label>
+								<label for="value_04" class="details_label">
+									<input id="value_04" type="checkbox" name="sctyPrpsl" value="Y"> 단체제안
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="bSch_btn">
+						<button type="button" class="btn black" onclick="javascript:fn_searchPrplList();">검색</button>
+						<button type="reset" class="btn white">초기화</button>
+					</div>
+				</div>
+				<div class="search_fold">
+					<a class="search_close" href="#porgSearchDetails" onclick="javascript:fn_optionYn('N');"><span>상세검색 닫기</span></a>
+					<a class="search_open" href="#porgSearchDetails" onclick="javascript:fn_optionYn('Y');"><span>상세검색 열기</span></a>
+				</div>
+			</div>
+			<!-- 게시글 검색 : e -->
+			<!-- 게시판 상단 정보 : s -->
+			<div class="prog_util">
+	<span class="total" aria-live="polite">총 <span>4,026</span>건 등록 (1/403)</span>
+		<div class="align add_icon">
+			<strong class="hide">게시판 아이콘 설명</strong>
+				<ul class="b_iconType mo_none">
+				<li><span><img src="/resource/images/paid/nep/pot/content/icon_bl_05.png" alt="자체포상"></span>자체포상</li><li><span><img src="/resource/images/paid/nep/pot/content/icon_bl_06.png" alt="중앙포상"></span>중앙포상</li><li><span><img src="/resource/images/paid/nep/pot/content/icon_bl_07.png" alt="공동제안"></span>공동제안</li><li><span><img src="/resource/images/paid/nep/pot/content/icon_bl_08.png" alt="단체제안"></span>단체제안</li></ul>
+			<label for="listCnt" class="hide">글목록 개수 지정</label>
+			<select id="listCnt" onchange="chngCountForPage('post',this.value)">
+<option selected="selected" value="10">10개씩</option>
+<option value="20">20개씩</option>
+<option value="30">30개씩</option>
+<option value="40">40개씩</option>
+<option value="50">50개씩</option>
+</select>
+<input type="hidden" name="focusPerPageYn" id="focusPerPageYn" value="">
+</div>
+</div>
+			<!-- 게시판 상단 정보 : e -->
+			<table class="tbl default brd1">
+				<caption>
+					<strong>공개제안 목록</strong>
+					<details>
+						<summary>공개제안 목록 게시판으로, 번호, 제목, 처리기관, 신청일, 추진상황, 조회로 구분되어 있습니다.</summary>
+					</details>
+				</caption>
+				<colgroup>
+					<col style="width:70px">
+					<col style="width:auto">
+					<col style="width:150px">
+					<col style="width:110px">
+					<col style="width:100px">
+					<col style="width:60px">
+				</colgroup>
+				<thead>
+					<tr>
+						<th scope="col">번호</th>
+						<th scope="col">제목</th>
+						<th scope="col">처리 기관</th>
+						<th scope="col">신청일</th>
+						<th scope="col">추진상황</th>
+						<th scope="col">조회</th>
+					</tr>
+				</thead>
+				<tbody>
+						<tr>
+							<td>4026</td>
+							<td class="left">
+								<a href="javascript:void(0);" onclick="javaScript:fn_prplDetailPage('1AB-2512-0015715','201114505');">건강일터 조성사업, 온열질환 예방장비 지원 사업 관련
+										<img src="/resource/images/paid/nep/pot/content/icon_bl_07.png" alt="공동제안">
+								</a>
+							</td>
+							<td>고용노동부</td>
+							<td>2025-12-02</td>
+							<td>제안심사</td>
+							<td>8</td>
+						</tr>
+						<tr>
+							<td>4025</td>
+							<td class="left">
+								<a href="javascript:void(0);" onclick="javaScript:fn_prplDetailPage('1AB-2512-0015740','201114503');">AGI 관련 추가 백서입니다.
+								</a>
+							</td>
+							<td>한국지능정보사회진흥원</td>
+							<td>2025-12-02</td>
+							<td>제안심사</td>
+							<td>1</td>
+						</tr>
+						<tr>
+							<td>4024</td>
+							<td class="left">
+								<a href="javascript:void(0);" onclick="javaScript:fn_prplDetailPage('1AB-2512-0015695','201114440');">사서교사 정원 확대 및 기간제 교사 배치 의무화 촉구
+								</a>
+							</td>
+							<td>경기도교육청</td>
+							<td>2025-12-02</td>
+							<td>제안심사</td>
+							<td>7</td>
+						</tr>
+						<tr>
+							<td>4023</td>
+							<td class="left">
+								<a href="javascript:void(0);" onclick="javaScript:fn_prplDetailPage('1AB-2512-0015682','201114428');">등외 상이군인 보훈 사각지대 해소를 위한 국가유공자 8급 신설
+								</a>
+							</td>
+							<td>국가보훈부</td>
+							<td>2025-12-02</td>
+							<td>제안심사</td>
+							<td>8</td>
+						</tr>
+						<tr>
+							<td>4022</td>
+							<td class="left">
+								<a href="javascript:void(0);" onclick="javaScript:fn_prplDetailPage('1AB-2512-0015679','201114427');">경로당 비상벨 설치 필요합니다.
+								</a>
+							</td>
+							<td>보건복지부</td>
+							<td>2025-12-02</td>
+							<td>제안심사</td>
+							<td>6</td>
+						</tr>
+						<tr>
+							<td>4021</td>
+							<td class="left">
+								<a href="javascript:void(0);" onclick="javaScript:fn_prplDetailPage('1AB-2512-0015670','201114426');">사직운동장 풋살장 건립
+								</a>
+							</td>
+							<td>부산광역시</td>
+							<td>2025-12-02</td>
+							<td>제안심사</td>
+							<td>1</td>
+						</tr>
+						<tr>
+							<td>4020</td>
+							<td class="left">
+								<a href="javascript:void(0);" onclick="javaScript:fn_prplDetailPage('1AB-2512-0015665','201114411');">등외판정 상이군인을 위한 국가유공자 8급 신설 제안
+								</a>
+							</td>
+							<td>국가보훈부</td>
+							<td>2025-12-02</td>
+							<td>제안심사</td>
+							<td>9</td>
+						</tr>
+						<tr>
+							<td>4019</td>
+							<td class="left">
+								<a href="javascript:void(0);" onclick="javaScript:fn_prplDetailPage('1AB-2512-0015654','201114406');">국기봉 및 게양기의 개선 안.
+								</a>
+							</td>
+							<td>행정안전부</td>
+							<td>2025-12-02</td>
+							<td>제안심사</td>
+							<td>6</td>
+						</tr>
+						<tr>
+							<td>4018</td>
+							<td class="left">
+								<a href="javascript:void(0);" onclick="javaScript:fn_prplDetailPage('1AB-2512-0015646','201114400');">국기 게양대 개선안
+								</a>
+							</td>
+							<td>행정안전부</td>
+							<td>2025-12-02</td>
+							<td>제안심사</td>
+							<td>6</td>
+						</tr>
+						<tr>
+							<td>4017</td>
+							<td class="left">
+								<a href="javascript:void(0);" onclick="javaScript:fn_prplDetailPage('1AB-2512-0015644','201114399');">편의점 미성년자 담배구매 처벌 기준변경
+								</a>
+							</td>
+							<td>성평등가족부</td>
+							<td>2025-12-02</td>
+							<td>제안심사</td>
+							<td>8</td>
+						</tr>
+				</tbody>
+			</table>
+			<div class="page_list">
+					<span class="nep_p_prevBundle"><a href="?pageIndex=1" onclick="frmPageLink(1);return false; "><img src="/resource/images/paid/nep/pot/board/btn_first_bg.gif" alt="이전 페이지 묶음으로 이동"></a></span>
+<span class="nep_p_prev"><a href="?pageIndex=1" onclick="frmPageLink(1);return false; "><img src="/resource/images/paid/nep/pot/board/btn_prev_bg.gif" alt="이전 페이지로 이동"></a></span>
+<strong class="ds_number"><a onclick="return false;">1</a></strong>
+<a class="ds_number" href="?pageIndex=2" onclick="frmPageLink(2);return false; ">2</a>
+<a class="ds_number" href="?pageIndex=3" onclick="frmPageLink(3);return false; ">3</a>
+<a class="ds_number" href="?pageIndex=4" onclick="frmPageLink(4);return false; ">4</a>
+<a class="ds_number" href="?pageIndex=5" onclick="frmPageLink(5);return false; ">5</a>
+<a class="ds_number" href="?pageIndex=6" onclick="frmPageLink(6);return false; ">6</a>
+<a class="ds_number" href="?pageIndex=7" onclick="frmPageLink(7);return false; ">7</a>
+<a class="ds_number" href="?pageIndex=8" onclick="frmPageLink(8);return false; ">8</a>
+<a class="ds_number" href="?pageIndex=9" onclick="frmPageLink(9);return false; ">9</a>
+<a class="ds_number" href="?pageIndex=10" onclick="frmPageLink(10);return false; ">10</a>
+<span class="paging_count">1/403</span> ··· <a href="?pageIndex=403" onclick="frmPageLink(403);return false; ">403</a>
+<span class="nep_p_next"><a href="?pageIndex=2" onclick="frmPageLink(2);return false; "><img src="/resource/images/paid/nep/pot/board/btn_next_bg.gif" alt="다음 페이지로 이동"></a></span>
+<span class="nep_p_nextBundle"><a href="?pageIndex=11" onclick="frmPageLink(11);return false; "><img src="/resource/images/paid/nep/pot/board/btn_end_bg.gif" alt="다음 페이지 묶음으로 이동"></a></span>
+			</div>
+		</form>
+		<div class="btnArea right" id="div_btnPrplRqst" style="display:none;">
+			<button type="button" class="btn gray" id="btnPrplRqst" onclick="fn_movePrplRqst();"><span>신청</span></button>
+		</div>
+		<!-- 로딩 화면 추가 20200618-노경용 -->
+		<div class="loading_submit" style="display:none;">
+			<div class="apload_ing"></div>
+			<div class="load_box">
+				<span><img src="/resource/images/paid/biz/content/load_ing.png" alt="불러오는 중"></span>
+				<strong>화면을 불러오는 중</strong>
+				<p>요청하신 화면을 불러오는 중입니다. 잠시만 기다려주십시오.</p>
+			</div>
+		</div>
+	</article>
+	<script type="text/javascript" src="/resource/js/paid/cmmn/pagination.js"></script>
+			</section>
+		</div>
+	</main>
+<!-- footer -->
+<footer id="footer">
+	<div class="foot-quick">
+		<ul class="inner">
+			<li><a class="link" href="/nep/gdnc/utilInqr/UtilInqrInsert.npaid" title="오류신고·이용문의">오류신고·이용문의</a></li>
+			<li><a class="link" href="/nep/gdnc/ViewerDownload.npaid" title="뷰어다운로드">뷰어다운로드</a></li>
+			<li><a class="link" href="/nep/gdnc/BlindUtilGdncContent.npaid" title="시각장애인 이용안내">시각장애인 이용안내</a></li>
+			<li><button type="button" class="link open-modal" title="유관사이트 바로가기" data-target="footer_link">유관사이트</button></li>
+		</ul>
+	</div>
+	<div class="inner">
+		<div class="f-logo">
+			<span class="sr-only">국민권익위원회가 운영하는 국민신문고</span>
+		</div>
+		<div class="f-cnt">
+			<div class="f-info">
+				<p class="info-addr">(30102) 세종특별자치시 도움5로 20 정부세종청사 국민권익위원회</p>
+				<ul class="info-cs">
+					<li><strong class="strong">정부민원안내콜센터 국번없이 <a href="tel:110" aria-label="전화번호 110">110</a>번</strong> <span class="span">(무료, 365일 24시간 안내가능, 수어상담 평일 09:00~18:00)</span></li>
+					<li><strong class="strong">국민신문고 시스템 이용관련 문의</strong> <span class="span">(<a href="tel:16008172" aria-label="전화번호 1600-8172">1600-8172</a>(유료), <a href="tel:07041401458" aria-label="전화번호 070-4140-1458">070-4140-1458</a>(유료), 평일 09:00~18:00)</span></li>
+				</ul>
+			</div>
+		</div>
+		<div class="f-btm">
+			<div class="f-btm-text">
+				<div class="f-menu">
+					<a href="/nep/gdnc/PlHndPlc.npaid" class="point">개인정보처리방침</a>
+					<a href="/nep/gdnc/TermsConditions.npaid">이용약관</a>
+					<a href="/nep/gdnc/faq/CtmInqrFAQList.npaid">자주하는 질문</a>
+				</div>
+				<p class="f-copy">© Anti-Corruption &amp; Civil Rights Commission. All rights reserved.</p>
+			</div>
+			<section class="identifier">
+					<span class="logo">
+						<span class="sr-only">국민권익위원회</span>
+					</span>
+				<span class="ban-txt">이 누리집은 국민권익위원회에서 운영하는 누리집입니다.</span>
+			</section>
+		</div>
+	</div>
+</footer>
+<!-- //footer -->
+<!-- 모달 : 유관사이트 -->
+<div class="modal-wrap">
+	<div id="footer_link" class="krds-modal fade" aria-labelledby="tit_footer_link">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<!-- modal title -->
+				<div class="modal-header">
+					<h2 id="tit_footer_link" class="modal-title">유관사이트</h2>
+				</div>
+				<!-- //modal title -->
+				<!-- modal contents -->
+				<div class="modal-conts">
+					<ul class="footer_link_list">
+						<li><a href="http://www.acrc.go.kr" target="_blank" title="국민권익위원회 새창으로 열기">국민권익위원회</a></li>
+						<li><a href="http://bigdata.epeople.go.kr" target="_blank" title="민원 빅데이터 새창으로 열기">민원 빅데이터</a></li>
+						<li><a href="http://www.110.go.kr" target="_blank" title="정부민원안내콜센터 새창으로 열기">정부민원안내콜센터</a></li>
+						<li><a href="http://www.simpan.go.kr" target="_blank" title="온라인행정심판 새창으로 열기">온라인행정심판</a></li>
+						<li><a href="http://www.open.go.kr" target="_blank" title="정보공개포털 새창으로 열기">정보공개포털</a></li>
+						<li><a href="http://www.gov.kr" target="_blank" title="정부 24 새창으로 열기">정부 24</a></li>
+						<li><a href="http://www.law.go.kr" target="_blank" title="국가법령정보센터 새창으로 열기">국가법령정보센터</a></li>
+						<li><a href="http://www.korea.kr" target="_blank" title="정책브리핑 새창으로 열기">정책브리핑</a></li>
+						<li><a href="http://www.mpm.go.kr/proactivePublicService/" target="_blank" title="적극행정 통합 플랫폼 새창으로 열기">적극행정 통합 플랫폼</a></li>
+					</ul>
+				</div>
+				<!-- //modal contents -->
+				<!-- close button -->
+				<button type="button" class="krds-btn xlarge icon btn-close close-modal">
+					<span class="sr-only">닫기</span>
+					<i class="svg-icon ico-popup-close"></i>
+				</button>
+				<!-- //close button -->
+			</div>
+		</div>
+		<div class="modal-back"></div>
+	</div>
+</div>
+<!-- //모달 : 유관사이트 -->
+<!-- top btn : s -->
+<div class="page_topBtn">
+	<a href="#skip" title="제일 상단으로 이동"><i class="svg-icon ico-go-top"></i></a>
+</div>
+<!-- top btn : e -->
+<!-- 2025-11-27 18:25:48 -->
+<!-- euser31 -->
+</div>
+<!-- 세션연장 팝업: s -->
+<div id="session-extend-popup">
+	<a class="b-close">x</a>
+	<div class="title">
+		<h4>국민신문고<br>자동 로그아웃 안내</h4>
+		<p>남은시간  <strong id="popupSecond">60</strong>초</p>
+	</div>
+	<p class="text">로그인 후 약 <strong>120</strong>분 동안 서비스 이용이 없어 자동 로그아웃 됩니다. <br>
+		로그인 시간 연장을 원하시면 연장하기 버튼을 눌러주세요.</p>
+	<div class="link">
+		<a href="javascript:void(0);" onclick="javascript:fn_sessionExtend();" class="go_link">연장하기</a>
+		<a href="javascript:void(0);" onclick="javascript:fn_userLogout();">로그아웃</a>
+	</div>
+</div>
+<!-- 세션연장 팝업: e -->
+<!-- 1 : 개인정보 스크립트 -->
+<script type="text/javascript" src="/resource/app/applex_wdigm_html5/applex_local.js?version=1.08"></script><script src="/resource/app/applex_wdigm_html5/policy.js?version=1.03"></script><script src="/resource/app/applex_wdigm_html5/b_word.js?version=1.06"></script><script src="/resource/app/applex_wdigm_html5/b_word2.js?version=1.06"></script><script src="/resource/app/applex_wdigm_html5/applet/wdigm_msg_epeople.js?version=1.06"></script><script src="/resource/app/applex_wdigm_html5/applet/wdigm_constain.js?version=1.03"></script><script src="/resource/app/applex_wdigm_html5/applet/wdigm_lib.js?version=1.03"></script><script src="/resource/app/applex_wdigm_html5/applet/wdigm_expr.js?version=1.03"></script><script src="/resource/app/applex_wdigm_html5/applet/wdigm_api.js?version=1.03"></script><script src="/resource/app/applex_wdigm_html5/applet/ui/js/jquery.ui.draggable.js" type="text/javascript"></script><script src="/resource/app/applex_wdigm_html5/applet/ui/js/jquery.alerts.js" type="text/javascript"></script><link href="/resource/app/applex_wdigm_html5/applet/ui/css/jquery.alerts.css" rel="stylesheet" type="text/css" media="screen"><link href="/resource/app/applex_wdigm_html5/applet/ui/css/ui.alert.css" rel="stylesheet" type="text/css">
+<!-- 2 : 첨부파일 변환 스크립트 -->
+<iframe id="uploadIFrame1" name="uploadIFrame1" class="uploadIFrame1" style="display: none; visibility: hidden;" title="첨부파일 변환"></iframe>
+<!-- 3 : 개인정보 차단 스크립트 -->
+<!-- 4 : onchang 함수 -->
+<!-- 5 : 첨부파일 변환 알림 문구 -->
+<!-- <div id="applex_wdigm_html5_waiting"></div> -->
+<div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"><div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all"><a class="ui-datepicker-prev ui-corner-all" data-handler="prev" data-event="click" title="이전 달"><span class="ui-icon ui-icon-circle-triangle-w">이전 달</span></a><a class="ui-datepicker-next ui-corner-all ui-state-disabled" title="다음 달"><span class="ui-icon ui-icon-circle-triangle-e">다음 달</span></a><div class="ui-datepicker-title"><select class="ui-datepicker-year" data-handler="selectYear" data-event="change" title="년도를 선택하세요."><option value="1925">1925</option><option value="1926">1926</option><option value="1927">1927</option><option value="1928">1928</option><option value="1929">1929</option><option value="1930">1930</option><option value="1931">1931</option><option value="1932">1932</option><option value="1933">1933</option><option value="1934">1934</option><option value="1935">1935</option><option value="1936">1936</option><option value="1937">1937</option><option value="1938">1938</option><option value="1939">1939</option><option value="1940">1940</option><option value="1941">1941</option><option value="1942">1942</option><option value="1943">1943</option><option value="1944">1944</option><option value="1945">1945</option><option value="1946">1946</option><option value="1947">1947</option><option value="1948">1948</option><option value="1949">1949</option><option value="1950">1950</option><option value="1951">1951</option><option value="1952">1952</option><option value="1953">1953</option><option value="1954">1954</option><option value="1955">1955</option><option value="1956">1956</option><option value="1957">1957</option><option value="1958">1958</option><option value="1959">1959</option><option value="1960">1960</option><option value="1961">1961</option><option value="1962">1962</option><option value="1963">1963</option><option value="1964">1964</option><option value="1965">1965</option><option value="1966">1966</option><option value="1967">1967</option><option value="1968">1968</option><option value="1969">1969</option><option value="1970">1970</option><option value="1971">1971</option><option value="1972">1972</option><option value="1973">1973</option><option value="1974">1974</option><option value="1975">1975</option><option value="1976">1976</option><option value="1977">1977</option><option value="1978">1978</option><option value="1979">1979</option><option value="1980">1980</option><option value="1981">1981</option><option value="1982">1982</option><option value="1983">1983</option><option value="1984">1984</option><option value="1985">1985</option><option value="1986">1986</option><option value="1987">1987</option><option value="1988">1988</option><option value="1989">1989</option><option value="1990">1990</option><option value="1991">1991</option><option value="1992">1992</option><option value="1993">1993</option><option value="1994">1994</option><option value="1995">1995</option><option value="1996">1996</option><option value="1997">1997</option><option value="1998">1998</option><option value="1999">1999</option><option value="2000">2000</option><option value="2001">2001</option><option value="2002">2002</option><option value="2003">2003</option><option value="2004">2004</option><option value="2005">2005</option><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2015">2015</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option><option value="2021">2021</option><option value="2022">2022</option><option value="2023">2023</option><option value="2024">2024</option><option value="2025" selected="selected">2025</option></select>년<select class="ui-datepicker-month" data-handler="selectMonth" data-event="change" title="월을 선택하세요."><option value="0">1월</option><option value="1">2월</option><option value="2">3월</option><option value="3">4월</option><option value="4">5월</option><option value="5">6월</option><option value="6">7월</option><option value="7">8월</option><option value="8">9월</option><option value="9">10월</option><option value="10">11월</option><option value="11" selected="selected">12월</option></select></div></div><table class="ui-datepicker-calendar"><caption>달력</caption><thead><tr><th scope="col" class="ui-datepicker-week-end"><span title="일">일</span></th><th scope="col"><span title="월">월</span></th><th scope="col"><span title="화">화</span></th><th scope="col"><span title="수">수</span></th><th scope="col"><span title="목">목</span></th><th scope="col"><span title="금">금</span></th><th scope="col" class="ui-datepicker-week-end"><span title="토">토</span></th></tr></thead><tbody><tr><td class=" ui-datepicker-week-end ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td><td class=" " data-handler="selectDay" data-event="click" data-month="11" data-year="2025"><a class="ui-state-default" href="#">1</a></td><td class=" ui-datepicker-days-cell-over  ui-datepicker-current-day ui-datepicker-today" data-handler="selectDay" data-event="click" data-month="11" data-year="2025"><a class="ui-state-default ui-state-highlight ui-state-active ui-state-hover" href="#">2</a></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">3</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">4</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">5</span></td><td class=" ui-datepicker-week-end ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">6</span></td></tr><tr><td class=" ui-datepicker-week-end ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">7</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">8</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">9</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">10</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">11</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">12</span></td><td class=" ui-datepicker-week-end ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">13</span></td></tr><tr><td class=" ui-datepicker-week-end ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">14</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">15</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">16</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">17</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">18</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">19</span></td><td class=" ui-datepicker-week-end ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">20</span></td></tr><tr><td class=" ui-datepicker-week-end ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">21</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">22</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">23</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">24</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">25</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">26</span></td><td class=" ui-datepicker-week-end ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">27</span></td></tr><tr><td class=" ui-datepicker-week-end ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">28</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">29</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">30</span></td><td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">31</span></td><td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td><td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td><td class=" ui-datepicker-week-end ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td></tr></tbody></table></div><div class="gnb-backdrop"></div><div class="glasp-extension-toaster" style="display: block; width: 320px; margin: unset; padding: unset; border: unset; border-radius: unset; outline: unset; background-color: unset; box-shadow: unset; position: fixed; top: 40px; right: 24px; z-index: 9999;"><template shadowrootmode="open"><div class="glasp-extension" style="font-family: inherit;"></div></template></div></body>
+<div class="glasp-extension" style="display: block; width: unset; margin: unset; padding: unset; border: unset; border-radius: unset; outline: unset; background-color: unset; box-shadow: unset; position: fixed; bottom: 16px; right: 16px; z-index: 9999;"><div class="glasp-extension" style="font-family: inherit;"></div></div>
+CSS style:
+<head>
+    font-family: "Pretendard GOV", sans-serif;
+    color: var(--gray80);
+    font-weight: 400;
+    line-height: 1.5;
+    word-break: keep-all;
+    word-wrap: break-word;
+    -webkit-tap-highlight-color: transparent;
+    font-size: 62.5%;
+    --primary5: #ecf2fe;
+    --primary10: #d8e5fd;
+    --primary20: #b1cefb;
+    --primary30: #86aff9;
+    --primary40: #4c87f6;
+    --primary50: #256ef4;
+    --primary60: #0b50d0;
+    --primary70: #083891;
+    --primary80: #052561;
+    --primary90: #03163a;
+    --primary95: #020f27;
+    --secondary5: #eef2f7;
+    --secondary10: #d6e0eb;
+    --secondary20: #bacbde;
+    --secondary30: #90b0d5;
+    --secondary40: #6b96c7;
+    --secondary50: #346fb2;
+    --secondary60: #1c589c;
+    --secondary70: #063a74;
+    --secondary80: #052b57;
+    --secondary90: #031f3f;
+    --secondary95: #02162c;
+    --gray0: #ffffff;
+    --gray5: #f4f5f6;
+    --gray10: #e6e8ea;
+    --gray20: #cdd1d5;
+    --gray30: #b1b8be;
+    --gray40: #8a949e;
+    --gray50: #6d7882;
+    --gray60: #58616a;
+    --gray70: #464c53;
+    --gray80: #33363d;
+    --gray90: #1e2124;
+    --gray95: #131416;
+    --gray100: #000000;
+    --danger5: #fdefec;
+    --danger10: #fcdfd9;
+    --danger20: #f7afa1;
+    --danger30: #f48771;
+    --danger40: #f05f42;
+    --danger50: #de3412;
+    --danger60: #bd2c0f;
+    --danger70: #8a240f;
+    --danger80: #5c180a;
+    --danger90: #390d05;
+    --danger95: #260903;
+    --information5: #e7f4fe;
+    --information10: #d3ebfd;
+    --information20: #9ed2fa;
+    --information30: #5fb5f7;
+    --information40: #2098f3;
+    --information50: #0b78cb;
+    --information60: #096ab3;
+    --information70: #085691;
+    --information80: #053961;
+    --information90: #03253f;
+    --information95: #021a2c;
+    --warning5: #fff3db;
+    --warning10: #ffe0a3;
+    --warning20: #ffc95c;
+    --warning30: #ffb114;
+    --warning40: #c78500;
+    --warning50: #9e6a00;
+    --warning60: #8a5c00;
+    --warning70: #614100;
+    --warning80: #422c00;
+    --warning90: #2e1f00;
+    --warning95: #241800;
+    --success5: #eaf6ec;
+    --success10: #d8eedd;
+    --success20: #a9dab4;
+    --success30: #7ec88e;
+    --success40: #3fa654;
+    --success50: #228738;
+    --success60: #267337;
+    --success70: #285d33;
+    --success80: #1f4727;
+    --success90: #122b18;
+    --success95: #0e2012;
+    --point5: #fbeff0;
+    --point10: #f5d6d9;
+    --point20: #ebadb2;
+    --point30: #e0858c;
+    --point40: #d65c66;
+    --point50: #d63d4a;
+    --point60: #ab2b36;
+    --point70: #7a1f26;
+    --point80: #521419;
+    --point90: #310c0f;
+    --point95: #21080a;
+    --graphic10: #e5ecf9;
+    --graphic30: #98acc5;
+    --graphic50: #61758f;
+    --graphic70: #39506c;
+    --graphic90: #223a58;
+    --alpha-black100: #000000;
+    --alpha-black75: #000000bf;
+    --alpha-black50: #00000080;
+    --alpha-black25: #00000040;
+    --alpha-black10: #0000001a;
+    --alpha-black0: #00000000;
+    --alpha-white100: #ffffff;
+    --alpha-white75: #ffffffbf;
+    --alpha-white50: #ffffff80;
+    --alpha-white25: #ffffff40;
+    --alpha-white10: #ffffff1a;
+    --alpha-white0: #ffffff00;
+    --alpha-shadow1: #0000000d;
+    --alpha-shadow2: #00000014;
+    --alpha-shadow3: #0000001f;
+    --bg-dim: var(--alpha-black75);
+    --number0: 0rem;
+    --number1: 0.1rem;
+    --number2: 0.2rem;
+    --number3: 0.4rem;
+    --number4: 0.6rem;
+    --number5: 0.8rem;
+    --number6: 1rem;
+    --number7: 1.2rem;
+    --number8: 1.6rem;
+    --number9: 2rem;
+    --number10: 2.4rem;
+    --number11: 2.8rem;
+    --number12: 3.2rem;
+    --number13: 3.6rem;
+    --number14: 4rem;
+    --number15: 4.4rem;
+    --number16: 4.8rem;
+    --number17: 5.6rem;
+    --number18: 6.4rem;
+    --number19: 7.2rem;
+    --number20: 8rem;
+    --number21: 9.6rem;
+    --numbermax: 100rem;
+    --pc-fz-heading-lg: 3.2rem;
+    --pc-fz-heading-md: 2.4rem;
+    --pc-fz-heading-sm: 1.9rem;
+    --pc-fz-heading-xs: 1.7rem;
+    --mob-fz-heading-lg: 2.4rem;
+    --mob-fz-heading-md: 2.2rem;
+    --mob-fz-heading-sm: 1.8rem;
+    --mob-fz-heading-xs: 1.6rem;
+    --gap1: 0.2rem;
+    --gap2: 0.4rem;
+    --gap3: 0.8rem;
+    --gap4: 1.2rem;
+    --gap5: 1.6rem;
+    --gap6: 2rem;
+    --gap7: 2.4rem;
+    --gap8: 3.2rem;
+    --gap9: 4rem;
+    --gap10: 4.8rem;
+    --gap11: 6.4rem;
+    --gap12: 8rem;
+    --padding1: 0.2rem;
+    --padding2: 0.4rem;
+    --padding3: 0.8rem;
+    --padding4: 1rem;
+    --padding5: 1.2rem;
+    --padding6: 1.6rem;
+    --padding7: 2rem;
+    --padding8: 2.4rem;
+    --padding9: 3.2rem;
+    --padding10: 4rem;
+    --height1: 0.8rem;
+    --height2: 1.6rem;
+    --height3: 2rem;
+    --height4: 2.4rem;
+    --height5: 3.2rem;
+    --height6: 4rem;
+    --height7: 4.8rem;
+    --height8: 5.6rem;
+    --height9: 6.4rem;
+    --height10: 7.2rem;
+    --height11: 8rem;
+    --radius-xs: 4px;
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 10px;
+    --radius-xlg: 12px;
+    --radius-max: 100px;
+    --transition-base: 0.4s ease-in-out;
+    --contents-padding-x: 24px;
+    --box-shadow-outline-inset: inset 0 0 0 0.2rem var(--primary50);
+    --zoom-sm: 0.9;
+    --zoom-md: 1;
+    --zoom-lg: 1.1;
+    --zoom-xlg: 1.3;
+    --zoom-xxlg: 1.5;
+    --icon-xs: var(--height2);
+    --icon-sm: var(--height3);
+    --icon-md: var(--height4);
+    --icon-lg: var(--height5);
+    --icon-xlg: var(--height6);
+    box-sizing: border-box;
+<body>
+    --primary5: #ecf2fe;
+    --primary10: #d8e5fd;
+    --primary20: #b1cefb;
+    --primary30: #86aff9;
+    --primary40: #4c87f6;
+    --primary50: #256ef4;
+    --primary60: #0b50d0;
+    --primary70: #083891;
+    --primary80: #052561;
+    --primary90: #03163a;
+    --primary95: #020f27;
+    --secondary5: #eef2f7;
+    --secondary10: #d6e0eb;
+    --secondary20: #bacbde;
+    --secondary30: #90b0d5;
+    --secondary40: #6b96c7;
+    --secondary50: #346fb2;
+    --secondary60: #1c589c;
+    --secondary70: #063a74;
+    --secondary80: #052b57;
+    --secondary90: #031f3f;
+    --secondary95: #02162c;
+    --gray0: #ffffff;
+    --gray5: #f4f5f6;
+    --gray10: #e6e8ea;
+    --gray20: #cdd1d5;
+    --gray30: #b1b8be;
+    --gray40: #8a949e;
+    --gray50: #6d7882;
+    --gray60: #58616a;
+    --gray70: #464c53;
+    --gray80: #33363d;
+    --gray90: #1e2124;
+    --gray95: #131416;
+    --gray100: #000000;
+    --danger5: #fdefec;
+    --danger10: #fcdfd9;
+    --danger20: #f7afa1;
+    --danger30: #f48771;
+    --danger40: #f05f42;
+    --danger50: #de3412;
+    --danger60: #bd2c0f;
+    --danger70: #8a240f;
+    --danger80: #5c180a;
+    --danger90: #390d05;
+    --danger95: #260903;
+    --information5: #e7f4fe;
+    --information10: #d3ebfd;
+    --information20: #9ed2fa;
+    --information30: #5fb5f7;
+    --information40: #2098f3;
+    --information50: #0b78cb;
+    --information60: #096ab3;
+    --information70: #085691;
+    --information80: #053961;
+    --information90: #03253f;
+    --information95: #021a2c;
+    --warning5: #fff3db;
+    --warning10: #ffe0a3;
+    --warning20: #ffc95c;
+    --warning30: #ffb114;
+    --warning40: #c78500;
+    --warning50: #9e6a00;
+    --warning60: #8a5c00;
+    --warning70: #614100;
+    --warning80: #422c00;
+    --warning90: #2e1f00;
+    --warning95: #241800;
+    --success5: #eaf6ec;
+    --success10: #d8eedd;
+    --success20: #a9dab4;
+    --success30: #7ec88e;
+    --success40: #3fa654;
+    --success50: #228738;
+    --success60: #267337;
+    --success70: #285d33;
+    --success80: #1f4727;
+    --success90: #122b18;
+    --success95: #0e2012;
+    --point5: #fbeff0;
+    --point10: #f5d6d9;
+    --point20: #ebadb2;
+    --point30: #e0858c;
+    --point40: #d65c66;
+    --point50: #d63d4a;
+    --point60: #ab2b36;
+    --point70: #7a1f26;
+    --point80: #521419;
+    --point90: #310c0f;
+    --point95: #21080a;
+    --graphic10: #e5ecf9;
+    --graphic30: #98acc5;
+    --graphic50: #61758f;
+    --graphic70: #39506c;
+    --graphic90: #223a58;
+    --alpha-black100: #000000;
+    --alpha-black75: #000000bf;
+    --alpha-black50: #00000080;
+    --alpha-black25: #00000040;
+    --alpha-black10: #0000001a;
+    --alpha-black0: #00000000;
+    --alpha-white100: #ffffff;
+    --alpha-white75: #ffffffbf;
+    --alpha-white50: #ffffff80;
+    --alpha-white25: #ffffff40;
+    --alpha-white10: #ffffff1a;
+    --alpha-white0: #ffffff00;
+    --alpha-shadow1: #0000000d;
+    --alpha-shadow2: #00000014;
+    --alpha-shadow3: #0000001f;
+    --bg-dim: var(--alpha-black75);
+    --number0: 0rem;
+    --number1: 0.1rem;
+    --number2: 0.2rem;
+    --number3: 0.4rem;
+    --number4: 0.6rem;
+    --number5: 0.8rem;
+    --number6: 1rem;
+    --number7: 1.2rem;
+    --number8: 1.6rem;
+    --number9: 2rem;
+    --number10: 2.4rem;
+    --number11: 2.8rem;
+    --number12: 3.2rem;
+    --number13: 3.6rem;
+    --number14: 4rem;
+    --number15: 4.4rem;
+    --number16: 4.8rem;
+    --number17: 5.6rem;
+    --number18: 6.4rem;
+    --number19: 7.2rem;
+    --number20: 8rem;
+    --number21: 9.6rem;
+    --numbermax: 100rem;
+    --pc-fz-heading-lg: 3.2rem;
+    --pc-fz-heading-md: 2.4rem;
+    --pc-fz-heading-sm: 1.9rem;
+    --pc-fz-heading-xs: 1.7rem;
+    --mob-fz-heading-lg: 2.4rem;
+    --mob-fz-heading-md: 2.2rem;
+    --mob-fz-heading-sm: 1.8rem;
+    --mob-fz-heading-xs: 1.6rem;
+    --gap1: 0.2rem;
+    --gap2: 0.4rem;
+    --gap3: 0.8rem;
+    --gap4: 1.2rem;
+    --gap5: 1.6rem;
+    --gap6: 2rem;
+    --gap7: 2.4rem;
+    --gap8: 3.2rem;
+    --gap9: 4rem;
+    --gap10: 4.8rem;
+    --gap11: 6.4rem;
+    --gap12: 8rem;
+    --padding1: 0.2rem;
+    --padding2: 0.4rem;
+    --padding3: 0.8rem;
+    --padding4: 1rem;
+    --padding5: 1.2rem;
+    --padding6: 1.6rem;
+    --padding7: 2rem;
+    --padding8: 2.4rem;
+    --padding9: 3.2rem;
+    --padding10: 4rem;
+    --height1: 0.8rem;
+    --height2: 1.6rem;
+    --height3: 2rem;
+    --height4: 2.4rem;
+    --height5: 3.2rem;
+    --height6: 4rem;
+    --height7: 4.8rem;
+    --height8: 5.6rem;
+    --height9: 6.4rem;
+    --height10: 7.2rem;
+    --height11: 8rem;
+    --radius-xs: 4px;
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 10px;
+    --radius-xlg: 12px;
+    --radius-max: 100px;
+    --transition-base: 0.4s ease-in-out;
+    --contents-padding-x: 24px;
+    --box-shadow-outline-inset: inset 0 0 0 0.2rem var(--primary50);
+    --zoom-sm: 0.9;
+    --zoom-md: 1;
+    --zoom-lg: 1.1;
+    --zoom-xlg: 1.3;
+    --zoom-xxlg: 1.5;
+    --icon-xs: var(--height2);
+    --icon-sm: var(--height3);
+    --icon-md: var(--height4);
+    --icon-lg: var(--height5);
+    --icon-xlg: var(--height6);
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    color: var(--gray80);
+    font-weight: 400;
+    word-break: keep-all;
+    word-wrap: break-word;
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+    background-color: #fff;
+    font-size: 1.7rem;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-text-size-adjust: none;
+    font-family: inherit;
+    line-height: 1.5;
+    letter-spacing: inherit;
+<div class= >
+    color: var(--gray80);
+    font-weight: 400;
+    word-break: keep-all;
+    word-wrap: break-word;
+    -webkit-tap-highlight-color: transparent;
+    font-size: 62.5%;
+    --primary5: #ecf2fe;
+    --primary10: #d8e5fd;
+    --primary20: #b1cefb;
+    --primary30: #86aff9;
+    --primary40: #4c87f6;
+    --primary50: #256ef4;
+    --primary60: #0b50d0;
+    --primary70: #083891;
+    --primary80: #052561;
+    --primary90: #03163a;
+    --primary95: #020f27;
+    --secondary5: #eef2f7;
+    --secondary10: #d6e0eb;
+    --secondary20: #bacbde;
+    --secondary30: #90b0d5;
+    --secondary40: #6b96c7;
+    --secondary50: #346fb2;
+    --secondary60: #1c589c;
+    --secondary70: #063a74;
+    --secondary80: #052b57;
+    --secondary90: #031f3f;
+    --secondary95: #02162c;
+    --gray0: #ffffff;
+    --gray5: #f4f5f6;
+    --gray10: #e6e8ea;
+    --gray20: #cdd1d5;
+    --gray30: #b1b8be;
+    --gray40: #8a949e;
+    --gray50: #6d7882;
+    --gray60: #58616a;
+    --gray70: #464c53;
+    --gray80: #33363d;
+    --gray90: #1e2124;
+    --gray95: #131416;
+    --gray100: #000000;
+    --danger5: #fdefec;
+    --danger10: #fcdfd9;
+    --danger20: #f7afa1;
+    --danger30: #f48771;
+    --danger40: #f05f42;
+    --danger50: #de3412;
+    --danger60: #bd2c0f;
+    --danger70: #8a240f;
+    --danger80: #5c180a;
+    --danger90: #390d05;
+    --danger95: #260903;
+    --information5: #e7f4fe;
+    --information10: #d3ebfd;
+    --information20: #9ed2fa;
+    --information30: #5fb5f7;
+    --information40: #2098f3;
+    --information50: #0b78cb;
+    --information60: #096ab3;
+    --information70: #085691;
+    --information80: #053961;
+    --information90: #03253f;
+    --information95: #021a2c;
+    --warning5: #fff3db;
+    --warning10: #ffe0a3;
+    --warning20: #ffc95c;
+    --warning30: #ffb114;
+    --warning40: #c78500;
+    --warning50: #9e6a00;
+    --warning60: #8a5c00;
+    --warning70: #614100;
+    --warning80: #422c00;
+    --warning90: #2e1f00;
+    --warning95: #241800;
+    --success5: #eaf6ec;
+    --success10: #d8eedd;
+    --success20: #a9dab4;
+    --success30: #7ec88e;
+    --success40: #3fa654;
+    --success50: #228738;
+    --success60: #267337;
+    --success70: #285d33;
+    --success80: #1f4727;
+    --success90: #122b18;
+    --success95: #0e2012;
+    --point5: #fbeff0;
+    --point10: #f5d6d9;
+    --point20: #ebadb2;
+    --point30: #e0858c;
+    --point40: #d65c66;
+    --point50: #d63d4a;
+    --point60: #ab2b36;
+    --point70: #7a1f26;
+    --point80: #521419;
+    --point90: #310c0f;
+    --point95: #21080a;
+    --graphic10: #e5ecf9;
+    --graphic30: #98acc5;
+    --graphic50: #61758f;
+    --graphic70: #39506c;
+    --graphic90: #223a58;
+    --alpha-black100: #000000;
+    --alpha-black75: #000000bf;
+    --alpha-black50: #00000080;
+    --alpha-black25: #00000040;
+    --alpha-black10: #0000001a;
+    --alpha-black0: #00000000;
+    --alpha-white100: #ffffff;
+    --alpha-white75: #ffffffbf;
+    --alpha-white50: #ffffff80;
+    --alpha-white25: #ffffff40;
+    --alpha-white10: #ffffff1a;
+    --alpha-white0: #ffffff00;
+    --alpha-shadow1: #0000000d;
+    --alpha-shadow2: #00000014;
+    --alpha-shadow3: #0000001f;
+    --bg-dim: var(--alpha-black75);
+    --number0: 0rem;
+    --number1: 0.1rem;
+    --number2: 0.2rem;
+    --number3: 0.4rem;
+    --number4: 0.6rem;
+    --number5: 0.8rem;
+    --number6: 1rem;
+    --number7: 1.2rem;
+    --number8: 1.6rem;
+    --number9: 2rem;
+    --number10: 2.4rem;
+    --number11: 2.8rem;
+    --number12: 3.2rem;
+    --number13: 3.6rem;
+    --number14: 4rem;
+    --number15: 4.4rem;
+    --number16: 4.8rem;
+    --number17: 5.6rem;
+    --number18: 6.4rem;
+    --number19: 7.2rem;
+    --number20: 8rem;
+    --number21: 9.6rem;
+    --numbermax: 100rem;
+    --pc-fz-heading-lg: 3.2rem;
+    --pc-fz-heading-md: 2.4rem;
+    --pc-fz-heading-sm: 1.9rem;
+    --pc-fz-heading-xs: 1.7rem;
+    --mob-fz-heading-lg: 2.4rem;
+    --mob-fz-heading-md: 2.2rem;
+    --mob-fz-heading-sm: 1.8rem;
+    --mob-fz-heading-xs: 1.6rem;
+    --gap1: 0.2rem;
+    --gap2: 0.4rem;
+    --gap3: 0.8rem;
+    --gap4: 1.2rem;
+    --gap5: 1.6rem;
+    --gap6: 2rem;
+    --gap7: 2.4rem;
+    --gap8: 3.2rem;
+    --gap9: 4rem;
+    --gap10: 4.8rem;
+    --gap11: 6.4rem;
+    --gap12: 8rem;
+    --padding1: 0.2rem;
+    --padding2: 0.4rem;
+    --padding3: 0.8rem;
+    --padding4: 1rem;
+    --padding5: 1.2rem;
+    --padding6: 1.6rem;
+    --padding7: 2rem;
+    --padding8: 2.4rem;
+    --padding9: 3.2rem;
+    --padding10: 4rem;
+    --height1: 0.8rem;
+    --height2: 1.6rem;
+    --height3: 2rem;
+    --height4: 2.4rem;
+    --height5: 3.2rem;
+    --height6: 4rem;
+    --height7: 4.8rem;
+    --height8: 5.6rem;
+    --height9: 6.4rem;
+    --height10: 7.2rem;
+    --height11: 8rem;
+    --radius-xs: 4px;
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 10px;
+    --radius-xlg: 12px;
+    --radius-max: 100px;
+    --transition-base: 0.4s ease-in-out;
+    --contents-padding-x: 24px;
+    --box-shadow-outline-inset: inset 0 0 0 0.2rem var(--primary50);
+    --zoom-sm: 0.9;
+    --zoom-md: 1;
+    --zoom-lg: 1.1;
+    --zoom-xlg: 1.3;
+    --zoom-xxlg: 1.5;
+    --icon-xs: var(--height2);
+    --icon-sm: var(--height3);
+    --icon-md: var(--height4);
+    --icon-lg: var(--height5);
+    --icon-xlg: var(--height6);
+    box-sizing: border-box;
+    -webkit-text-size-adjust: none;
+    font-family: inherit;
+    line-height: 1.5;
+    letter-spacing: inherit;
+    display: block;
+    width: unset;
+    margin: unset;
+    padding: unset;
+    border: unset;
+    border-radius: unset;
+    outline: unset;
+    background-color: unset;
+    box-shadow: unset;
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 9999;

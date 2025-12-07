@@ -1,3 +1,4 @@
+from langchain_openai import ChatOpenAI
 from src.models.state import CivilComplaintState
 from src.tools.civil_rag_tool import get_retriever
 

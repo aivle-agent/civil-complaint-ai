@@ -1,3 +1,4 @@
+from unittest.mock import patch, MagicMock
 from src.models.state import CivilComplaintState
 from src.nodes.generate_strategy_node import generate_strategy_node
 

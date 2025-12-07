@@ -1,0 +1,252 @@
+아래 문서는 백엔드(Spring Boot) + 프론트엔드(React) + 웹기초(JS) 를 모두 아우르는
+**AI Agent에게 그대로 붙여넣어서 동일한 코딩 스타일을 강제할 수 있는 형태의 “코딩 스타일 가이드”**다.
+
+필요하면 Markdown 파일(.md)로도 만들어줄 수 있어.
+
+⸻
+
+📘 AI Agent 개발용 코딩 스타일 가이드 (Backend + Frontend + Web Basic)
+
+이 문서는 AI Agent가 코드를 생성할 때 반드시 준수해야 하는 통합 코딩 스타일 규칙이다.
+아래 원칙에서 벗어난 코드는 생성하지 않는다.
+
+⸻
+
+🟩 1. 백엔드(Spring Boot) 코딩 스타일 가이드
+
+✅ 1.1 아키텍처 원칙
+
+▶ Layered Architecture 유지
+	•	Controller → Service → Repository → Entity 구조
+	•	Controller는 비즈니스 로직 금지
+	•	Service는 트랜잭션 경계 유지
+	•	Repository는 JPA 기반 CRUD만 수행
+
+▶ DI(의존성 주입)는 반드시 생성자 주입
+
+@RequiredArgsConstructor
+@Service
+public class UserService {
+    private final UserRepository userRepository;
+}
+
+▶ Lombok 적극 활용
+	•	@Getter, @Setter, @RequiredArgsConstructor, @Builder, @ToString
+	•	Setter는 최대한 금지 → 엔티티 불변성 유지
+
+⸻
+
+✅ 1.2 Java/JPA 코딩 스타일
+
+▶ 네이밍 규칙
+	•	클래스: PascalCase (ex: UserController)
+	•	변수/메서드: camelCase
+	•	패키지명: 모두 소문자, 단수형 사용
+ex) controller, service, repository, domain.user
+
+▶ 컨트롤러 규칙
+	•	명확한 URL + RESTful
+	•	@RestController + @RequestMapping
+	•	응답은 DTO 사용
+
+@RestController
+@RequestMapping("/api/users")
+@RequiredArgsConstructor
+public class UserController {
+    private final UserService userService;
+
+    @GetMapping
+    public List<UserResponse> listUsers() {
+        return userService.getUsers();
+    }
+}
+
+
+⸻
+
+✅ 1.3 예외 처리 규칙
+
+통합 예외 처리 필수:
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<?> handleRuntime(RuntimeException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+}
+
+
+⸻
+
+✅ 1.4 Entity 규칙
+	•	Setter 금지
+	•	값 변경은 비즈니스 메서드로만
+	•	관계 설정은 연관관계 편의 메서드 제공
+
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class User {
+    @Id @GeneratedValue
+    private Long id;
+
+    private String name;
+
+    public void changeName(String newName) {
+        this.name = newName;
+    }
+}
+
+
+⸻
+
+🟦 2. 프론트엔드(React) 코딩 스타일 가이드
+
+✅ 2.1 React 기본 원칙
+	•	함수형 컴포넌트 ONLY
+	•	파일명 PascalCase (ex. UserCard.jsx)
+	•	하나의 파일 = 하나의 컴포넌트
+	•	CSS는 module.css 또는 styled-components 중 선택
+
+⸻
+
+✅ 2.2 코드 패턴
+
+▶ 상태관리: useState / useEffect
+
+import { useState, useEffect } from "react";
+
+const UserList = () => {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    const res = await fetch("/api/users");
+    const data = await res.json();
+    setUsers(data);
+  };
+
+  return <div>{users.map(u => <p key={u.id}>{u.name}</p>)}</div>;
+};
+
+
+⸻
+
+✅ 2.3 API 호출 규칙
+	•	반드시 async/await 사용
+	•	fetch 또는 axios 라이브러리 사용
+	•	에러 핸들링 통합
+
+try {
+   const res = await axios.get("/api/users");
+} catch (e) {
+   console.error(e);
+}
+
+
+⸻
+
+✅ 2.4 컴포넌트 네이밍 규칙
+	•	컴포넌트: PascalCase
+	•	props: camelCase
+	•	폴더 구조:
+
+src/
+  components/
+  pages/
+  hooks/
+  services/
+
+
+⸻
+
+🟧 3. 웹 기초 (HTML + JavaScript) 코딩 스타일
+
+✅ 3.1 문서 구조
+	•	Doctype 선언 필수
+	•	head/body 구분
+	•	script는 body 마지막에 위치
+
+⸻
+
+✅ 3.2 JS 코딩 규칙 (Vanilla JS)
+
+▶ 변수 및 함수 규칙
+	•	const 기본, 필요 시 let
+	•	함수는 arrow function 우선
+
+const add = (a, b) => a + b;
+
+▶ 배열/객체 가공은 고차함수 사용
+	•	for문보다 map/filter/reduce 우선
+
+const adults = users.filter(user => user.age >= 20);
+
+▶ DOM 조작 규칙
+	•	document.querySelector 우선 사용
+	•	이벤트는 addEventListener 사용
+
+document.querySelector("#btn").addEventListener("click", () => {
+  console.log("clicked");
+});
+
+
+⸻
+
+🟪 4. 공통 스타일 규칙 (Backend + Frontend)
+
+✅ 4.1 주석 규칙
+	•	함수 상단에 한 줄 요약 주석
+	•	복잡한 로직 내부에 설명 주석 추가
+
+// 유저 목록 조회
+public List<User> getUsers() { ... }
+
+// 사용자 데이터를 서버에서 가져온다
+useEffect(() => {}, []);
+
+
+⸻
+
+✅ 4.2 코드 포맷팅 규칙
+	•	들여쓰기: 공통 2 or 4 spaces (환경에 맞춰 자동 정렬)
+	•	줄 길이 120자 이하
+	•	불필요한 console.log, sysout 금지
+	•	의미 없는 변수명 금지 (a, b, x)
+
+⸻
+
+✅ 4.3 Git 커밋 메시지 규칙
+
+feat: 새로운 기능 추가
+fix: 버그 수정
+refactor: 코드 구조 변경
+docs: 문서 수정
+style: 포맷팅, 세미콜론 변경 등
+test: 테스트 코드 추가
+chore: 빌드/환경 설정
+
+
+⸻
+
+📗 5. AI Agent를 위한 “지켜야 할 핵심 룰” 요약
+
+AI가 코드 생성 시 반드시 아래 10개 원칙을 따른다:
+	1.	Spring Boot는 Layered Architecture로 작성
+	2.	DI는 반드시 생성자 주입
+	3.	Controller는 DTO만 사용, 엔티티 직접 반환 금지
+	4.	React는 함수형 컴포넌트 + Hooks만 사용
+	5.	JS는 ES6 문법 + arrow function + const 우선
+	6.	Front/Back 모두 명확한 네이밍 규칙 준수
+	7.	JPA Entity는 Setter 금지, 비즈니스 메서드만 사용
+	8.	API 호출은 반드시 async/await
+	9.	DOM 조작 시 querySelector/addEventListener 필수
+	10.	Git 커밋 메시지는 Conventional Commits 규칙 사용
+
+이 규칙을 사용해서 
+https://www.epeople.go.kr/nep/prpsl/opnPrpl/opnpblPrpslList.npaid
+이 사이트의 공개제안 clone 사이트 만들어줘 
