@@ -299,6 +299,64 @@ const ConfirmationBox = styled.div`
   }
 `;
 
+const AiResponseBox = styled.div`
+  margin-top: 25px;
+  border: 2px solid var(--primary50);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  
+  .response-header {
+    background: linear-gradient(135deg, var(--primary50) 0%, var(--primary60) 100%);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    h4 {
+      color: white;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    
+    .icon {
+      font-size: 1.8rem;
+    }
+  }
+  
+  .response-content {
+    padding: 25px;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    
+    p {
+      font-size: 1.5rem;
+      color: var(--gray90);
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+  }
+  
+  .response-footer {
+    padding: 12px 20px;
+    background-color: var(--gray5);
+    text-align: right;
+    
+    button {
+      padding: 8px 20px;
+      background-color: var(--gray60);
+      color: white;
+      border: none;
+      border-radius: var(--radius-xs);
+      font-size: 1.3rem;
+      cursor: pointer;
+      
+      &:hover {
+        background-color: var(--gray80);
+      }
+    }
+  }
+`;
+
 const ButtonArea = styled.div`
   display: flex;
   justify-content: space-between;
@@ -478,10 +536,11 @@ const ModalContent = styled.div`
   }
 `;
 
-const InstitutionSelect = ({ onNavigate, data }) => {
+const InstitutionSelect = ({ onNavigate, data, aiResult }) => {
     const [selectedInstitution, setSelectedInstitution] = useState(null);
     const [isAccordionOpen, setIsAccordionOpen] = useState(true);
     const [showPreview, setShowPreview] = useState(false);
+    const [showAnswerModal, setShowAnswerModal] = useState(false); // 예상답변 모달
     const [searchCategory, setSearchCategory] = useState('cntrAdministDiv');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [aiResponse, setAiResponse] = useState(null);
@@ -515,39 +574,22 @@ const InstitutionSelect = ({ onNavigate, data }) => {
 
     const handleSelect = (name) => {
         setSelectedInstitution(name);
-        setAiResponse(null); // Reset AI response when institution changes
     };
 
-    const handlePreview = async () => {
+    const handlePreview = () => {
         if (!selectedInstitution) {
             alert("처리기관을 선택해주세요.");
             return;
         }
 
-        setIsSubmitting(true);
-        try {
-            const response = await fetch('http://localhost:8000/api/submit-proposal', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const result = await response.json();
-            console.log("AI Analysis Result:", result);
-            setAiResponse(result.final_answer);
-            setShowPreview(true);
-        } catch (error) {
-            console.error("Error generating preview:", error);
-            alert("미리보기 생성 중 오류가 발생했습니다.");
-        } finally {
-            setIsSubmitting(false);
+        // 기존 질문 교정에서 받은 데이터 사용
+        if (!aiResult || !aiResult.final_answer) {
+            alert("먼저 '질문 교정'을 실행해주세요.");
+            return;
         }
+
+        // 모달로 예상답변 표시
+        setShowAnswerModal(true);
     };
 
     return (
@@ -676,13 +718,36 @@ const InstitutionSelect = ({ onNavigate, data }) => {
                     <button
                         className="btn line"
                         onClick={handlePreview}
-                        disabled={isSubmitting}
+                        disabled={!aiResult}
                     >
-                        {isSubmitting ? '생성중...' : '미리보기'}
+                        예상답변
                     </button>
                     {selectedInstitution && <button className="btn fill">신청</button>}
                 </div>
             </ButtonArea>
+
+            {/* 예상답변 모달 */}
+            {showAnswerModal && aiResult && (
+                <ModalOverlay onClick={() => setShowAnswerModal(false)}>
+                    <ModalContent onClick={(e) => e.stopPropagation()}>
+                        <div className="layerPop_top">
+                            <strong>🤖 AI 예상답변</strong>
+                            <button onClick={() => setShowAnswerModal(false)}>닫기</button>
+                        </div>
+                        <div className="def_lPop_body">
+                            <div className="preview" style={{ borderTop: 'none' }}>
+                                <dl>
+                                    <dt style={{ backgroundColor: 'var(--primary5)', color: 'var(--primary60)' }}>예상답변</dt>
+                                    <dd style={{ whiteSpace: 'pre-wrap', lineHeight: '1.8' }}>{aiResult.final_answer}</dd>
+                                </dl>
+                            </div>
+                            <div className="closeBtn">
+                                <button onClick={() => setShowAnswerModal(false)}>닫기</button>
+                            </div>
+                        </div>
+                    </ModalContent>
+                </ModalOverlay>
+            )}
 
             {showPreview && (
                 <ModalOverlay>

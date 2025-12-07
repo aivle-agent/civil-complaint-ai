@@ -29,6 +29,8 @@ function App() {
         btmtIdeaCl: '',
         expcEfctCl: ''
     });
+    // LangGraph 결과를 저장하여 ProposalForm과 InstitutionSelect 간 공유
+    const [aiResult, setAiResult] = useState(null);
 
     const handleProposalDataChange = (name, value) => {
         setProposalData(prev => ({
@@ -50,12 +52,15 @@ function App() {
                             onNext={() => setActivePage('institution')}
                             data={proposalData}
                             onDataChange={handleProposalDataChange}
+                            aiResult={aiResult}
+                            onAiResult={setAiResult}
                         />
                     )}
                     {activePage === 'institution' && (
                         <InstitutionSelect
                             onNavigate={setActivePage}
                             data={proposalData}
+                            aiResult={aiResult}
                         />
                     )}
                 </ContentWrapper>

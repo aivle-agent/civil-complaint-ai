@@ -1,8 +1,8 @@
 # src/nodes/refine_query_node.py
 # -*- coding: utf-8 -*-
 """
-Local LangGraph node:
-- Qwen/Qwen2.5-3B-Instruct 로 민원 질문 품질 평가
+LangGraph node:
+- OpenAI API 로 민원 질문 품질 평가
 - RandomForestRegressor + SHAP 으로 품질 예측 및 중요도 분석
 - refined_question, strategy, predicted_quality, quality_shap_plot_base64 를 state에 기록
 """
@@ -28,41 +28,9 @@ IS_CI = os.getenv("CI", "").lower() == "true" or os.getenv(
     "GITHUB_ACTIONS", ""
 ).lower() == "true"
 
-if not IS_CI:
-    import torch  # type: ignore[import]
-    from transformers import AutoModelForCausalLM, AutoTokenizer  # type: ignore[import]
-else:
-    # CI 환경에서는 torch/transformers 를 실제로 사용하지 않도록 막는다
-    torch = None  # type: ignore[assignment]
-    AutoModelForCausalLM = AutoTokenizer = None  # type: ignore[assignment]
-
-
-def _get_device() -> str:
-    """
-    CI 환경에서는 torch 없이도 안전하게 동작하도록 장치 문자열만 리턴.
-    로컬/실서비스에서는 cuda/mps 여부를 보고 문자열 리턴.
-    """
-    if IS_CI or torch is None:
-        return "cpu"
-
-    if torch.cuda.is_available():
-        return "cuda"
-    # mps(backends)가 있을 때만 확인
-    if hasattr(torch, "backends") and hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
-        return "mps"
-    return "cpu"
-
-
-# "cpu" / "cuda" / "mps" 문자 형태
-DEVICE = _get_device()
-
-
 # -------------------------------------------------------------------
 # 1. 경로 및 기본 설정
 # -------------------------------------------------------------------
-
-# HF 모델 ID (환경변수 QWEN_MODEL_ID 로 덮어쓰기 가능)
-DEFAULT_MODEL_ID = "Qwen/Qwen2.5-3B-Instruct"
 
 # 이 파일: src/nodes/refine_query_node.py
 THIS_DIR = Path(__file__).resolve().parent        # .../src/nodes
@@ -71,126 +39,60 @@ MODEL_SAVE_DIR = THIS_DIR.parent / "models"       # .../src/models
 # RF / SHAP 아티팩트 캐시
 ARTIFACTS: Dict[str, Any] = {"model": None, "explainer": None, "features": None}
 
-# LLM 전역 캐시 (lazy load)
-_tokenizer: Optional[Any] = None
-_model: Optional[Any] = None
-
+# OpenAI 모델 설정
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
 
 # -------------------------------------------------------------------
-# 2. LLM 로딩 및 호출 유틸
+# 2. OpenAI API 기반 LLM 호출 유틸
 # -------------------------------------------------------------------
-def initialize_models() -> None:
-    """
-    Qwen2.5-3B-Instruct 모델 lazy-load.
-    - QWEN_MODEL_ID 환경변수: 모델 ID 변경 가능
-    - HUGGINGFACE_HUB_TOKEN / HF_TOKEN / HUGGINGFACE_TOKEN: HF 토큰 사용
-    """
-    global _tokenizer, _model
 
-    # CI에서는 LLM 로딩 자체를 하지 않음 (테스트는 compute_question_quality만 사용)
-    if IS_CI:
-        return
-
-    if _model is not None and _tokenizer is not None:
-        return
-
-    model_id = os.getenv("QWEN_MODEL_ID", DEFAULT_MODEL_ID)
-
-    hf_token = (
-        os.getenv("HUGGINGFACE_HUB_TOKEN")
-        or os.getenv("HF_TOKEN")
-        or os.getenv("HUGGINGFACE_TOKEN")
-    )
-
-    print(f"[INFO] Loading LLM: {model_id} on device={DEVICE} ...")
-
-    # dtype 설정
-    if DEVICE == "cuda":
-        torch_dtype = torch.float16  # GPU 있으면 half 사용
-    elif DEVICE == "mps":
-        # MPS 에서는 속도를 위해 여전히 float16 사용
-        # (NaN 문제는 generate() 단계에서 do_sample=False 로 완화)
-        torch_dtype = torch.float16
-    else:
-        torch_dtype = torch.float32  # CPU
-
-    _tokenizer = AutoTokenizer.from_pretrained(
-        model_id,
-        token=hf_token if hf_token else None,
-    )
-    _model = AutoModelForCausalLM.from_pretrained(
-        model_id,
-        torch_dtype=torch_dtype,
-        device_map=None,
-        token=hf_token if hf_token else None,
-    ).to(DEVICE)
-
-    if _tokenizer.pad_token is None:
-        _tokenizer.pad_token = _tokenizer.eos_token
-
-    print("[INFO] LLM loaded successfully.")
+# OpenAI 클라이언트 (lazy initialization)
+_openai_client: Optional[Any] = None
 
 
-def _generate_from_messages(
-    messages: List[Dict[str, str]],
-    temperature: float = 0.2,
-    max_new_tokens: int = 512,
-) -> str:
-    """
-    Qwen chat template 으로 messages 입력받아 텍스트 생성.
-    messages 예:
-      [{"role": "system", "content": "..."}, {"role": "user", "content": "..."}]
-    """
-    initialize_models()
-    assert _tokenizer is not None and _model is not None
-
-    prompt_text = _tokenizer.apply_chat_template(
-        messages,
-        tokenize=False,
-        add_generation_prompt=True,
-    )
-    inputs = _tokenizer(prompt_text, return_tensors="pt").to(DEVICE)
-
-    # MPS 에서는 NaN/inf 문제를 줄이기 위해 샘플링을 끄고 greedy decoding 사용
-    if DEVICE == "mps":
-        do_sample_flag = False
-        gen_temperature = None
-    else:
-        do_sample_flag = True
-        gen_temperature = temperature
-
-    with torch.no_grad():
-        generated = _model.generate(
-            **inputs,
-            max_new_tokens=max_new_tokens,
-            do_sample=do_sample_flag,
-            temperature=gen_temperature,
-            eos_token_id=_tokenizer.eos_token_id,
-        )
-
-    gen_ids = generated[0, inputs["input_ids"].shape[1]:]
-    out = _tokenizer.decode(gen_ids, skip_special_tokens=True)
-    return out.strip()
+def _get_openai_client():
+    """OpenAI 클라이언트를 lazy하게 초기화."""
+    global _openai_client
+    if _openai_client is None:
+        try:
+            from openai import OpenAI
+            api_key = os.getenv("OPENAI_API_KEY")
+            if not api_key:
+                print("[WARN] OPENAI_API_KEY not set. LLM calls will fail.")
+            _openai_client = OpenAI(api_key=api_key)
+            print(f"[INFO] OpenAI client initialized. Model: {OPENAI_MODEL}")
+        except ImportError:
+            print("[ERROR] openai package not installed. Run: pip install openai")
+            return None
+    return _openai_client
 
 
 def call_llm_json(
     messages: List[Dict[str, str]],
     temperature: float = 0.2,
 ) -> Optional[Dict[str, Any]]:
-    """LLM 에 JSON 응답을 요청하고 파싱. 실패 시 None."""
+    """OpenAI API로 JSON 응답을 요청하고 파싱. 실패 시 None."""
+    # CI 환경에서는 API 호출하지 않음
+    if IS_CI:
+        return None
+    
+    client = _get_openai_client()
+    if client is None:
+        return None
+    
     try:
-        raw = _generate_from_messages(
-            messages,
+        response = client.chat.completions.create(
+            model=OPENAI_MODEL,
+            messages=messages,
             temperature=temperature,
-            max_new_tokens=256,
+            response_format={"type": "json_object"},
         )
-        start_idx = raw.find("{")
-        end_idx = raw.rfind("}")
-        if start_idx == -1 or end_idx == -1:
-            return None
-        return json.loads(raw[start_idx : end_idx + 1])
+        raw = response.choices[0].message.content
+        if raw:
+            return json.loads(raw)
+        return None
     except Exception as e:
-        print(f"[WARN] JSON Parsing Error: {e}")
+        print(f"[WARN] JSON LLM call failed: {e}")
         return None
 
 
@@ -198,15 +100,24 @@ def call_llm_text(
     messages: List[Dict[str, str]],
     temperature: float = 0.2,
 ) -> str:
-    """LLM 에 일반 텍스트 응답을 요청."""
+    """OpenAI API로 일반 텍스트 응답을 요청."""
+    # CI 환경에서는 API 호출하지 않음
+    if IS_CI:
+        return ""
+    
+    client = _get_openai_client()
+    if client is None:
+        return ""
+    
     try:
-        return _generate_from_messages(
-            messages,
+        response = client.chat.completions.create(
+            model=OPENAI_MODEL,
+            messages=messages,
             temperature=temperature,
-            max_new_tokens=512,
         )
+        content = response.choices[0].message.content
+        return content.strip() if content else ""
     except Exception as e:
-        # 콘솔에는 에러 출력, 사용자 결과에는 노출하지 않도록 빈 문자열 반환
         print(f"[ERROR] LLM call failed: {e}")
         return ""
 

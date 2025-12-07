@@ -49,6 +49,7 @@ async def submit_proposal(request: ProposalRequest):
         
         return {
             "status": "success",
+            "refined_question": result.get("refined_question"),
             "final_answer": result.get("final_answer"),
             "draft_answer": result.get("draft_answer"),
             "strategy": result.get("strategy")
