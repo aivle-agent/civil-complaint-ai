@@ -36,16 +36,17 @@ import chromadb
 CHROMA_DIR = current_dir+"/data/chroma_lawdb_kanana_clustered/chroma_lawdb_kanana_clustered"
 
 # 로컬 파인튜닝 모델 경로 (없으면 HuggingFace 기본 모델 사용)
-# LOCAL_MODEL_DIR = current_dir+"/data/finetuned_models/tinyllama-law"
-# if os.path.exists(LOCAL_MODEL_DIR) and os.listdir(LOCAL_MODEL_DIR):
-#     MODEL_DIR = LOCAL_MODEL_DIR
-#     print(f"[INFO] Using local finetuned model: {MODEL_DIR}")
-# else:
-#     MODEL_DIR = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"  # HuggingFace 기본 모델
-#     print(f"[WARN] Local model not found. Using HuggingFace model: {MODEL_DIR}")
+# 로컬 파인튜닝 모델 경로 (없으면 HuggingFace 기본 모델 사용)
+LOCAL_MODEL_DIR = current_dir+"/data/finetuned_models/tinyllama-law"
+if os.path.exists(LOCAL_MODEL_DIR) and os.listdir(LOCAL_MODEL_DIR):
+    MODEL_DIR = LOCAL_MODEL_DIR
+    print(f"[INFO] Using local finetuned model: {MODEL_DIR}")
+else:
+    MODEL_DIR = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"  # HuggingFace 기본 모델
+    print(f"[WARN] Local model not found. Using HuggingFace model: {MODEL_DIR}")
 
-# NOVEL_PATH = current_dir+"/data/novel_test.jsonl"
-# MEMORY_PATH = current_dir+"/data/bandit_memory.json"
+NOVEL_PATH = current_dir+"/data/novel_test.jsonl"
+MEMORY_PATH = current_dir+"/data/bandit_memory.json"
 
 # logging.basicConfig(level=logging.INFO)
 # logger = logging.getLogger(__name__)
@@ -55,7 +56,7 @@ GEN_MODEL_NAME = "kakaocorp/kanana-nano-2.1b-instruct"
 MEMORY_PATH = "./answer_memory.json"
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(name)
+logger = logging.getLogger(__name__)
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 logger.info(f"[INIT] DEVICE = {DEVICE}")
