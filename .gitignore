@@ -155,3 +155,6 @@ data/documents.txt
 data/embeddings.npy
 data/metadata.pkl
 data/vectorstores/
+data/chroma_lawdb_kanana_clustered/
+data/*.zip
+data/*.pkl

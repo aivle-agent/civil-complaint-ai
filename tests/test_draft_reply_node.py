@@ -9,20 +9,26 @@ def test_draft_reply_node():
     state: CivilComplaintState = {
         "user_question": "Test Question",
         "refined_question": "Refined: Test Question",
-        "strategy": "Test Strategy",
         "retry_count": 0,
-        "is_verified": False,
     }
 
     # Mock the OpenAI API call and config
     mock_response = MagicMock()
-    mock_response.content = "Mock draft answer based on the test strategy"
+    mock_response.content = "Mock draft answer based on the test question"
     
     with patch("src.nodes.draft_reply_node.get_openai_api_key", return_value="mock-api-key"), \
-         patch("src.nodes.draft_reply_node.ChatOpenAI") as mock_llm:
+         patch("src.nodes.draft_reply_node.ChatOpenAI") as mock_llm, \
+         patch("src.nodes.draft_reply_node.retrieve_with_kanana") as mock_retriever:
+        
         mock_instance = MagicMock()
         mock_instance.invoke.return_value = mock_response
         mock_llm.return_value = mock_instance
+        
+        # Mock retriever return value
+        mock_retriever.return_value = [
+            {"doc": "Test Document 1", "meta": {"source": "test"}},
+            {"doc": "Test Document 2", "meta": {"source": "test"}}
+        ]
         
         # When
         result = draft_reply_node(state)
@@ -35,7 +41,13 @@ def test_draft_reply_node():
     assert isinstance(result["draft_answer"], str), "Draft answer must be a string"
     assert len(result["draft_answer"]) > 0, "Draft answer must not be empty"
     
-    # 3. Ensure no unexpected keys are added
-    assert set(result.keys()) == {"draft_answer"}, "Result should only contain 'draft_answer' key"
+    # 3. Check for new keys and content
+    assert "retrieved_documents" in result, "Result must contain 'retrieved_documents' key"
+    assert "rag_context" in result, "Result must contain 'rag_context' key"
+    
+    # Verify retrieved_documents content
+    docs = result["retrieved_documents"]
+    assert isinstance(docs, list), "retrieved_documents must be a list"
+    assert len(docs) == 2, "Should have retrieved 2 documents"
     
     print(f"✓ State validation passed: draft_answer generated ({len(result['draft_answer'])} chars)")

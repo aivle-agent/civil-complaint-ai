@@ -20,7 +20,9 @@ import joblib
 import matplotlib.pyplot as plt
 import numpy as np
 import shap
+from openai import OpenAI
 
+from src.config import get_openai_api_key
 from ..models.state import CivilComplaintState  # models/state.py 에서 타입 불러옴
 
 # CI 환경 여부
@@ -45,26 +47,107 @@ OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
 # -------------------------------------------------------------------
 # 2. OpenAI API 기반 LLM 호출 유틸
 # -------------------------------------------------------------------
+# def initialize_models() -> None:
+#     """
+#     Qwen2.5-3B-Instruct 모델 lazy-load.
+#     - QWEN_MODEL_ID 환경변수: 모델 ID 변경 가능
+#     - HUGGINGFACE_HUB_TOKEN / HF_TOKEN / HUGGINGFACE_TOKEN: HF 토큰 사용
+#     """
+#     global _tokenizer, _model
 
-# OpenAI 클라이언트 (lazy initialization)
-_openai_client: Optional[Any] = None
+#     # CI에서는 LLM 로딩 자체를 하지 않음 (테스트는 compute_question_quality만 사용)
+#     if IS_CI:
+#         return
+
+#     if _model is not None and _tokenizer is not None:
+#         return
+
+#     model_id = os.getenv("QWEN_MODEL_ID", DEFAULT_MODEL_ID)
+
+#     hf_token = (
+#         os.getenv("HUGGINGFACE_HUB_TOKEN")
+#         or os.getenv("HF_TOKEN")
+#         or os.getenv("HUGGINGFACE_TOKEN")
+#     )
+
+#     print(f"[INFO] Loading LLM: {model_id} on device={DEVICE} ...")
+
+#     # dtype 설정
+#     if DEVICE == "cuda":
+#         torch_dtype = torch.float16  # GPU 있으면 half 사용
+#     elif DEVICE == "mps":
+#         # MPS 에서는 속도를 위해 여전히 float16 사용
+#         # (NaN 문제는 generate() 단계에서 do_sample=False 로 완화)
+#         torch_dtype = torch.float16
+#     else:
+#         torch_dtype = torch.float32  # CPU
+
+#     _tokenizer = AutoTokenizer.from_pretrained(
+#         model_id,
+#         token=hf_token if hf_token else None,
+#     )
+#     _model = AutoModelForCausalLM.from_pretrained(
+#         model_id,
+#         torch_dtype=torch_dtype,
+#         device_map=None,
+#         token=hf_token if hf_token else None,
+#     ).to(DEVICE)
+
+#     if _tokenizer.pad_token is None:
+#         _tokenizer.pad_token = _tokenizer.eos_token
+
+#     print("[INFO] LLM loaded successfully.")
 
 
-def _get_openai_client():
-    """OpenAI 클라이언트를 lazy하게 초기화."""
-    global _openai_client
-    if _openai_client is None:
-        try:
-            from openai import OpenAI
-            api_key = os.getenv("OPENAI_API_KEY")
-            if not api_key:
-                print("[WARN] OPENAI_API_KEY not set. LLM calls will fail.")
-            _openai_client = OpenAI(api_key=api_key)
-            print(f"[INFO] OpenAI client initialized. Model: {OPENAI_MODEL}")
-        except ImportError:
-            print("[ERROR] openai package not installed. Run: pip install openai")
-            return None
-    return _openai_client
+# def _generate_from_messages(
+#     messages: List[Dict[str, str]],
+#     temperature: float = 0.2,
+#     max_new_tokens: int = 512,
+# ) -> str:
+#     """
+#     Qwen chat template 으로 messages 입력받아 텍스트 생성.
+#     messages 예:
+#       [{"role": "system", "content": "..."}, {"role": "user", "content": "..."}]
+#     """
+#     initialize_models()
+#     assert _tokenizer is not None and _model is not None
+
+#     prompt_text = _tokenizer.apply_chat_template(
+#         messages,
+#         tokenize=False,
+#         add_generation_prompt=True,
+#     )
+#     inputs = _tokenizer(prompt_text, return_tensors="pt").to(DEVICE)
+
+#     # MPS 에서는 NaN/inf 문제를 줄이기 위해 샘플링을 끄고 greedy decoding 사용
+#     if DEVICE == "mps":
+#         do_sample_flag = False
+#         gen_temperature = None
+#     else:
+#         do_sample_flag = True
+#         gen_temperature = temperature
+
+#     with torch.no_grad():
+#         generated = _model.generate(
+#             **inputs,
+#             max_new_tokens=max_new_tokens,
+#             do_sample=do_sample_flag,
+#             temperature=gen_temperature,
+#             eos_token_id=_tokenizer.eos_token_id,
+#         )
+
+#     gen_ids = generated[0, inputs["input_ids"].shape[1]:]
+#     out = _tokenizer.decode(gen_ids, skip_special_tokens=True)
+#     return out.strip()
+
+
+def _get_openai_client() -> Optional[OpenAI]:
+    """OpenAI 클라이언트 생성 (싱글톤 아님, 호출 시마다 생성)"""
+    try:
+        api_key = get_openai_api_key()
+        return OpenAI(api_key=api_key)
+    except Exception:
+        return None
 
 
 def call_llm_json(
