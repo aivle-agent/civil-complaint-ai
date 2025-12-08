@@ -17,17 +17,17 @@ else:
     print("[INFO] Chroma directory already exists, skipping extraction")
 
 
-import os
-import json
-import math
-import logging
-from typing import List, Dict, Any, Tuple
+import os  # noqa: E402
+import json  # noqa: E402
+import math  # noqa: E402
+import logging  # noqa: E402
+from typing import List, Dict, Any, Tuple  # noqa: E402
 
-import numpy as np
-import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from sentence_transformers import SentenceTransformer
-import chromadb
+import numpy as np  # noqa: E402
+import torch  # noqa: E402
+from transformers import AutoTokenizer, AutoModelForCausalLM  # noqa: E402
+from sentence_transformers import SentenceTransformer  # noqa: E402
+import chromadb  # noqa: E402
 
 
 # 0. 경로 및 기본 설정

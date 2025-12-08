@@ -31,11 +31,19 @@ Original file is located at
 import os
 import re
 import json
+import logging
+import pickle
 import pandas as pd
 import numpy as np
-from typing import Any, List, Dict, Tuple
+import torch
+import chromadb
+from tqdm import tqdm
+from typing import Any, List, Dict, Tuple, Optional
 from sentence_transformers import SentenceTransformer
-from sklearn.cluster import DBSCAN
+from sklearn.cluster import DBSCAN, MiniBatchKMeans, KMeans
+from sklearn.metrics import silhouette_score
+from transformers import AutoModel, AutoTokenizer, AutoModelForCausalLM
+from chromadb import PersistentClient
 
 
 
@@ -196,7 +204,7 @@ def export_to_jsonl(train, novel, out_dir="export"):
                 "q_count": int(row.get("q_count", 1)),
             }, ensure_ascii=False) + "\n")
 
-    print(f"\n[EXPORT DONE]")
+    print("\n[EXPORT DONE]")
     print(f"Train JSONL → {train_path}")
     print(f"Novel JSONL → {novel_path}")
 
@@ -213,9 +221,9 @@ if __name__ == "__main__":
 
     export_to_jsonl(train_clustered, novel_unique, out_dir="export")
 
-import json
-import os
-import pandas as pd
+# import json
+# import os
+# import pandas as pd
 
 PREC_PATH = "prec_parallel.jsonl"
 LOCAL_CSV = "data/지방행정기관.csv"
@@ -294,11 +302,11 @@ if __name__ == "__main__":
     print("[DONE] Saved:", OUT_ITEMS)
 
 import json
-import numpy as np
-from transformers import AutoModel, AutoTokenizer
-import torch
-import os
-from tqdm import tqdm
+# import numpy as np
+# from transformers import AutoModel, AutoTokenizer
+# import torch
+# import os
+# from tqdm import tqdm
 
 IN_ITEMS = "processed_items.jsonl"
 OUT_DIR = "emb_shards"
@@ -364,17 +372,17 @@ if __name__ == "__main__":
         print(f"[DONE] Saved SHARD {shard_id}")
         shard_id += 1
 
-import numpy as np
-import json
-import os
-from sklearn.cluster import MiniBatchKMeans, KMeans
-from sklearn.metrics import silhouette_score
+# import numpy as np
+# import json
+# import os
+# from sklearn.cluster import MiniBatchKMeans, KMeans
+# from sklearn.metrics import silhouette_score
 
 EMB_DIR = "emb_shards"
 OUT_LABELS = "cluster_labels.npy"
 OUT_CLUSTER_MODEL = "cluster_model.pkl"
 
-import pickle
+# import pickle
 
 def load_embeddings():
     arrs = []
@@ -432,11 +440,11 @@ if __name__ == "__main__":
 
     print("[DONE] Cluster saved.")
 
-import json
-import numpy as np
-import os
-import chromadb
-from chromadb.config import Settings
+# import json
+# import numpy as np
+# import os
+# import chromadb
+# from chromadb.config import Settings
 
 EMB_DIR = "emb_shards"
 ITEM_DIR = "emb_shards"
@@ -520,15 +528,15 @@ print("[DONE] 총 라벨 사용 개수:", label_ptr)
 
 # retriever_kanana.py
 
-import os
-from typing import List, Dict, Any, Optional
+# import os
+# from typing import List, Dict, Any, Optional
 
-import numpy as np
-import chromadb
-from chromadb import PersistentClient
+# import numpy as np
+# import chromadb
+# from chromadb import PersistentClient
 
-import torch
-from transformers import AutoModel, AutoTokenizer
+# import torch
+# from transformers import AutoModel, AutoTokenizer
 
 
 DB_DIR = os.environ.get("LAWDB_DIR", "./chroma_lawdb_kanana_clustered")
@@ -764,15 +772,15 @@ if __name__ == "__main__":
 # - 출력: 최종 '검토내용' 답변 1개
 # ============================================
 
-import os
-import json
-import logging
-from typing import List, Dict, Any, Tuple
+# import os
+# import json
+# import logging
+# from typing import List, Dict, Any, Tuple
 
-import numpy as np
-import torch
-from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM
-import chromadb
+# import numpy as np
+# import torch
+# from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM
+# import chromadb
 
 # --------------------------------------------
 # 0. 기본 설정
@@ -1242,6 +1250,13 @@ def save_memory(record: Dict[str, Any]):
 #         return record
 #     else:
 #         return final_answer
+
+def summarize_final_answer(question: str, answer: str) -> str:
+    """
+    최종 답변을 요약합니다. (Placeholder implementation)
+    """
+    return answer[:200] + "..." if len(answer) > 200 else answer
+
 
 def answer_question(question: str, return_meta: bool = False):
     """
