@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
 LLM 텍스트 생성 모듈 (OpenAI API 사용)
-로컬 Kanana 모델 대신 OpenAI GPT-4o-mini API를 사용
+모델 설정은 src/config.py의 LLM_MODEL 상수에서 관리
 """
 
 import logging
 from typing import Optional
 
 from langchain_openai import ChatOpenAI
-from src.config import get_openai_api_key
+from src.config import get_openai_api_key, get_llm_model
 
 logger = logging.getLogger(__name__)
 
@@ -26,9 +26,10 @@ def get_llm() -> ChatOpenAI:
     global _llm_instance
     
     if _llm_instance is None:
-        logger.info("[LLM] Initializing OpenAI GPT-4o-mini")
+        model = get_llm_model()
+        logger.info(f"[LLM] Initializing OpenAI {model}")
         _llm_instance = ChatOpenAI(
-            model="gpt-4o-mini",
+            model=model,
             temperature=0.7,
             api_key=get_openai_api_key()
         )
@@ -53,8 +54,9 @@ def llm_generate(
         생성된 텍스트
     """
     try:
+        model = get_llm_model()
         llm = ChatOpenAI(
-            model="gpt-4o-mini",
+            model=model,
             temperature=temperature,
             api_key=get_openai_api_key()
         )

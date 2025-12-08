@@ -22,7 +22,7 @@ import numpy as np
 import shap
 from openai import OpenAI
 
-from src.config import get_openai_api_key
+from src.config import get_openai_api_key, get_llm_model
 from ..models.state import CivilComplaintState  # models/state.py 에서 타입 불러옴
 
 # CI 환경 여부
@@ -41,8 +41,8 @@ MODEL_SAVE_DIR = THIS_DIR.parent / "models"       # .../src/models
 # RF / SHAP 아티팩트 캐시
 ARTIFACTS: Dict[str, Any] = {"model": None, "explainer": None, "features": None}
 
-# OpenAI 모델 설정
-OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
+# OpenAI 모델 설정 (config.py에서 중앙 관리)
+OPENAI_MODEL = get_llm_model()
 
 # -------------------------------------------------------------------
 # 2. OpenAI API 기반 LLM 호출 유틸

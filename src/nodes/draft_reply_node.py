@@ -95,6 +95,7 @@ def draft_reply_node(state: CivilComplaintState) -> CivilComplaintState:
     
     return {
         "draft_answer": final_answer,
+        "final_answer": final_answer,
         "retrieved_documents": retrieved_docs,
         "views": views,
         "candidates": scored_candidates,
