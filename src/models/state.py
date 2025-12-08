@@ -9,12 +9,16 @@ class CivilComplaintState(TypedDict):
     
     quality_shap_plot_base64: Optional[str]  # SHAP 막대그래프
     
-    strategy: Optional[str] # retriever
+    strategy: Optional[str]  # retriever
     verification_feedback: Optional[str]
     
     retry_count: int
     rag_context: Optional[str]  # Context retrieved via RAG
-    retrieved_documents: Optional[List[Dict[str, Any]]] # Retrieved documents from Kanana RAG
+    retrieved_documents: Optional[List[Dict[str, Any]]]  # Retrieved documents from Kanana RAG
+    
+    # Multi-View Algorithm fields
+    views: Optional[Dict[str, str]]  # Multi-view summaries (law, case, mixed)
+    candidates: Optional[List[Dict[str, Any]]]  # Candidate answers with critic scores
     
     draft_answer: Optional[str]
     final_answer: Optional[str]
